@@ -386,6 +386,8 @@ abstract class AbstractScanner {
       next = bigSwitch(next);
     }
     appendEofToken();
+
+    print('len ${this._tokens.length}');
     return firstToken();
   }
   /**
@@ -680,7 +682,9 @@ abstract class AbstractScanner {
     }
     return null;
   }
-  Token firstToken() => _tokens.next;
+  Token firstToken() {
+    return _tokens.next;
+  }
   /**
    * Return the source being scanned.
    * @return the source being scanned

@@ -5,5 +5,5 @@ description: Experimental static analyzer for Dart.
 homepage: http://www.dartlang.org
 dependencies:
   args: any
-dev_dependencies:
+  browser: 0.4.2
   unittest: any

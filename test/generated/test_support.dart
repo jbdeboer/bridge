@@ -223,6 +223,7 @@ class GatheringErrorListener implements AnalysisErrorListener {
       int right = left + error.length - 1;
       _markedSource = "${_rawSource.substring(0, left)}^${_rawSource.substring(left, right)}^${_rawSource.substring(right)}";
     }
+    print("Found an error");
     _errors.add(error);
   }
   /**
