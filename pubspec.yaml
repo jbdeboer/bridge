@@ -1,9 +1,10 @@
-name: analyzer_experimental
-version: 0.1.5
-author: Dart Team <misc@dartlang.org>
-description: Experimental static analyzer for Dart.
-homepage: http://www.dartlang.org
+name: dart2closure
+author: "Chirayu Krishnappa <chirayu@chirayuk.com>"
+homepage: https://github.com/dart-lang/web-ui
+description: An easy way to build web apps in Dart.
+version: 0.0.1
 dependencies:
   args: any
+  analyzer_experimental: any
   browser: 0.4.2
   unittest: any

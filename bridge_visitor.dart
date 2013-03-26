@@ -1,4 +1,4 @@
-import 'generated/ast.dart';
+import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 
 class BridgeVisitor implements ASTVisitor<Object> {
