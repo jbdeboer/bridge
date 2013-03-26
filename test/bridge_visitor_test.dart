@@ -5,10 +5,10 @@ import 'package:analyzer_experimental/src/generated/java_engine.dart';
 import 'package:analyzer_experimental/src/generated/java_junit.dart';
 
 
-import '../listeners.dart';
-import '../parse.dart';
+import '../src/listeners.dart';
+import '../src/parse.dart';
 import 'package:unittest/unittest.dart';
-import '../bridge_visitor.dart';
+import '../src/bridge_visitor.dart';
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/scanner.dart';
 import 'package:analyzer_experimental/src/generated/error.dart';
