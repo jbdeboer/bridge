@@ -21,3 +21,6 @@ Point.prototype.distanceTo = function(other) {
   var dy = this.y - other.y;
   return Math.sqrt(dx * dx + dy * dy);
 };
+
+
+

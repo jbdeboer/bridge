@@ -20,9 +20,9 @@ import 'package:analyzer_experimental/src/generated/parser.dart';
 import 'package:analyzer_experimental/src/generated/scanner.dart';
 import 'package:analyzer_experimental/src/generated/source.dart';
 
+import 'listeners.dart';
+import 'parse.dart';
 part 'string_source.dart';
-part 'listeners.dart';
-part 'parse.dart';
 part 'debug.dart';
 
 

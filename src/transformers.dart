@@ -1,12 +1,18 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
-
+import 'expression_visitor.dart';
 
 String dartType2jsType(TypeName dartType) {
   if (dartType.name.name == 'String') {
     return 'string';
   }
   throw "Not implemented $dartType";
+}
+
+String dartExpression2js(Expression expr) {
+  ExpressionVisitor ev = new ExpressionVisitor.def();
+  expr.accept(ev);
+  return ev.js;
 }
 
 String variableDeclarationToString(VariableDeclaration decl,
@@ -21,7 +27,7 @@ String variableDeclarationToString(VariableDeclaration decl,
     typeString = '/\** @type {${jsType}} */\n';
   }
   if (decl.initializer != null) {
-    var expression = decl.initializer.toString();
+    var expression = dartExpression2js(decl.initializer);
     declString = "$namespace$name = $expression;";
   } else {
     declString = "$namespace$name;";

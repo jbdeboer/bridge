@@ -78,5 +78,11 @@ function C(x) {
 /\** @type {string} */
 C.prototype.x;"""); });
 
+  test('should init vars with expression', () {
+    BVT.expectParse('var dx = x - other.x;',
+                    'var dx = this.x - other.x;');
+
+  });
+
 
 }
