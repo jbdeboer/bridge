@@ -1,5 +1,7 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
+import 'ClassMemberVisitor.dart';
+import 'transformers.dart';
 
 class BridgeVisitor implements ASTVisitor<Object> {
 
@@ -23,8 +25,23 @@ class BridgeVisitor implements ASTVisitor<Object> {
   R visitBooleanLiteral(BooleanLiteral node);
   R visitBreakStatement(BreakStatement node);
   R visitCascadeExpression(CascadeExpression node);
-  R visitCatchClause(CatchClause node);
-  R visitClassDeclaration(ClassDeclaration node);
+  R visitCatchClause(CatchClause node); */
+
+  Object visitClassDeclaration(ClassDeclaration node) {
+    String functionName = node.name;
+
+    this._writer.print("function $functionName() { };\n\n");
+
+    var cmv = new ClassMemberVisitor("$functionName.prototype.");
+    for (ClassMember member in node.members) {
+      member.accept(cmv);
+    }
+    for (String s in cmv.fields) {
+      this._writer.print(s);
+    }
+  }
+
+  /*
   R visitClassTypeAlias(ClassTypeAlias node); */
 
   Object visitComment(Comment node) {
@@ -144,27 +161,12 @@ class BridgeVisitor implements ASTVisitor<Object> {
   }
 
 
-  String dartType2jsType(TypeName dartType) {
-    if (dartType.name.name == 'String') {
-      return 'string';
-    }
-    throw "Not implemented $dartType";
-  }
+
+
   Object visitVariableDeclarationList(VariableDeclarationList node) {
 
     for (VariableDeclaration decl in node.variables) {
-      var name = decl.name.toString();
-      // print the type information first.
-      if (node.type != null) {
-        String jsType = dartType2jsType(node.type);
-        this._writer.print('/\** @type {${jsType}} */\n');
-      }
-      if (decl.initializer != null) {
-        var expression = decl.initializer.toString();
-        this._writer.print("var $name = $expression");
-      } else {
-        this._writer.print("var $name");
-      }
+      this._writer.print(variableDeclarationToString(decl, node.type, "var "));
     }
 
     //node.visitChildren(this);

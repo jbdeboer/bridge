@@ -50,4 +50,12 @@ main() {
       '/\** @type {string} */\n' +
       'var r = "a"');
   });
+
+  test('should parse a simple class', () {
+    BVT.expectParse('class E { String x; }',
+"""function E() { };
+
+/\** @type {string} */
+E.prototype.x"""
+); });
 }
