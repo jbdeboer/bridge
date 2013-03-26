@@ -42,20 +42,41 @@ main() {
   });*/
 
   test('should parse a variable assignment', () {
-    BVT.expectParse('var r = 3', 'var r = 3');
+    BVT.expectParse('var r = 3', 'var r = 3;');
   });
 
   test('should parse a typed variable assignment', () {
     BVT.expectParse('String r = "a"',
       '/\** @type {string} */\n' +
-      'var r = "a"');
+      'var r = "a";');
   });
 
   test('should parse a simple class', () {
     BVT.expectParse('class E { String x; }',
-"""function E() { };
+"""/\**
+ * @constructor
+ */
+function E() { }
 
 /\** @type {string} */
-E.prototype.x"""
+E.prototype.x;"""
 ); });
+
+
+  test('should parse a class with a constructor', () {
+    BVT.expectParse("""class C {
+  String x;
+  C(this.x);
+}""",
+"""/\**
+ * @constructor
+ */
+function C(x) {
+  this.x = x;
+}
+
+/\** @type {string} */
+C.prototype.x;"""); });
+
+
 }

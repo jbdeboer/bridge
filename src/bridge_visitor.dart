@@ -30,12 +30,16 @@ class BridgeVisitor implements ASTVisitor<Object> {
   Object visitClassDeclaration(ClassDeclaration node) {
     String functionName = node.name;
 
-    this._writer.print("function $functionName() { };\n\n");
 
     var cmv = new ClassMemberVisitor("$functionName.prototype.");
     for (ClassMember member in node.members) {
       member.accept(cmv);
     }
+    this._writer.print("""/\**
+ * @constructor
+ */
+function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
+
     for (String s in cmv.fields) {
       this._writer.print(s);
     }

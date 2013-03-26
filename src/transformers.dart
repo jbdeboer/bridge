@@ -22,9 +22,9 @@ String variableDeclarationToString(VariableDeclaration decl,
   }
   if (decl.initializer != null) {
     var expression = decl.initializer.toString();
-    declString = "$namespace$name = $expression";
+    declString = "$namespace$name = $expression;";
   } else {
-    declString = "$namespace$name";
+    declString = "$namespace$name;";
   }
   return "$typeString$declString";
 }
