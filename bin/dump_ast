@@ -1,43 +1,37 @@
+#!/usr/bin/env dart
+// vim: set filetype=dart: -*- mode: dart; -*
+
 /**
- * Translate Dart source code to readable closure flavored Javascript.
+ * Dump parsed AST for provided .dart files.
+ *
  * Ref:
  *   http://pub.dartlang.org/packages/analyzer_experimental
  *   https://github.com/dart-lang/web-ui/blob/master/lib/src/observable_transform.dart
  */
-
-library dart2closure;
 
 import 'dart:collection';
 import 'dart:io';
 
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 import 'package:analyzer_experimental/src/generated/java_engine.dart';
-import 'package:analyzer_experimental/src/generated/java_junit.dart';
 
-import 'package:analyzer_experimental/src/generated/ast.dart';
-import 'package:analyzer_experimental/src/generated/error.dart';
-import 'package:analyzer_experimental/src/generated/parser.dart';
-import 'package:analyzer_experimental/src/generated/scanner.dart';
-import 'package:analyzer_experimental/src/generated/source.dart';
-
-import 'listeners.dart';
-import 'parse.dart';
-part 'string_source.dart';
-part 'debug.dart';
+// This package.
+import 'package:dart2closure/debug.dart';
+import 'package:dart2closure/parse.dart';
+import 'package:dart2closure/utils.dart';
 
 
 /**
- * TODO(chirayu):  Actually write the code.
+ * Invoke as,
  *
- * For now, you can invoke as,
- *
- *    dart main.dart /dev/stdin <<<"var x = 1; class A {static staticMethod() {print(1);}}"""
+ *    dart main.dart \
+ *        <<<"var x = 1; class A {static staticMethod() {print(1);}}"
  *
  *       or
  *
  *    dart main.dart testdata/ex_01.dart
  *
- * And you can see this output:
+ * And you should see this output:
  *
  *   CompilationUnit: var x = 1; class A {static staticMethod() {print(1);}}
  *     TopLevelVariableDeclaration: var x = 1;
@@ -58,13 +52,24 @@ part 'debug.dart';
  *                 ArgumentList: (1)
  *                   IntegerLiteral: 1
  */
+
+parseAndDumpStream(Stream stream) {
+  readFullStream(stream).then((text) {
+    var ast = parseText(text);
+    print(dumpAst(ast));
+  });
+}
+
 main() {
   var fnames = new Options().arguments;
-  if (fnames.length > 0) {
-    for (var fname in fnames) {
-      print(dumpAst(parseFile(new File(fname))));
-    }
+  if (fnames.length == 0) {
+    print('File: <STDIN>');
+    parseAndDumpStream(stdin);
   } else {
-    // TODO(chirayu): Reading from stdin is needlessly complicated.
+    for (var fname in fnames) {
+      print('File: $fname');
+      parseAndDumpStream(new File(fname).openRead());
+      print('--\n');
+    }
   }
 }

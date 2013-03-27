@@ -1,4 +1,5 @@
-part of dart2closure;
+import 'package:analyzer_experimental/src/generated/source.dart';
+
 
 class StringSource implements Source {
   bool operator ==(Object object) {
