@@ -1,11 +1,11 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 import 'transformers.dart';
+import '../lib/utils.dart';
+import 'package:analyzer_experimental/src/generated/java_core.dart';
 
-class StringWriter extends StringBuffer {
-  print(x) => write(x);
-  println(x) => writeln(x);
-}
+
+
 class ExpressionVisitor extends ToSourceVisitor {
    bool inPrefix = false;
 
@@ -17,9 +17,9 @@ class ExpressionVisitor extends ToSourceVisitor {
   Object visitSimpleIdentifier(SimpleIdentifier node) {
     if (inPrefix) { return super.visitSimpleIdentifier(node); }
     if (node.name == "other") {
-      _buffer.write("other");
+      _buffer.print("other");
     } else {
-      _buffer.write("this.${node.name}");
+      _buffer.print("this.${node.name}");
     }
   }
 

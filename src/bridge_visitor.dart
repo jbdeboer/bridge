@@ -28,7 +28,7 @@ class BridgeVisitor implements ASTVisitor<Object> {
   R visitCatchClause(CatchClause node); */
 
   Object visitClassDeclaration(ClassDeclaration node) {
-    String functionName = node.name;
+    String functionName = node.name.toString();
 
 
     var cmv = new ClassMemberVisitor("$functionName.prototype.");

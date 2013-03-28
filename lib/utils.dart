@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:analyzer_experimental/src/generated/java_core.dart';
+
+
 /**
  * Dedents and returns text (like Python's textwrap.dedent).
  *
@@ -70,11 +73,15 @@ readFullStream(Stream stream) {
 /**
  * A StringBuffer that can be used in place of a PrintWriter.
  */
-class StringWriter extends StringBuffer {
-  print(x) => write(x);
-  println(x) => writeln(x);
-}
+class StringWriter extends PrintWriter {
+  final StringBuffer _sb = new StringBuffer();
 
+  void print(x) {
+    _sb.write(x);
+  }
+
+  String toString() => _sb.toString();
+}
 
 class IndentedStringBuffer extends StringWriter {
   num _level = 0;
