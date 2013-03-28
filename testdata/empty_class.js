@@ -1,9 +1,7 @@
 /**
  * @constructor
  */
-function EmptyClass() {
+function EmptyClass() { }
 
-}
-
-/** @type {int} */
+/** @type {string} */
 EmptyClass.prototype.x;

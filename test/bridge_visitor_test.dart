@@ -5,6 +5,7 @@ import 'package:analyzer_experimental/src/generated/java_junit.dart';
 
 import 'package:unittest/unittest.dart';
 import '../src/bridge_visitor.dart';
+import '../src/bridge_parser.dart';
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/scanner.dart';
 import 'package:analyzer_experimental/src/generated/error.dart';
@@ -19,11 +20,7 @@ class BVT {
     Comment.createBlockComment([Keyword.BREAK]);
 
   static expectParse(String dart, String js) {
-    PrintStringWriter psw = new PrintStringWriter();
-    BridgeVisitor bv = new BridgeVisitor(psw);
-    ASTNode n = parseText(dart);
-    n.accept(new BridgeVisitor(psw));
-    expect(psw.toString(), equals(js));
+    expect(stringBridge(dart), equals(js));
   }
 }
 

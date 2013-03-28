@@ -1,3 +1,3 @@
 class EmptyClass {
-  int x;
+  String x;
 }

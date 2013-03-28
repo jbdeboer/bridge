@@ -1,0 +1,45 @@
+#!/usr/bin/env dart
+// vim: set filetype=dart: -*- mode: dart; -*
+
+import 'dart:io';
+import 'dart:async';
+import '../lib/utils.dart';
+import '../src/bridge_parser.dart';
+
+
+void print_usage() {
+print(dedent('''
+      Usage: bridge_test [input]
+
+      Prints the Javascript equalivant to the Dart code.
+
+      If no file is passed in, then reads from stdin.'''));
+exit(2);
+}
+void main() {
+  var fnames = new Options().arguments;
+  if (fnames.length > 1) {
+     print_usage();
+  }
+
+  Stream dartStream;
+  Stream jsStream;
+  if (fnames.length == 1) {
+    var prefix = fnames[0];
+    dartStream = new File("$prefix.dart").openRead();
+    jsStream = new File("$prefix.js").openRead();
+  } else {
+    print_usage();
+  }
+
+  readFullStream(dartStream).then((dartText) {
+    readFullStream(jsStream).then((jsText) {
+      String genJs = stringBridge(dartText);
+      print(genJs);
+      if (jsText.trim() != genJs.trim()) {
+         print("Not equal.  Bad news!\n");
+         print(jsText);
+      }
+    });
+  });
+}

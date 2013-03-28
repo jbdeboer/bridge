@@ -54,7 +54,7 @@ String dedent(String text) {
 /**
  * Read entire [stream] as a [String].  Returns a [Future].
  */
-String readFullStream(Stream stream) {
+readFullStream(Stream stream) {
   var parts = <String>[];
   var completer = new Completer();
 
