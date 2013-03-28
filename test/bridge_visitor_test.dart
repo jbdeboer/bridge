@@ -4,8 +4,8 @@ import 'package:analyzer_experimental/src/generated/java_junit.dart';
 
 
 import 'package:unittest/unittest.dart';
-import '../src/bridge_visitor.dart';
-import '../src/bridge_parser.dart';
+import 'package:dart2closure/src/bridge_visitor.dart';
+import 'package:dart2closure/src/bridge_parser.dart';
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/scanner.dart';
 import 'package:analyzer_experimental/src/generated/error.dart';
