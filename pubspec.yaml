@@ -8,3 +8,4 @@ dependencies:
   analyzer_experimental: any
   browser: 0.4.2
   unittest: any
+  dart2js: any

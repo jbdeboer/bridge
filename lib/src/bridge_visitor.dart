@@ -2,12 +2,14 @@ import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 import 'ClassMemberVisitor.dart';
 import 'transformers.dart';
+import 'jsast/js.dart' as js;
 
 class BridgeVisitor implements ASTVisitor<Object> {
 
   PrintWriter _writer;
 
   BridgeVisitor(PrintWriter writer) {
+
     this._writer = writer;
   }
 
@@ -28,6 +30,14 @@ class BridgeVisitor implements ASTVisitor<Object> {
   R visitCatchClause(CatchClause node); */
 
   Object visitClassDeclaration(ClassDeclaration node) {
+    var cmv = new ClassMemberVisitor();
+    node.accept(cmv);
+    for (var s in cmv.statements) {
+      this._writer.print(js.prettyPrint(s).getText());
+    }
+  }
+    /*
+    this._writer.print(cmv.statements.getText())
     String functionName = node.name.toString();
 
 
@@ -37,13 +47,13 @@ class BridgeVisitor implements ASTVisitor<Object> {
     }
     this._writer.print("""/\**
  * @constructor
- */
+ * /
 function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
 
     for (String s in cmv.fields) {
       this._writer.print(s);
     }
-  }
+  } */
 
   /*
   R visitClassTypeAlias(ClassTypeAlias node); */
