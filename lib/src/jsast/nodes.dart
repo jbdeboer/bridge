@@ -406,8 +406,9 @@ class Default extends SwitchClause {
 class FunctionDeclaration extends Statement {
   final VariableDeclaration name;
   final Fun function;
+  final String jsDoc;
 
-  FunctionDeclaration(this.name, this.function);
+  FunctionDeclaration(this.name, this.function, this.jsDoc);
 
   accept(NodeVisitor visitor) => visitor.visitFunctionDeclaration(this);
 
@@ -738,7 +739,13 @@ class VariableUse extends VariableReference {
 }
 
 class VariableDeclaration extends VariableReference {
+  String jsType;
+
   VariableDeclaration(String name) : super(name);
+
+  VariableDeclaration.withType(String name, String jsType) : super(name) {
+    this.jsType = jsType;
+  }
 
   accept(NodeVisitor visitor) => visitor.visitVariableDeclaration(this);
 }

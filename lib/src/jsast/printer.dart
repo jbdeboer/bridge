@@ -431,6 +431,10 @@ class Printer implements NodeVisitor {
     VarCollector vars = new VarCollector();
     vars.visitFunctionDeclaration(declaration);
     indent();
+    var jsDoc = declaration.jsDoc;
+    if (jsDoc != null) {
+      out("/**\n * $jsDoc\n */\n");
+    }
     functionOut(declaration.function, declaration.name, vars);
     lineOut();
   }
@@ -672,6 +676,10 @@ class Printer implements NodeVisitor {
   }
 
   visitVariableDeclaration(VariableDeclaration decl) {
+    if (decl.jsType != null) {
+      // TODO(deboer): Pass this up to the statement.
+      out("/** @type {${decl.jsType}} */\n");
+    }
     out(localNamer.getName(decl.name));
   }
 

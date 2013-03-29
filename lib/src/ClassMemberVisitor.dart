@@ -8,7 +8,6 @@ class ClassMemberVisitor implements ASTVisitor<Object> {
 
   List<js.Statement> fields = new List<js.Statement>();
   String functionName;
-  //js.Block constructor =
 
   List<js.Parameter> consParams;
   js.Block consBlock = new js.Block.empty();
@@ -17,11 +16,10 @@ class ClassMemberVisitor implements ASTVisitor<Object> {
     var ret = new List<js.Statement>();
 
     // Create the constructor
-
-
     ret.add(new js.FunctionDeclaration(
         new js.VariableDeclaration(functionName),
-        new js.Fun(consParams, consBlock)));
+        new js.Fun(consParams, consBlock),
+        "@constructor"));
     ret.addAll(fields);
     return ret;
   }
@@ -29,7 +27,6 @@ class ClassMemberVisitor implements ASTVisitor<Object> {
   Object visitClassDeclaration(ClassDeclaration node) {
     functionName = node.name.toString();
     node.members.accept(this);
-    //node.visitChildren(this);
   }
 
 
@@ -39,10 +36,8 @@ class ClassMemberVisitor implements ASTVisitor<Object> {
 
 
        fields.add(new js.ExpressionStatement(
-          new js.VariableUse("$functionName.prototype.$name")));
-
-      //print("running");
-      //fields.add(variableDeclarationToString(decl, node.fields.type, namespace));
+          new js.VariableDeclaration.withType(
+              "$functionName.prototype.$name", "string")));
     }
   }
 
@@ -53,10 +48,11 @@ class ClassMemberVisitor implements ASTVisitor<Object> {
      for(FormalParameter param in node.parameters.parameters) {
        String name = param.identifier.name;
 
-      consStatements.add(new js.Assignment(
-           new js.VariableUse("this.$name"),
-           new js.VariableUse(name)));
-       params.add(new js.Parameter(name));
+      consStatements.add(new js.ExpressionStatement(
+          new js.Assignment(
+           new js.VariableDeclaration("this.$name"),
+           new js.VariableUse(name))));
+       consParams.add(new js.Parameter(name));
      }
 
      consBlock = new js.Block(consStatements);

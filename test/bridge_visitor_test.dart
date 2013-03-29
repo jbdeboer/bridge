@@ -53,10 +53,11 @@ main() {
            /**
             * @constructor
             */
-           function E() { }
-
+           function E() {
+           }
            /** @type {string} */
-           E.prototype.x;"""
+           E.prototype.x;
+           """
         ));
   });
 
@@ -75,9 +76,9 @@ main() {
         function C(x) {
           this.x = x;
         }
-
         /\** @type {string} */
-        C.prototype.x;"""));
+        C.prototype.x;
+        """));
     });
 
   test('should init vars with expression', () {
