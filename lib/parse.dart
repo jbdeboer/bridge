@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/parser.dart';

@@ -9,7 +9,7 @@ translateText(String text) {
 }
 
 
-main() {
+main() { /*
   // TODO(chirayu): Use testdata files.
   test('nested block variables', () => expect(
     translateText(dedent(r'''
@@ -30,4 +30,6 @@ main() {
         }
         var c = 3;
       }'''))));
+*/
 }
+
