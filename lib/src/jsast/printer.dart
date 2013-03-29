@@ -680,6 +680,10 @@ class Printer implements NodeVisitor {
       // TODO(deboer): Pass this up to the statement.
       out("/** @type {${decl.jsType}} */\n");
     }
+    if (decl.jsDoc != null) {
+// TODO(deboer): Pass this up to the statement.
+      out("/\**\n * ${decl.jsDoc}\n */\n");
+    }
     out(localNamer.getName(decl.name));
   }
 

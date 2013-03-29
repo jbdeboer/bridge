@@ -740,11 +740,15 @@ class VariableUse extends VariableReference {
 
 class VariableDeclaration extends VariableReference {
   String jsType;
+  String jsDoc;
 
   VariableDeclaration(String name) : super(name);
 
   VariableDeclaration.withType(String name, String jsType) : super(name) {
     this.jsType = jsType;
+  }
+  VariableDeclaration.withDoc(String name, String jsDoc) : super(name) {
+    this.jsDoc = jsDoc;
   }
 
   accept(NodeVisitor visitor) => visitor.visitVariableDeclaration(this);

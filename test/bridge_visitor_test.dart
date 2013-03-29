@@ -81,6 +81,27 @@ main() {
         """));
     });
 
+  test('should parse a class with a method', () {
+    BVT.expectParse(dedent("""
+        class C {
+          String method() { return "a"; };
+        }"""),
+// JS.
+    dedent("""
+        /\**
+         * @constructor
+         */
+        function C() {
+        }
+        /\**
+         * @return {string}
+         */
+        C.prototype.method = function() {
+          return "a";
+        };
+         """));
+  });
+
   test('should init vars with expression', () {
     BVT.expectParse('var dx = x - other.x;',
                     'var dx = this.x - other.x;');
