@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:analyzer_experimental/src/generated/ast.dart';
-import 'package:dart2closure/utils.dart';
+import '../utils.dart';
 
 
 class DumpAstVisitor extends GeneralizingASTVisitor {

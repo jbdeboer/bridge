@@ -1,7 +1,7 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 import 'transformers.dart';
-import 'package:dart2closure/utils.dart';
+import '../utils.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 
 class ExpressionVisitor extends ToSourceVisitor {

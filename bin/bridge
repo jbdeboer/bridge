@@ -3,8 +3,8 @@
 
 import 'dart:io';
 import 'dart:async';
-import 'package:dart2closure/utils.dart';
-import 'package:dart2closure/src/bridge_parser.dart';
+import '../lib/utils.dart';
+import '../lib/src/bridge_parser.dart';
 
 
 void print_usage() {

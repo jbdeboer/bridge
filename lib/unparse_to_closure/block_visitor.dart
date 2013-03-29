@@ -1,8 +1,8 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 
-import 'package:dart2closure/symbols.dart';
-import 'package:dart2closure/unparse_to_closure/expression_visitor.dart';
-import 'package:dart2closure/utils.dart';
+import '../symbols.dart';
+import '../unparse_to_closure/expression_visitor.dart';
+import '../utils.dart';
 
 
 class BlockVisitor extends GeneralizingASTVisitor {

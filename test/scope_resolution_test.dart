@@ -1,8 +1,8 @@
 import 'package:unittest/unittest.dart';
 
-import 'package:dart2closure/parse.dart';
-import 'package:dart2closure/unparse_to_closure.dart';
-import 'package:dart2closure/utils.dart';
+import '../lib/parse.dart';
+import '../lib/unparse_to_closure.dart';
+import '../lib/utils.dart';
 
 translateText(String text) {
   return unparseToClosureJs(parseText(text));

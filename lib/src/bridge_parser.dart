@@ -10,15 +10,15 @@ import 'package:analyzer_experimental/src/generated/java_junit.dart';
 
 
 import 'package:unittest/unittest.dart';
-import '../src/bridge_visitor.dart';
+import 'bridge_visitor.dart';
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/scanner.dart';
 import 'package:analyzer_experimental/src/generated/error.dart';
 import 'package:analyzer_experimental/src/generated/parser.dart';
 
-import 'package:dart2closure/listeners.dart';
-import 'package:dart2closure/parse.dart';
-import 'package:dart2closure/utils.dart';
+import '../listeners.dart';
+import '../parse.dart';
+import '../utils.dart';
 
 stringBridge(String dart) {
   PrintStringWriter psw = new PrintStringWriter();
