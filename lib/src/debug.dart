@@ -29,7 +29,7 @@ class DumpAstVisitor extends GeneralizingASTVisitor {
     }
   }
 
-  static dumpAst(CompilationUnit node) {
+  static dumpAst(ASTNode node) {
     var buffer = new IndentedStringBuffer();
     node.accept(new DumpAstVisitor(buffer));
     return buffer.toString();
