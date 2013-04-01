@@ -45,62 +45,7 @@ main() {
       'var r = "a";');
   });
 
-  test('should parse a simple class', () {
-    BVT.expectParse(
-        'class E { String x; }',
-        // JS.
-        dedent("""
-           /**
-            * @constructor
-            */
-           function E() {
-           }
-           /** @type {string} */
-           E.prototype.x;
-           """
-        ));
-  });
 
-
-  test('should parse a class with a constructor', () {
-    BVT.expectParse(dedent("""
-        class C {
-          String x;
-          C(this.x);
-        }"""),
-        // JS.
-        dedent("""
-        /\**
-         * @constructor
-         */
-        function C(x) {
-          this.x = x;
-        }
-        /\** @type {string} */
-        C.prototype.x;
-        """));
-    });
-
-  test('should parse a class with a method', () {
-    BVT.expectParse(dedent("""
-        class C {
-          String method() { return "a"; };
-        }"""),
-// JS.
-    dedent("""
-        /\**
-         * @constructor
-         */
-        function C() {
-        }
-        /\**
-         * @return {string}
-         */
-        C.prototype.method = function() {
-          return "a";
-        };
-         """));
-  });
 
   test('should init vars with expression', () {
     BVT.expectParse('var dx = x - other.x;',

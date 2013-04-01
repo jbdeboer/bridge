@@ -1,6 +1,6 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
-import 'ClassMemberVisitor.dart';
+import 'class_member_visitor.dart';
 import 'transformers.dart';
 import 'jsast/js.dart' as js;
 
@@ -21,7 +21,13 @@ class BridgeVisitor implements ASTVisitor<Object> {
   R visitAsExpression(AsExpression node);
   R visitAssertStatement(AssertStatement assertStatement);
   R visitAssignmentExpression(AssignmentExpression node);
-  R visitBinaryExpression(BinaryExpression node);
+  R visitBinaryExpression(BinaryExpression node); */
+
+  List<js.Node> visitBlock(Block node) {
+    return [new js.Comment('VISIT BLOCK')];
+  }
+
+  /*
   R visitBlock(Block node);
   R visitBlockFunctionBody(BlockFunctionBody node);
   R visitBooleanLiteral(BooleanLiteral node);
@@ -30,7 +36,7 @@ class BridgeVisitor implements ASTVisitor<Object> {
   R visitCatchClause(CatchClause node); */
 
   Object visitClassDeclaration(ClassDeclaration node) {
-    var cmv = new ClassMemberVisitor();
+    var cmv = new ClassMemberVisitor(this);
     node.accept(cmv);
     for (var s in cmv.statements) {
       this._writer.print(js.prettyPrint(s).getText());

@@ -1,10 +1,13 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 import 'transformers.dart';
+import 'base_visitor.dart';
 import 'jsast/js.dart' as js;
 
-class ClassMemberVisitor implements ASTVisitor<Object> {
-  ClassMemberVisitor();
+class ClassMemberVisitor extends BaseVisitor {
+  ASTVisitor<Object> otherVisitor;
+
+  ClassMemberVisitor(this.otherVisitor);
 
   List<js.Statement> fields = new List<js.Statement>();
   List<js.Statement> methods = new List<js.Statement>();
@@ -68,9 +71,9 @@ class ClassMemberVisitor implements ASTVisitor<Object> {
      consBlock = new js.Block(consStatements);
   }
 
-  js.Block visitFunction(FunctionBody body) {
+  js.Block visitBlock(FunctionBody body) {
     var ss = new List<js.Statement>();
-    ss.add(new js.Return(new js.LiteralString('"a"')));
+    //ss.add(new js.Return(new js.LiteralString('"a"')));
 
     return new js.Block(ss);
   }
@@ -78,7 +81,7 @@ class ClassMemberVisitor implements ASTVisitor<Object> {
   Object visitMethodDeclaration(MethodDeclaration node) {
     String name = node.name.name;
     var funParams = dartParamsToJs(node.parameters.parameters);
-    var funBody = visitFunction(node.body);
+    var funBody = node.body.block.accept(this.otherVisitor)[0];
     methods.add(new js.ExpressionStatement(
           new js.Assignment(
            new js.VariableDeclaration.withDoc(
