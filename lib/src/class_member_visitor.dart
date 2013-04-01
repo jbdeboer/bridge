@@ -16,22 +16,19 @@ class ClassMemberVisitor extends BaseVisitor {
   List<js.Parameter> consParams;
   js.Block consBlock = new js.Block.empty();
 
-  List<js.Statement> get statements {
-    var ret = new List<js.Statement>();
+  Object visitClassDeclaration(ClassDeclaration node) {
+    functionName = node.name.toString();
+    node.members.accept(this);
 
+    var ret = new List<js.Statement>();
     // Create the constructor
     ret.add(new js.FunctionDeclaration(
         new js.VariableDeclaration(functionName),
         new js.Fun(consParams, consBlock), "@constructor"
-        ));
+    ));
     ret.addAll(fields);
     ret.addAll(methods);
     return ret;
-  }
-
-  Object visitClassDeclaration(ClassDeclaration node) {
-    functionName = node.name.toString();
-    node.members.accept(this);
   }
 
 
@@ -69,13 +66,6 @@ class ClassMemberVisitor extends BaseVisitor {
            new js.VariableUse(name))));
      }
      consBlock = new js.Block(consStatements);
-  }
-
-  js.Block visitBlock(FunctionBody body) {
-    var ss = new List<js.Statement>();
-    //ss.add(new js.Return(new js.LiteralString('"a"')));
-
-    return new js.Block(ss);
   }
 
   Object visitMethodDeclaration(MethodDeclaration node) {

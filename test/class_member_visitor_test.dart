@@ -23,8 +23,8 @@ stringBridge(String dart) {
   PrintStringWriter psw = new PrintStringWriter();
   ASTNode n = parseText(dart);
   var visitor = new ClassMemberVisitor(new StubVisitor());
-  n.accept(visitor);
-  for (var s in visitor.statements) {
+  ;
+  for (var s in n.accept(visitor)) {
       psw.print(js.prettyPrint(s).getText());
     }
   return psw.toString();

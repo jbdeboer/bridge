@@ -4,6 +4,10 @@ import 'jsast/js.dart' as js;
 
 class BaseVisitor implements ASTVisitor<List<js.Node>> {
   List<js.Node> visitCompilationUnit(CompilationUnit node) {
-    node.visitChildren(this);
+    var ret = new List<js.Node>();
+    for (var child in node.sortedDirectivesAndDeclarations) {
+      ret.addAll(child.accept(this));
+    }
+    return ret;
   }
 }
