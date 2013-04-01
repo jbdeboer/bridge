@@ -1,7 +1,7 @@
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 
 import 'dart:async';
-import 'dart:io';
+import 'dart:utf';
 
 /**
  * Dedents and returns text (like Python's textwrap.dedent).
@@ -61,7 +61,7 @@ Future readFullStream(Stream stream) {
   var completer = new Completer();
 
   stream
-      .transform(new StringDecoder())
+      .transform(new Utf8DecoderTransformer())
       .listen(
           (String text) => parts.add(text),
           onDone: () => completer.complete(parts.join()),
