@@ -27,7 +27,8 @@ String variableDeclarationToString(VariableDeclaration decl,
     typeString = '/\** @type {${jsType}} */\n';
   }
   if (decl.initializer != null) {
-    var expression = dartExpression2js(decl.initializer);
+    var expression = "33";
+    //var expression = dartExpression2js(decl.initializer);
     declString = "$namespace$name = $expression;";
   } else {
     declString = "$namespace$name;";
