@@ -22,7 +22,7 @@ stringBridge(String dart) {
   PrintStringWriter psw = new PrintStringWriter();
   ASTNode n = parseText(dart);
   var visitor = new ClassMemberVisitor(new StubVisitor());
-  ;
+
   for (var s in n.accept(visitor)) {
       psw.print(js.prettyPrint(s).getText());
     }
@@ -87,9 +87,9 @@ main() {
         /\**
          * @return {string}
          */
-        C.prototype.method = function()
+        C.prototype.method = function() {
           // STUB BLOCK
-        ;
+        };
          """));
   });
 }

@@ -3,6 +3,8 @@ import 'jsast/js.dart' as jss;
 
 class StubVisitor implements dart.ASTVisitor<List<jss.Node>> {
   List<jss.Node> visitBlock(dart.Block block) {
-    return [new jss.Comment('// STUB BLOCK')];
+    return [new jss.Block(
+        [new jss.Comment('// STUB BLOCK')]
+    )];
   }
 }
