@@ -13,10 +13,10 @@ import 'package:analyzer_experimental/src/generated/java_engine.dart';
 import 'package:analyzer_experimental/src/generated/java_junit.dart';
 
 // From this package.
-import '../lib/debug.dart';
-import '../lib/parse.dart';
-import '../lib/utils.dart';
-import '../lib/unparse_to_closure.dart';
+import '../lib/src/debug.dart';
+import '../lib/src/parse.dart';
+import '../lib/src/utils.dart';
+import '../lib/src/unparse_to_closure.dart';
 
 
 /**

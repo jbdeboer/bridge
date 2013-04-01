@@ -1,8 +1,7 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 import 'transformers.dart';
-import '../utils.dart';
-import 'package:analyzer_experimental/src/generated/java_core.dart';
+import 'utils.dart';
 
 class ExpressionVisitor extends ToSourceVisitor {
    bool inPrefix = false;

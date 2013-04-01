@@ -16,9 +16,9 @@ import 'package:analyzer_experimental/src/generated/scanner.dart';
 import 'package:analyzer_experimental/src/generated/error.dart';
 import 'package:analyzer_experimental/src/generated/parser.dart';
 
-import '../listeners.dart';
-import '../parse.dart';
-import '../utils.dart';
+import 'listeners.dart';
+import 'parse.dart';
+import 'utils.dart';
 
 stringBridge(String dart) {
   PrintStringWriter psw = new PrintStringWriter();

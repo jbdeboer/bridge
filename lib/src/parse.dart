@@ -4,7 +4,7 @@ import 'package:analyzer_experimental/src/generated/parser.dart';
 import 'package:analyzer_experimental/src/generated/scanner.dart';
 
 // Package local imports.
-import '../lib/listeners.dart';
+import 'listeners.dart';
 
 
 CompilationUnit parseText(String text) {
