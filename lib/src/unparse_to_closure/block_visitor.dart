@@ -7,7 +7,6 @@ import '../utils.dart';
 
 class BlockVisitor extends GeneralizingASTVisitor {
   IndentedStringBuffer _buffer;
-  Scope _instanceScope;
   Scope _currentScope;
   ExpressionVisitor expressionVisitor;
 
@@ -15,14 +14,11 @@ class BlockVisitor extends GeneralizingASTVisitor {
   bool firstTime = true;
 
   BlockVisitor({Scope currentScope,
-                Scope instanceScope,
                 IndentedStringBuffer buffer}) {
     _currentScope = currentScope.clone();
-    _instanceScope = instanceScope;
     _buffer = buffer;
     expressionVisitor = new ExpressionVisitor(
         currentScope: currentScope,
-        instanceScope: instanceScope,
         buffer: buffer);
   }
 
@@ -50,7 +46,6 @@ class BlockVisitor extends GeneralizingASTVisitor {
   Object visitBlock(Block block) {
     if (!firstTime) {
       var v = new BlockVisitor(currentScope: _currentScope,
-                               instanceScope: _instanceScope,
                                buffer: _buffer);
       return v.visitBlock(block);
     } else {

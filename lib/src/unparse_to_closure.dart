@@ -7,12 +7,10 @@ import 'utils.dart';
 import 'unparse_to_closure/block_visitor.dart';
 
 
-void unparseToClosureJs(CompilationUnit ast) {
-  var instanceScope = new Scope();
+String unparseToClosureJs(CompilationUnit ast) {
   var currentScope = new Scope();
   var buffer = new IndentedStringBuffer();
   var blockVisitor = new BlockVisitor(currentScope: currentScope,
-                                      instanceScope: instanceScope,
                                       buffer: buffer);
   ast.accept(blockVisitor);
   return buffer.toString();

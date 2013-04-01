@@ -31,13 +31,13 @@ class DumpAstVisitor extends GeneralizingASTVisitor {
 
   visitNode(ASTNode node) {
     try {
-      buffer.level++;
       var snippet = node.toString();
       if (snippet.length > 25) {
         snippet = '${snippet.slice(0, 10)}...';
       }
       buffer.writeln('${node.runtimeType}: ${snippet}');
       assert(node.runtimeType.toString() == reflect(node).type.simpleName);
+      buffer.level++;
       return this.visitChildren(node);
     }
     finally {

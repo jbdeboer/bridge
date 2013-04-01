@@ -7,15 +7,12 @@ import '../utils.dart';
 // ToSourceVisitor.
 class ExpressionVisitor extends ToSourceVisitor {
   IndentedStringBuffer _buffer;
-  Scope _instanceScope;
   Scope _currentScope;
   bool inPrefix = false;
 
   ExpressionVisitor({Scope currentScope,
-                     Scope instanceScope,
                      IndentedStringBuffer buffer}): super(buffer) {
     _currentScope = currentScope.clone();
-    _instanceScope = instanceScope;
     _buffer = buffer;
   }
 }
