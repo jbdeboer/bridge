@@ -4,8 +4,23 @@ import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'utils.dart';
 
 
+class TreeIndentedWriter extends IndentedStringBuffer {
+  String getIndentAtLevel(num l) {
+    if (l + 1 == level) {
+      return '├── ';
+    } else {
+      return '│   ';
+    }
+  }
+
+  String getIndentString(num level) {
+    return new List<String>.generate(level, getIndentAtLevel).join();
+  }
+}
+
+
 class DumpAstVisitor extends GeneralizingASTVisitor {
-  IndentedStringBuffer buffer;
+  var buffer;
 
   DumpAstVisitor(this.buffer);
 
@@ -31,7 +46,8 @@ class DumpAstVisitor extends GeneralizingASTVisitor {
   }
 
   static dumpAst(CompilationUnit node) {
-    var buffer = new IndentedStringBuffer();
+    var buffer = new TreeIndentedWriter();
+    // var buffer = new IndentedStringBuffer();
     node.accept(new DumpAstVisitor(buffer));
     return buffer.toString();
   }

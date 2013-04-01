@@ -83,7 +83,7 @@ class IndentedStringBuffer extends StringWriter {
   String _indent = '';
   bool pendingNewline = false;
 
-  static String getIndentString(num level) {
+  String getIndentString(num level) {
     return new List<String>(level).map((_) => '  ').join();
   }
 
