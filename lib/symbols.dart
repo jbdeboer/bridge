@@ -61,7 +61,7 @@ class Scope {
   final Map<SymbolName, Symbol> _symbols;
 
   Scope() : this._internal({});
-  Scope._internal(this._symbols);
+  Scope() : this._internal(new Map<SymbolName, Symbol>());
 
   add(SymbolName name, DartType type) {
     if (_symbols.containsKey(name)) {

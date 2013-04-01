@@ -11,6 +11,7 @@ class BlockVisitor extends GeneralizingASTVisitor {
   Scope _currentScope;
   ExpressionVisitor expressionVisitor;
 
+  // Visiting sub-blocks constructs a new BlockVisitor.
   bool firstTime = true;
 
   BlockVisitor({Scope currentScope,
@@ -29,10 +30,10 @@ class BlockVisitor extends GeneralizingASTVisitor {
   }
 
   Object visitVariableDeclaration(VariableDeclaration node) {
-    var name = node.name;
+    String name = node.name.name;
     var symbolName = new SymbolName(name);
     // Add correct type.  This will assert() if this is a duplicate defn.
-    _currentScope.add(SymbolName, DartType.DYNAMIC);
+    _currentScope.add(symbolName, DartType.DYNAMIC);
     if (node.initializer == null) {
       _buffer.writeln("var $name;");
     } else {

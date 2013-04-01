@@ -1,8 +1,7 @@
-import 'dart:async';
-
-
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 
+import 'dart:async';
+import 'dart:io';
 
 /**
  * Dedents and returns text (like Python's textwrap.dedent).
@@ -57,7 +56,7 @@ String dedent(String text) {
 /**
  * Read entire [stream] as a [String].  Returns a [Future].
  */
-readFullStream(Stream stream) {
+Future readFullStream(Stream stream) {
   var parts = <String>[];
   var completer = new Completer();
 
@@ -73,22 +72,18 @@ readFullStream(Stream stream) {
 /**
  * A StringBuffer that can be used in place of a PrintWriter.
  */
-class StringWriter extends PrintWriter {
-  final StringBuffer _sb = new StringBuffer();
-
-  void print(x) {
-    _sb.write(x);
-  }
-
-  String toString() => _sb.toString();
+class StringWriter extends PrintStringWriter {
+  write(x) => print(x);
+  writeln(x) => println(x);
 }
+
 
 class IndentedStringBuffer extends StringWriter {
   num _level = 0;
   String _indent = '';
   bool pendingNewline = false;
 
-  static num getIndentString(num level) {
+  static String getIndentString(num level) {
     return new List<String>(level).map((_) => '  ').join();
   }
 
@@ -100,12 +95,12 @@ class IndentedStringBuffer extends StringWriter {
 
   flushNewline() {
     if (pendingNewline) {
-      super.write("\n$_indent");
+      super.print("\n$_indent");
     }
     pendingNewline = false;
   }
 
-  write(obj) {
+  print(obj) {
     flushNewline();
     var s = obj.toString();
     if (s.endsWith("\n")) {
@@ -113,12 +108,12 @@ class IndentedStringBuffer extends StringWriter {
       s = s.slice(0, -1);
     }
     s = s.replaceAll("\n", "\n$_indent");
-    super.write(s);
+    super.print(s);
   }
 
-  writeln([Object obj = ""]) {
+  println([Object obj = ""]) {
     flushNewline();
-    write(obj);
-    write("\n");
+    print(obj);
+    print("\n");
   }
 }

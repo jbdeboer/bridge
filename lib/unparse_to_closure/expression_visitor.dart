@@ -1,4 +1,5 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
+import '../symbols.dart';
 import '../utils.dart';
 
 
