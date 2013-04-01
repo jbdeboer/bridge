@@ -5,16 +5,14 @@ import 'transformers.dart';
 import 'jsast/js.dart' as js;
 
 class BridgeVisitor implements ASTVisitor<Object> {
-
   PrintWriter _writer;
 
   BridgeVisitor(PrintWriter writer) {
-
     this._writer = writer;
   }
 
  /**
-*  R visitAdjacentStrings(AdjacentStrings node);
+  R visitAdjacentStrings(AdjacentStrings node);
   R visitAnnotation(Annotation node);
   R visitArgumentDefinitionTest(ArgumentDefinitionTest node);
   R visitArgumentList(ArgumentList node);

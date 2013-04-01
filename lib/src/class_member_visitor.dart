@@ -31,12 +31,9 @@ class ClassMemberVisitor extends BaseVisitor {
     return ret;
   }
 
-
   Object visitFieldDeclaration(FieldDeclaration node) {
     for (VariableDeclaration decl in node.fields.variables) {
        var name = decl.name.toString();
-
-
        fields.add(new js.ExpressionStatement(
           new js.VariableDeclaration.withType(
               "$functionName.prototype.$name", "string")));
@@ -51,8 +48,8 @@ class ClassMemberVisitor extends BaseVisitor {
       jsParams.add(new js.Parameter(name));
     }
     return jsParams;
-
   }
+
   Object visitConstructorDeclaration(ConstructorDeclaration node) {
      consParams = dartParamsToJs(node.parameters.parameters);
      var consStatements = new List<js.Statement>();
