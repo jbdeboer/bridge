@@ -1,10 +1,10 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 
 // From this package.
-import '../lib/src/debug.dart';
-import '../lib/src/symbols.dart';
-import '../lib/src/unparse_to_closure/block_visitor.dart';
-import '../lib/src/utils.dart';
+import 'debug.dart';
+import 'symbols.dart';
+import 'utils.dart';
+import 'unparse_to_closure/block_visitor.dart';
 
 
 void unparseToClosureJs(CompilationUnit ast) {

@@ -1,4 +1,3 @@
-
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 import 'package:analyzer_experimental/src/generated/java_engine.dart';
 import 'package:analyzer_experimental/src/generated/java_junit.dart';
@@ -10,13 +9,13 @@ import 'package:analyzer_experimental/src/generated/scanner.dart';
 import 'package:analyzer_experimental/src/generated/error.dart';
 import 'package:analyzer_experimental/src/generated/parser.dart';
 
-import '../lib/listeners.dart';
-import '../lib/parse.dart';
-import '../lib/utils.dart';
+import '../lib/src/jsast/js.dart' as js;
 
 import '../lib/src/class_member_visitor.dart';
+import '../lib/src/listeners.dart';
+import '../lib/src/parse.dart';
 import '../lib/src/stub_visitor.dart';
-import '../lib/src/jsast/js.dart' as js;
+import '../lib/src/utils.dart';
 
 
 stringBridge(String dart) {

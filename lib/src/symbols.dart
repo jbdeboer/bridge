@@ -60,7 +60,6 @@ class Symbol {
 class Scope {
   final Map<SymbolName, Symbol> _symbols;
 
-  Scope() : this._internal({});
   Scope() : this._internal(new Map<SymbolName, Symbol>());
 
   add(SymbolName name, DartType type) {
