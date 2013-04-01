@@ -1,3 +1,5 @@
+import 'dart:mirrors';
+
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'utils.dart';
 
@@ -19,7 +21,7 @@ class DumpAstVisitor extends GeneralizingASTVisitor {
       if (snippet.length > 25) {
         snippet = '${snippet.slice(0, 10)}...';
       }
-      buffer.writeln('${node.runtimeType}: ${snippet}');
+      buffer.writeln('${node.runtimeType} (instance of ${reflect(node).type}): ${snippet}');
       return this.visitChildren(node);
     }
     finally {

@@ -17,15 +17,3 @@ CompilationUnit parseText(String text) {
   // TODO(chirayu): When is "errorCodes" valid?
   return unit;
 }
-
-
-CompilationUnit parseStream(Stream stream) {
-  var text = file.readAsStringSync();
-  return parseText(text);
-}
-
-
-CompilationUnit parseFile(File file) {
-  var text = file.readAsStringSync();
-  return parseText(text);
-}
