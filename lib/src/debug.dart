@@ -21,7 +21,7 @@ class DumpAstVisitor extends GeneralizingASTVisitor {
       if (snippet.length > 25) {
         snippet = '${snippet.slice(0, 10)}...';
       }
-      buffer.writeln('${node.runtimeType} (instance of ${reflect(node).type}): ${snippet}');
+      buffer.writeln('${node.runtimeType}: ${snippet}');
       return this.visitChildren(node);
     }
     finally {
