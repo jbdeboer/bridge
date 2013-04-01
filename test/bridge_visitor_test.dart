@@ -16,9 +16,6 @@ import '../lib/parse.dart';
 import '../lib/utils.dart';
 
 class BVT {
-  static Comment comment() =>
-    Comment.createBlockComment([Keyword.BREAK]);
-
   static expectParse(String dart, String js) {
     expect(stringBridge(dart), equals(js));
   }
