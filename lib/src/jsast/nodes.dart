@@ -805,6 +805,9 @@ class PropertyAccess extends Expression {
   PropertyAccess(this.receiver, this.selector);
   PropertyAccess.field(this.receiver, String fieldName)
       : selector = new LiteralString("'$fieldName'");
+  PropertyAccess.fieldExpression(this.receiver, LiteralString fieldName)
+  : selector = new LiteralString("'${fieldName.value}'");
+
   PropertyAccess.indexed(this.receiver, int index)
       : selector = new LiteralNumber('$index');
 
