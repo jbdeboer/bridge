@@ -488,7 +488,7 @@ class Printer implements NodeVisitor {
       spaceOut();
       String op = assignment.op;
       if (op != null) out(op);
-      out("=");
+      else out("=");
       spaceOut();
       visitNestedExpression(assignment.value, ASSIGNMENT,
                             newInForInit: inForInit,

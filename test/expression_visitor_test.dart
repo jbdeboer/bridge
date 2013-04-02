@@ -91,5 +91,111 @@ main() {
   test('should parse string interpolation', () {
     BVT.expectParse('"a\$\{1\}b', 'STUB STRING INTERPOLATION');
   });
+
+  // Identifiers
+
+  test('should punt on library identifiers', () {
+    BVT.expectParse('lib.name', 'stubIDENTIFIER_lib.name');
+  });
+
+  test('should punt on prefix identifiers', () {
+    BVT.expectParse('prefix.name', 'stubIDENTIFIER_prefix.name');
+  });
+
+  test('should punt on simple identifiers', () {
+    BVT.expectParse('id', 'stubIDENTIFIER_id');
+  });
+
+  // Binary expressions
+
+  test('should parse binary expressions', () {
+    BVT.expectParse('3 + 4', '3 + 4');
+  });
+
+  // Cascade expressions
+  test('should parse cascade expressions', () {
+    BVT.expectParse('x.foo()..boo()', 'CASCADES NOT IMPLEMENTED');
+  });
+
+  // Conditional expressions
+  test('should parse conditional expressions', () {
+    BVT.expectParse('true ? 4 : 3', 'true ? 4 : 3');
+  });
+
+  // Function expressions
+  test('should parse function expressions', () {
+    BVT.expectParse('x()', 'stubIDENTIFIER_x()');
+  });
+
+  test('should parse function expressions with parameters', () {
+    BVT.expectParse('x(1,2)', 'stubIDENTIFIER_x(1, 2)');
+  });
+
+  test('should parse method expressions', () {
+    BVT.expectParse('b.x(1,2)',
+      'stubIDENTIFIER_b.stubIDENTIFIER_x(1, 2)');
+  });
+
+  // Index expressions
+  test('should parse index expressions', () {
+    BVT.expectParse('x[2]', 'stubIDENTIFIER_x[2]');
+  });
+
+  // Instance creatation expessions
+  test('should parse a new call', () {
+    BVT.expectParse('new Y()', 'new stubIDENTIFIER_Y()');
+  });
+
+  test('should parse parans', () {
+    BVT.expectParse('4 * (2 + 2)', '4 * (2 + 2)');
+  });
+
+  // NOTE: the JS AST doesn't have parans and will remove
+  // unneeded ones.
+  test('should parse parans', () {
+    BVT.expectParse('(4) * ((2 + 2))', '4 * (2 + 2)');
+  });
+
+  test('should parse postfix expressions', () {
+    BVT.expectParse('i++', 'stubIDENTIFIER_i++');
+  });
+
+  test('should parse prefix expressions', () {
+    BVT.expectParse('++i', '++stubIDENTIFIER_i');
+  });
+
+  // Property access
+  test('should parse property access', () {
+    BVT.expectParse('a[4].b', 'stubIDENTIFIER_a[4].stubIDENTIFIER_b');
+  });
+
+  // this
+  test('should parse this', () {
+    BVT.expectParse('this', 'this');
+  });
+
+  // throw
+  // TODO(deboer): Investigate.  In JS, throw is a statement.
+  //test('should parse throw', () {
+  //  BVT.expectParse('throw 5', 'throw 5');
+  //});
+
+  // is expression
+  test('should parse is', () {
+    BVT.expectParse('4 is int', 'typeof 4 == stubIDENTIFIER_int');
+  });
+
+  test('should parse is not', () {
+    BVT.expectParse('4 is ! int', 'typeof 4 != stubIDENTIFIER_int');
+  });
+
+  // assignments
+  test('should parse assignments', () {
+    BVT.expectParse('f = 5', 'stubIDENTIFIER_f = 5');
+  });
+
+  test('should compound parse assignments', () {
+    BVT.expectParse('f *= 5', 'stubIDENTIFIER_f *= 5');
+  });
 }
 

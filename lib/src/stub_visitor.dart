@@ -3,12 +3,19 @@ import 'jsast/js.dart' as jss;
 import 'base_visitor.dart';
 
 class StubVisitor extends BaseVisitor {
-  List<jss.Node> visitBlock(dart.Block block) {
+  visitBlock(dart.Block block) {
     return [new jss.Block(
         [new jss.Comment('// STUB BLOCK')]
     )];
   }
 
-  List<jss.Node> visitStringInterpolation(dart.StringInterpolation node) =>
-    [new jss.LiteralString('STUB STRING INTERPOLATION')];
+  visitStringInterpolation(dart.StringInterpolation node) =>
+      [new jss.LiteralString('STUB STRING INTERPOLATION')];
+
+  visitSimpleIdentifier(node) =>
+      [new jss.LiteralString('stubIDENTIFIER_${node.name}')];
+  visitPrefixedIdentifier(node) =>
+      [new jss.LiteralString('stubIDENTIFIER_${node.name}')];
+  visitLibraryIdentifier(node) =>
+      [new jss.LiteralString('stubIDENTIFIER_${node.name}')];
 }
