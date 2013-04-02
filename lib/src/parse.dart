@@ -5,7 +5,10 @@ import 'package:analyzer_experimental/src/generated/scanner.dart';
 
 // Package local imports.
 import 'listeners.dart';
+import 'base_visitor.dart';
+import 'stub_visitor.dart';
 
+import 'jsast/js.dart' as js;
 
 CompilationUnit parseText(String text) {
   List<ErrorCode> errorCodes;
@@ -16,4 +19,15 @@ CompilationUnit parseText(String text) {
   CompilationUnit unit = parser.parseCompilationUnit(token);
   // TODO(chirayu): When is "errorCodes" valid?
   return unit;
+}
+
+ASTNode identityQuery(node) => node;
+String stringBridge(String dart,
+                    BaseVisitor visitorFactory(BaseVisitor),
+                    [ASTNode query(ASTNode) = identityQuery]) {
+  ASTNode n = parseText(dart);
+  var visitor = visitorFactory(new StubVisitor());
+
+  return query(n).accept(visitor).map(
+          (s) => js.prettyPrint(s).getText()).join("");
 }
