@@ -742,6 +742,8 @@ class VariableDeclaration extends VariableReference {
   String jsType;
   String jsDoc;
 
+  VariableDeclaration.fromLiteralString(LiteralString str) : super(str.value);
+
   VariableDeclaration(String name) : super(name);
 
   VariableDeclaration.withType(String name, String jsType) : super(name) {

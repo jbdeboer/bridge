@@ -1,61 +1,75 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 
+import '../base_visitor.dart';
+import '../jsast/js.dart' as js;
 import '../symbols.dart';
 import '../unparse_to_closure/expression_visitor.dart';
 import '../utils.dart';
 
 
-class BlockVisitor extends GeneralizingASTVisitor {
-  IndentedStringBuffer _buffer;
+List<js.Statement> flattenOneLevel(List<List<js.Statement>> statementLists) {
+  return statementLists.map((stmtList) => stmtList[0]).toList();
+}
+
+
+class BlockVisitor extends BaseVisitor {
+  BaseVisitor _otherVisitor;
   Scope _currentScope;
   ExpressionVisitor expressionVisitor;
 
   // Visiting sub-blocks constructs a new BlockVisitor.
   bool firstTime = true;
 
-  BlockVisitor({Scope currentScope,
-                IndentedStringBuffer buffer}) {
+  BlockVisitor.root(BaseVisitor otherVisitor): this(
+      new Scope(), otherVisitor);
+
+  BlockVisitor(Scope currentScope,
+               this._otherVisitor) {
     _currentScope = currentScope.clone();
-    _buffer = buffer;
-    expressionVisitor = new ExpressionVisitor(
-        currentScope: currentScope,
-        buffer: buffer);
+    // TODO(chirayu): This should use otherVisitor passing it the currentScope.
+    // expressionVisitor = new ExpressionVisitor(
+    //     currentScope: currentScope,
+    //     buffer: buffer);
   }
 
-  Object visitFieldDeclaration(FieldDeclaration node) {
+  js.ExpressionStatement getNewVarJsNode(String name) {
+    return new js.ExpressionStatement(new js.VariableDeclaration(name));
   }
 
-  Object visitVariableDeclaration(VariableDeclaration node) {
-    String name = node.name.name;
-    var symbolName = new SymbolName(name);
-    // Add correct type.  This will assert() if this is a duplicate defn.
-    _currentScope.add(symbolName, DartType.DYNAMIC);
-    if (node.initializer == null) {
-      _buffer.writeln("var $name;");
-    } else {
-      _buffer.write("var $name = ");
-      node.initializer.accept(expressionVisitor);
-      _buffer.writeln(";");
+  Object visitVariableDeclarationStatement(VariableDeclarationStatement node) {
+    List<js.Statement> statements = [];
+    for (var variable in node.variables.variables) {
+      SimpleIdentifier name = variable.name;
+      Expression initializer = variable.initializer;
+      js.Node nameStatement = name.accept(_otherVisitor)[0];
+      js.Node expression = null;
+      if (initializer != null) {
+        js.Node expression = initializer.accept(_otherVisitor)[0];
+      }
+      var statement = new js.ExpressionStatement(
+          new js.VariableDeclarationList([
+              new js.VariableInitialization(
+                 new js.VariableDeclaration.fromLiteralString(nameStatement),
+                 expression
+                 )]));
+      statements.add(statement);
     }
+    return statements;
   }
 
-  Object visitBlockFunctionBody(BlockFunctionBody node) {
-    visitBlock(node.block);
+  List<Statement> getStatements(Block block) {
+    return flattenOneLevel(
+        block.statements.elements.map(
+            (stmt) => stmt.accept(this)).toList());
   }
 
   Object visitBlock(Block block) {
     if (!firstTime) {
-      var v = new BlockVisitor(currentScope: _currentScope,
-                               buffer: _buffer);
+      var v = new BlockVisitor(_currentScope,
+                               this._otherVisitor);
       return v.visitBlock(block);
     } else {
-      _buffer.writeln("{");
-      _buffer.level++;
-      for (final Statement stmt in block.statements) {
-        stmt.accept(this);
-      }
-      _buffer.level--;
-      _buffer.writeln("}");
+      return [new js.Block(getStatements(block))];
     }
   }
 }
