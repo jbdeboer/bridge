@@ -25,11 +25,16 @@ class LexicalScope {
     }
     return id;
   }
+
   addName(String id) {
+    if (_symbols.containsKey(id)) {
+      throw "Duplicate definition for name: $id";
+    }
     _symbols[id] = currentScope;
   }
 
   LexicalScope();
+
   LexicalScope.clone(scope) {
     this.parent = scope;
     this.currentScope = parent.currentScope;

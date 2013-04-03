@@ -14,13 +14,19 @@ Block queryBlock(CompilationUnit compilationUnit) {
   return block;
 }
 
-expectBlock(String dart, String jsCode) {
+String dartToJs(String dart) {
   dart = dedent(dart);
-  jsCode = dedent(jsCode);
-  expect(stringBridge("main() $dart",
+  return stringBridge("main() $dart",
       (x) => new BlockVisitor.root(x),
-      queryBlock).trim(),
-    equals(jsCode));
+      queryBlock).trim();
+}
+
+expectBlock(String dart, String jsCode) {
+  expect(dartToJs(dart), equals(dedent(jsCode)));
+}
+
+expectBlockRaises(String dart) {
+  expect(() => dartToJs(dart), throws);
 }
 
 main() {
@@ -30,7 +36,9 @@ main() {
         // JS.
         "{\n}"
         );
+  });
 
+  test('should parse a simple var defn', () {
     expectBlock(
         """
         {
@@ -39,9 +47,18 @@ main() {
         // JS.
         """
         {
-          var stubIDENTIFIER_a;
+          var a;
         }"""
         );
+  });
 
+  test('should throw on duplicate symbol definition', () {
+    expectBlockRaises(
+        """
+        {
+          var a;
+          var a;
+        }"""
+        );
   });
 }

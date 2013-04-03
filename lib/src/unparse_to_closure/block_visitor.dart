@@ -7,6 +7,7 @@ import '../unparse_to_closure/expression_visitor.dart';
 import '../utils.dart';
 import '../lexical_scope.dart';
 
+const jsbuilder = js.js;
 
 List<js.Statement> flattenOneLevel(List<List<js.Statement>> statementLists) {
   return statementLists.map((stmtList) => stmtList[0]).toList();
@@ -26,10 +27,6 @@ class BlockVisitor extends BaseVisitor {
   BlockVisitor(LexicalScope currentScope,
                otherVisitor) : super(otherVisitor) {
     _currentScope = new LexicalScope.clone(currentScope);
-    // TODO(chirayu): This should use otherVisitor passing it the currentScope.
-    // expressionVisitor = new ExpressionVisitor(
-    //     currentScope: currentScope,
-    //     buffer: buffer);
   }
 
   js.ExpressionStatement getNewVarJsNode(String name) {
@@ -39,19 +36,15 @@ class BlockVisitor extends BaseVisitor {
   Object visitVariableDeclarationStatement(VariableDeclarationStatement node) {
     List<js.Statement> statements = [];
     for (var variable in node.variables.variables) {
-      SimpleIdentifier name = variable.name;
       Expression initializer = variable.initializer;
-      js.Node nameStatement = name.accept(otherVisitor)[0];
+      String name = variable.name.name;
+      _currentScope.addName(name);
       js.Node expression = null;
       if (initializer != null) {
         js.Node expression = initializer.accept(otherVisitor)[0];
       }
       var statement = new js.ExpressionStatement(
-          new js.VariableDeclarationList([
-              new js.VariableInitialization(
-                 new js.VariableDeclaration.fromLiteralString(nameStatement),
-                 expression
-                 )]));
+          jsbuilder.defineVar(name, expression));
       statements.add(statement);
     }
     return statements;

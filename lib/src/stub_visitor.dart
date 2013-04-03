@@ -3,9 +3,7 @@ import 'jsast/js.dart' as jss;
 import 'base_visitor.dart';
 
 class StubVisitor extends BaseVisitor {
-  StubVisitor() : super(() => new StubVisitor()) {
-    print("new stub");
-  }
+  StubVisitor() : super(() => new StubVisitor());
 
   visitBlock(dart.Block block) {
     return [new jss.Block(
