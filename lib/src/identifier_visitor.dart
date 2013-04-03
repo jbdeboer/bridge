@@ -30,9 +30,7 @@ import 'base_visitor.dart';
 import 'jsast/js.dart' as js;
 
 class IdentifierVisitor extends BaseVisitor {
-  ASTVisitor<Object> otherVisitor;
-
-  IdentifierVisitor(this.otherVisitor);
+  IdentifierVisitor(otherVisitor) : super(otherVisitor);
 
   visitSimpleIdentifier(SimpleIdentifier node) =>
       [new js.LiteralString(node.name)];

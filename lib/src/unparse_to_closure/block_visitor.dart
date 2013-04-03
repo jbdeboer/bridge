@@ -5,6 +5,7 @@ import '../jsast/js.dart' as js;
 import '../symbols.dart';
 import '../unparse_to_closure/expression_visitor.dart';
 import '../utils.dart';
+import '../lexical_scope.dart';
 
 
 List<js.Statement> flattenOneLevel(List<List<js.Statement>> statementLists) {
@@ -13,19 +14,18 @@ List<js.Statement> flattenOneLevel(List<List<js.Statement>> statementLists) {
 
 
 class BlockVisitor extends BaseVisitor {
-  BaseVisitor _otherVisitor;
-  Scope _currentScope;
+  LexicalScope _currentScope;
   ExpressionVisitor expressionVisitor;
 
   // Visiting sub-blocks constructs a new BlockVisitor.
   bool firstTime = true;
 
-  BlockVisitor.root(BaseVisitor otherVisitor): this(
-      new Scope(), otherVisitor);
+  BlockVisitor.root(otherVisitor): this(
+      new LexicalScope(), otherVisitor);
 
-  BlockVisitor(Scope currentScope,
-               this._otherVisitor) {
-    _currentScope = currentScope.clone();
+  BlockVisitor(LexicalScope currentScope,
+               otherVisitor) : super(otherVisitor) {
+    _currentScope = new LexicalScope.clone(currentScope);
     // TODO(chirayu): This should use otherVisitor passing it the currentScope.
     // expressionVisitor = new ExpressionVisitor(
     //     currentScope: currentScope,
@@ -41,10 +41,10 @@ class BlockVisitor extends BaseVisitor {
     for (var variable in node.variables.variables) {
       SimpleIdentifier name = variable.name;
       Expression initializer = variable.initializer;
-      js.Node nameStatement = name.accept(_otherVisitor)[0];
+      js.Node nameStatement = name.accept(otherVisitor)[0];
       js.Node expression = null;
       if (initializer != null) {
-        js.Node expression = initializer.accept(_otherVisitor)[0];
+        js.Node expression = initializer.accept(otherVisitor)[0];
       }
       var statement = new js.ExpressionStatement(
           new js.VariableDeclarationList([
@@ -66,7 +66,7 @@ class BlockVisitor extends BaseVisitor {
   Object visitBlock(Block block) {
     if (!firstTime) {
       var v = new BlockVisitor(_currentScope,
-                               this._otherVisitor);
+                               this.otherVisitor);
       return v.visitBlock(block);
     } else {
       return [new js.Block(getStatements(block))];

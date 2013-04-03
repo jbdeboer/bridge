@@ -2,6 +2,14 @@ import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'jsast/js.dart' as js;
 
 class BaseVisitor implements ASTVisitor<List<js.Node>> {
+  var otherVisitorFactory;
+
+  BaseVisitor get otherVisitor => otherVisitorFactory();
+
+  BaseVisitor(BaseVisitor otherVisitorFactory()) {
+    this.otherVisitorFactory = otherVisitorFactory;
+  }
+
   List<js.Node> visitCompilationUnit(CompilationUnit node) {
     var ret = new List<js.Node>();
     for (var child in node.sortedDirectivesAndDeclarations) {
