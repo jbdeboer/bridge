@@ -1,17 +1,29 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
+
+import 'base_visitor.dart';
 import 'class_member_visitor.dart';
+import 'lexical_scope.dart';
+import 'identifier_visitor.dart';
 import 'transformers.dart';
+
 import 'jsast/js.dart' as js;
 
-class BridgeVisitor implements ASTVisitor<Object> {
-  PrintWriter _writer;
+NoOtherVisitor() {
+  throw "BridgeVisitor other visitor";
+}
 
-  BridgeVisitor(PrintWriter writer) {
-    this._writer = writer;
-  }
+Factory() => new BridgeVisitor();
 
- /**
+class BridgeVisitor extends BaseVisitor {
+    LexicalScope scope = new LexicalScope();
+
+    BridgeVisitor(parentVisitor) : super(NoOtherVisitor) {
+      if (parentVisitor != null) this.scope = parentVisitor.scope;
+    }
+
+
+/*
   R visitAdjacentStrings(AdjacentStrings node);
   R visitAnnotation(Annotation node);
   R visitArgumentDefinitionTest(ArgumentDefinitionTest node);
@@ -21,11 +33,11 @@ class BridgeVisitor implements ASTVisitor<Object> {
   R visitAssignmentExpression(AssignmentExpression node);
   R visitBinaryExpression(BinaryExpression node); */
 
-  List<js.Node> visitBlock(Block node) {
-    return [new js.Comment('VISIT BLOCK')];
-  }
+//    List<js.Node> visitBlock(Block node) {
+//      return [new js.Comment('VISIT BLOCK')];
+//    }
 
-  /*
+/*
   R visitBlock(Block node);
   R visitBlockFunctionBody(BlockFunctionBody node);
   R visitBooleanLiteral(BooleanLiteral node);
@@ -33,14 +45,14 @@ class BridgeVisitor implements ASTVisitor<Object> {
   R visitCascadeExpression(CascadeExpression node);
   R visitCatchClause(CatchClause node); */
 
-  Object visitClassDeclaration(ClassDeclaration node) {
-    var cmv = new ClassMemberVisitor(this);
-    node.accept(cmv);
-    for (var s in cmv.statements) {
-      this._writer.print(js.prettyPrint(s).getText());
-    }
-  }
-    /*
+//    Object visitClassDeclaration(ClassDeclaration node) {
+//      var cmv = new ClassMemberVisitor(this);
+//      node.accept(cmv);
+//      for (var s in cmv.statements) {
+//        this._writer.print(js.prettyPrint(s).getText());
+//      }
+//    }
+/*
     this._writer.print(cmv.statements.getText())
     String functionName = node.name.toString();
 
@@ -59,21 +71,21 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
     }
   } */
 
-  /*
+/*
   R visitClassTypeAlias(ClassTypeAlias node); */
 
-  Object visitComment(Comment node) {
-    this._writer.print("comment");
-  }
+//    Object visitComment(Comment node) {
+//      this._writer.print("comment");
+//    }
 
-  /*
+/*
   R visitCommentReference(CommentReference node); */
 
-  Object visitCompilationUnit(CompilationUnit node) {
-    node.visitChildren(this);
-  }
+//    Object visitCompilationUnit(CompilationUnit node) {
+//      node.visitChildren(this);
+//    }
 
-  /*
+/*
   R visitConditionalExpression(ConditionalExpression node);
   R visitConstructorDeclaration(ConstructorDeclaration node);
   R visitConstructorFieldInitializer(ConstructorFieldInitializer node);
@@ -107,11 +119,11 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   R visitIndexExpression(IndexExpression node);
   R visitInstanceCreationExpression(InstanceCreationExpression node); */
 
-  /*Object visitIntegerLiteral(IntegerLiteral node) {
+/*Object visitIntegerLiteral(IntegerLiteral node) {
     node.visitChildren(this);
   }*/
 
-  /*
+/*
   R visitInterpolationExpression(InterpolationExpression node);
   R visitInterpolationString(InterpolationString node);
   R visitIsExpression(IsExpression node);
@@ -139,14 +151,16 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   R visitShowCombinator(ShowCombinator node);
   R visitSimpleFormalParameter(SimpleFormalParameter node); */
 
-  /*Object visitSimpleIdentifier(SimpleIdentifier node) {
-      node.visitChildren(this);
+  visitSimpleIdentifier(SimpleIdentifier node) {
+      var visitor = new IdentifierVisitor(Factory, scope);
+      return node.accept(visitor);
   }
 
+  /*
   Object visitSimpleStringLiteral(SimpleStringLiteral node) {
     node.visitChildren(this);
   }*/
-  /*
+/*
   R visitStringInterpolation(StringInterpolation node);
   R visitSuperConstructorInvocation(SuperConstructorInvocation node);
   R visitSuperExpression(SuperExpression node);
@@ -156,44 +170,45 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   R visitThisExpression(ThisExpression node);
   R visitThrowExpression(ThrowExpression node); */
 
-  Object visitTopLevelVariableDeclaration(TopLevelVariableDeclaration node) {
-    node.visitChildren(this);
-  }
+//    Object visitTopLevelVariableDeclaration(TopLevelVariableDeclaration node) {
+//      node.visitChildren(this);
+//    }
 
-  /*
+/*
   R visitTryStatement(TryStatement node);
   R visitTypeArgumentList(TypeArgumentList node); */
 
-  /*Object visitTypeName(TypeName node) {
+/*Object visitTypeName(TypeName node) {
     node.visitChildren(this);
   }*/
 
-  /*
+/*
   R visitTypeParameter(TypeParameter node);
   R visitTypeParameterList(TypeParameterList node); */
 
-  Object visitVariableDeclaration(VariableDeclaration node) {
+    Object visitVariableDeclaration(VariableDeclaration node) {
 
 
-    //node.visitChildren(this);
-  }
-
-
-
-
-  Object visitVariableDeclarationList(VariableDeclarationList node) {
-
-    for (VariableDeclaration decl in node.variables) {
-      this._writer.print(variableDeclarationToString(decl, node.type, "var "));
+//node.visitChildren(this);
     }
 
-    //node.visitChildren(this);
 
-  }
 
-  /*
+
+//    Object visitVariableDeclarationList(VariableDeclarationList node) {
+//
+//      for (VariableDeclaration decl in node.variables) {
+//        this._writer.print(variableDeclarationToString(decl, node.type, "var "));
+//      }
+//
+////node.visitChildren(this);
+//
+//    }
+
+/*
   R visitVariableDeclarationStatement(VariableDeclarationStatement node);
   R visitWhileStatement(WhileStatement node);
   R visitWithClause(WithClause node);
 */
+  //}
 }
