@@ -49,39 +49,3 @@ class Symbol {
   final bool isOnInstance;
   Symbol(this.name, [this.type = DartType.DYNAMIC]);
 }
-
-
-/**
- * Collections of symbols available in a Dart lexical scope.
- *
- * Nested blocks can just .clone() the current scope and use it as the inner
- * scope.  New declarations can then be put into it.  Throw away when you leave
- * the scope.
- */
-class Scope {
-  final Map<SymbolName, Symbol> _symbols;
-
-  Scope._internal(this._symbols);
-
-  Scope() : this._internal(new Map<SymbolName, Symbol>());
-
-  add(SymbolName name, DartType type) {
-    if (_symbols.containsKey(name)) {
-      // TODO(chirayu): Track line numbers, etc. for better error messages.
-      // throw new BaseException("Duplicate definition of symbol '${name}'");
-    }
-    _symbols[name] = type;
-  }
-
-  Symbol operator [](name) {
-    if (name is String) name = new SymbolName(name);
-    return _symbols[name];
-  }
-
-  clone() {
-    return new Scope._internal(new Map.from(_symbols));
-  }
-}
-
-
-final DEFAULT_GLOBALS = new Scope();

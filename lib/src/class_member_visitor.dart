@@ -5,9 +5,7 @@ import 'base_visitor.dart';
 import 'jsast/js.dart' as js;
 
 class ClassMemberVisitor extends BaseVisitor {
-  ASTVisitor<Object> otherVisitor;
-
-  ClassMemberVisitor(this.otherVisitor);
+  ClassMemberVisitor(otherVisitor) : super(otherVisitor);
 
   List<js.Statement> fields = new List<js.Statement>();
   List<js.Statement> methods = new List<js.Statement>();
