@@ -61,4 +61,33 @@ main() {
         }"""
         );
   });
+
+  test('should parse a simple var initialization', () {
+    expectBlock(
+        """
+        {
+          var a = 1;
+        }""",
+        // JS.
+        """
+        {
+          var a = 1 /* stubINT */;
+        }"""
+        );
+  });
+
+  test('should parse a simple var initialized from a non-literal', () {
+    expectBlock(
+        """
+        {
+          var a = b;
+        }""",
+        // JS.
+        """
+        {
+          var a = stubIDENTIFIER_b;
+        }"""
+        );
+  });
+
 }

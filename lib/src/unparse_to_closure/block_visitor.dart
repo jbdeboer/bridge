@@ -41,7 +41,7 @@ class BlockVisitor extends BaseVisitor {
       _currentScope.addName(name);
       js.Node expression = null;
       if (initializer != null) {
-        js.Node expression = initializer.accept(otherVisitor)[0];
+        expression = initializer.accept(otherVisitor)[0];
       }
       var statement = new js.ExpressionStatement(
           jsbuilder.defineVar(name, expression));
