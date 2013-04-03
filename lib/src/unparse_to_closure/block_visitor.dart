@@ -26,10 +26,6 @@ class BlockVisitor extends BaseVisitor {
   BlockVisitor(Scope currentScope,
                this._otherVisitor) {
     _currentScope = currentScope.clone();
-    // TODO(chirayu): This should use otherVisitor passing it the currentScope.
-    // expressionVisitor = new ExpressionVisitor(
-    //     currentScope: currentScope,
-    //     buffer: buffer);
   }
 
   js.ExpressionStatement getNewVarJsNode(String name) {
