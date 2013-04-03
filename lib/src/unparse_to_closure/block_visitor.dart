@@ -78,7 +78,7 @@ class BlockVisitor extends BaseVisitor {
     js.Node condition = _if.condition.accept(otherVisitor)[0];
     List<js.Statement> thenStatements = _if.thenStatement.accept(otherVisitor);
     List<js.Statement> elseStatements = null;
-    if (_if.elseStatement) {
+    if (_if.elseStatement != null) {
       elseStatements = _if.elseStatement.accept(otherVisitor);
     }
     return [jsbuilder.if_(condition, thenStatements, elseStatements)];

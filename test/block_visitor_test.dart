@@ -141,26 +141,44 @@ main() {
   });
 
 
-  // if (true) return;
+  // if (true);
   test('should parse a simple if statement', () {
     expectBlock(
         """
         {
-          if (true) return;
+          if (true);
         }""",
         // JS.
         """
         {
           if (true) {
-            // STUB
-            return;
+            ;
+          }
+        }"""
+        );
+  });
+
+  // if (true); else ;
+  test('should parse a simple if /else statement', () {
+    expectBlock(
+        """
+        {
+          if (true); else;
+        }""",
+        // JS.
+        """
+        {
+          if (true) {
+            ;
+          } else {
+            ;
           }
         }"""
         );
   });
 
   // if (true) { var a = 1 };
-  test('should parse a simple if statement', () {
+  test('should parse a simple if statement initialization', () {
     expectBlock(
         """
         {
@@ -172,6 +190,29 @@ main() {
         """
         {
           if (true) {
+            // STUB BLOCK
+          }
+        }"""
+        );
+  });
+
+  // if (true) { var a = 1; } else { var b = 1; }
+  test('should parse a simple if/else statement with initialization', () {
+    expectBlock(
+        """
+        {
+          if (true) {
+            var a = 1;
+          } else {
+            var b = 1;
+          }
+        }""",
+        // JS.
+        """
+        {
+          if (true) {
+            // STUB BLOCK
+          } else {
             // STUB BLOCK
           }
         }"""

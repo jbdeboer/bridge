@@ -5,6 +5,15 @@ import 'base_visitor.dart';
 class StubVisitor extends BaseVisitor {
   StubVisitor() : super(() => new StubVisitor());
 
+  visitEmptyStatement(node) {
+    return [new jss.EmptyStatement()];
+  }
+  visitBreakStatement(node) {
+    return [new jss.Break(null)];
+  }
+  visitContinueStatement(node) {
+    return [new jss.Continue(null)];
+  }
   visitBlock(dart.Block block) {
     return [new jss.Block(
         [new jss.Comment('// STUB BLOCK')]
