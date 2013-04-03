@@ -56,6 +56,18 @@ class BlockVisitor extends BaseVisitor {
             (stmt) => stmt.accept(this)).toList());
   }
 
+  List<Statement> visitBreakStatement(BreakStatement block) {
+    return [new js.Break(null)];
+  }
+
+  List<Statement> visitContinueStatement(ContinueStatement node) {
+    return [new js.Continue(null)];
+  }
+
+  List<Statement> visitReturnStatement(ReturnStatement node) {
+    return [new js.Return(null)];
+  }
+
   Object visitBlock(Block block) {
     if (!firstTime) {
       var v = new BlockVisitor(_currentScope,

@@ -90,4 +90,46 @@ main() {
         );
   });
 
+  test('should emit a break statement', () {
+    expectBlock(
+        """
+        {
+          break;
+        }""",
+        // JS.
+        """
+        {
+          break;
+        }"""
+        );
+  });
+
+  test('should emit a continue statement', () {
+    expectBlock(
+        """
+        {
+          continue;
+        }""",
+        // JS.
+        """
+        {
+          continue;
+        }"""
+        );
+  });
+
+  test('should emit a return statement', () {
+    expectBlock(
+        """
+        {
+          return;
+        }""",
+        // JS.
+        """
+        {
+          return;
+        }"""
+        );
+  });
+
 }
