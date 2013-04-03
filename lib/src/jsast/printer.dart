@@ -868,7 +868,6 @@ class Printer implements NodeVisitor {
   }
 
   void visitComment(Comment node) {
-    print('Cooma: ' + node.comment);
     //throw new Error(node.comment.trim());
     //if (shouldCompressOutput) return;
     String comment = node.comment.trim();

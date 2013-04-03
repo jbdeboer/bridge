@@ -30,6 +30,7 @@ expectBlockRaises(String dart) {
 }
 
 main() {
+  // Empty block.
   test('should parse a simple block', () {
     expectBlock(
         '{}',
@@ -38,6 +39,7 @@ main() {
         );
   });
 
+  // var a;
   test('should parse a simple var defn', () {
     expectBlock(
         """
@@ -52,6 +54,7 @@ main() {
         );
   });
 
+  // Duplicate var declaration.
   test('should throw on duplicate symbol definition', () {
     expectBlockRaises(
         """
@@ -62,6 +65,7 @@ main() {
         );
   });
 
+  // a = 1.
   test('should parse a simple var initialization', () {
     expectBlock(
         """
@@ -76,6 +80,7 @@ main() {
         );
   });
 
+  // a = b.
   test('should parse a simple var initialized from a non-literal', () {
     expectBlock(
         """
@@ -90,6 +95,7 @@ main() {
         );
   });
 
+  // Break statement.
   test('should emit a break statement', () {
     expectBlock(
         """
@@ -104,6 +110,7 @@ main() {
         );
   });
 
+  // Continue statement.
   test('should emit a continue statement', () {
     expectBlock(
         """
@@ -118,6 +125,7 @@ main() {
         );
   });
 
+  // Return statement.
   test('should emit a return statement', () {
     expectBlock(
         """
@@ -128,6 +136,44 @@ main() {
         """
         {
           return;
+        }"""
+        );
+  });
+
+
+  // if (true) return;
+  test('should parse a simple if statement', () {
+    expectBlock(
+        """
+        {
+          if (true) return;
+        }""",
+        // JS.
+        """
+        {
+          if (true) {
+            // STUB
+            return;
+          }
+        }"""
+        );
+  });
+
+  // if (true) { var a = 1 };
+  test('should parse a simple if statement', () {
+    expectBlock(
+        """
+        {
+          if (true) {
+            var a = 1;
+          }
+        }""",
+        // JS.
+        """
+        {
+          if (true) {
+            // STUB BLOCK
+          }
         }"""
         );
   });

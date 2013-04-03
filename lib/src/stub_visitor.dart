@@ -14,6 +14,8 @@ class StubVisitor extends BaseVisitor {
   visitStringInterpolation(dart.StringInterpolation node) =>
       [new jss.LiteralString('STUB STRING INTERPOLATION')];
 
+  visitBooleanLiteral(node) =>
+      [new jss.LiteralBool(node.value)];
   visitIntegerLiteral(node) =>
       [new jss.LiteralNumber('${node.value} /* stubINT */')];
   visitSimpleIdentifier(node) =>
@@ -22,4 +24,6 @@ class StubVisitor extends BaseVisitor {
       [new jss.LiteralString('stubIDENTIFIER_${node.name}')];
   visitLibraryIdentifier(node) =>
       [new jss.LiteralString('stubIDENTIFIER_${node.name}')];
+  visitReturnStatement(node) =>
+      [new jss.Comment('// STUB'), new jss.Return(null)];
 }

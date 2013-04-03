@@ -50,28 +50,38 @@ class BlockVisitor extends BaseVisitor {
     return statements;
   }
 
-  List<Statement> getStatements(Block block) {
+  List<js.Statement> getStatements(Block block) {
     return flattenOneLevel(
         block.statements.elements.map(
             (stmt) => stmt.accept(this)).toList());
   }
 
-  List<Statement> visitBreakStatement(BreakStatement _break) {
+  List<js.Statement> visitBreakStatement(BreakStatement _break) {
     if (_break.label != null) {
       throw "Break statements with labels are not supported yet.";
     }
     return [new js.Break(null)];
   }
 
-  List<Statement> visitContinueStatement(ContinueStatement _continue) {
+  List<js.Statement> visitContinueStatement(ContinueStatement _continue) {
     if (_continue.label != null) {
       throw "Continue statements with labels are not supported yet.";
     }
     return [new js.Continue(null)];
   }
 
-  List<Statement> visitReturnStatement(ReturnStatement _return) {
+  List<js.Statement> visitReturnStatement(ReturnStatement _return) {
     return [new js.Return(null)];
+  }
+
+  List<js.Statement> visitIfStatement(IfStatement _if) {
+    js.Node condition = _if.condition.accept(otherVisitor)[0];
+    List<js.Statement> thenStatements = _if.thenStatement.accept(otherVisitor);
+    List<js.Statement> elseStatements = null;
+    if (_if.elseStatement) {
+      elseStatements = _if.elseStatement.accept(otherVisitor);
+    }
+    return [jsbuilder.if_(condition, thenStatements, elseStatements)];
   }
 
   Object visitBlock(Block block) {
