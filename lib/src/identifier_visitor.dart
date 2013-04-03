@@ -27,11 +27,17 @@ import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 import 'transformers.dart';
 import 'base_visitor.dart';
+import 'lexical_scope.dart';
 import 'jsast/js.dart' as js;
 
 class IdentifierVisitor extends BaseVisitor {
-  IdentifierVisitor(otherVisitor) : super(otherVisitor);
+  LexicalScope scope;
+
+  IdentifierVisitor(otherVisitor, LexicalScope scope) :
+      super(otherVisitor) {
+    this.scope = scope;
+  }
 
   visitSimpleIdentifier(SimpleIdentifier node) =>
-      [new js.LiteralString(node.name)];
+      [new js.LiteralString(scope.nameFor(node.name))];
 }
