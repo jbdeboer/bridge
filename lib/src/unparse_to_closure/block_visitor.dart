@@ -56,15 +56,21 @@ class BlockVisitor extends BaseVisitor {
             (stmt) => stmt.accept(this)).toList());
   }
 
-  List<Statement> visitBreakStatement(BreakStatement block) {
+  List<Statement> visitBreakStatement(BreakStatement _break) {
+    if (_break.label != null) {
+      throw "Break statements with labels are not supported yet.";
+    }
     return [new js.Break(null)];
   }
 
-  List<Statement> visitContinueStatement(ContinueStatement node) {
+  List<Statement> visitContinueStatement(ContinueStatement _continue) {
+    if (_continue.label != null) {
+      throw "Continue statements with labels are not supported yet.";
+    }
     return [new js.Continue(null)];
   }
 
-  List<Statement> visitReturnStatement(ReturnStatement node) {
+  List<Statement> visitReturnStatement(ReturnStatement _return) {
     return [new js.Return(null)];
   }
 
