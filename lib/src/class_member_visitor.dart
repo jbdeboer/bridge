@@ -1,9 +1,12 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
-import 'transformers.dart';
+
+import 'jsast/js.dart' as js;
+
 import 'base_visitor.dart';
 import 'lexical_scope.dart';
-import 'jsast/js.dart' as js;
+import 'transformers.dart';
+import 'visit_result.dart';
 
 class ClassMemberVisitor extends BaseVisitor {
   ClassMemberVisitor(baseOptions) : super(baseOptions);
@@ -15,7 +18,7 @@ class ClassMemberVisitor extends BaseVisitor {
   List<js.Parameter> consParams;
   js.Block consBlock = new js.Block.empty();
 
-  visitClassDeclaration(ClassDeclaration node) {
+  VisitResult visitClassDeclaration(ClassDeclaration node) {
     assert(scope != null);
     scope.currentScope = LexicalScope.CLASS;
 
@@ -32,7 +35,7 @@ class ClassMemberVisitor extends BaseVisitor {
     ));
     ret.addAll(fields);
     ret.addAll(methods);
-    return ret;
+    return VisitResult.fromJsNodeList(ret);
   }
 
   Object visitFieldDeclaration(FieldDeclaration node) {
@@ -75,7 +78,7 @@ class ClassMemberVisitor extends BaseVisitor {
     String name = node.name.name;
     var funParams = dartParamsToJs(node.parameters.parameters);
 
-    var funBody = node.body.block.accept(this.otherVisitor)[0];
+    var funBody = node.body.block.accept(this.otherVisitor).node;
     methods.add(new js.ExpressionStatement(
           new js.Assignment(
            new js.VariableDeclaration.withDoc(

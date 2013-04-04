@@ -1,6 +1,10 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
-import 'lexical_scope.dart';
+
 import 'jsast/js.dart' as js;
+
+import 'lexical_scope.dart';
+import 'visit_result.dart';
+
 
 class BaseVisitorOptions {
   BaseVisitorOptions(this.otherVisitorFactory, this.scope);
@@ -23,15 +27,20 @@ class BaseVisitor implements ASTVisitor<List<js.Node>> {
     this.scope = options.scope;
   }
 
-  List<js.Node> visitCompilationUnit(CompilationUnit node) {
-    var ret = new List<js.Node>();
+  // TODO(chirayu): Change to just return VisitResult when all callers can
+  // handle it.
+  VisitResult visitCompilationUnit(CompilationUnit node) {
+    var ret = new VisitResult();
+    var nodes = ret.nodes;
     if (node.directivesAreBeforeDeclarations()) {
-      node.directives.elements.forEach((x) => ret.addAll(x.accept(this)));
-      node.declarations.elements.forEach((x) => ret.addAll(x.accept(this)));
+      node.directives.elements.forEach((x) => nodes.addAll(
+              x.accept(this)).nodes);
+      node.declarations.elements.forEach(
+          (x) => nodes.addAll(x.accept(this).nodes)   );
       return ret;
     }
     for (var child in node.sortedDirectivesAndDeclarations) {
-      ret.addAll(child.accept(this));
+      nodes.addAll(child.accept(this).nodes);
     }
     return ret;
   }

@@ -25,10 +25,13 @@ class A() {
 
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
-import 'transformers.dart';
+
+import 'jsast/js.dart' as js;
+
 import 'base_visitor.dart';
 import 'lexical_scope.dart';
-import 'jsast/js.dart' as js;
+import 'transformers.dart';
+import 'visit_result.dart';
 
 maybeSqrt(s) => s == 'sqrt' ? 'Math.sqrt' : s;
 
@@ -39,9 +42,9 @@ class IdentifierVisitor extends BaseVisitor {
       super(baseOptions) {
   }
 
-  visitSimpleIdentifier(SimpleIdentifier node) =>
-      [new js.LiteralString(maybeSqrt(scope.nameFor(node.name)))];
+  visitSimpleIdentifier(SimpleIdentifier node) => VisitResult.fromJsNode(
+      new js.LiteralString(maybeSqrt(scope.nameFor(node.name))));
 
-  visitPrefixedIdentifier(PrefixedIdentifier node) =>
-      [new js.LiteralString("${scope.nameFor(node.prefix.name)}.${node.identifier}")];
+  visitPrefixedIdentifier(PrefixedIdentifier node) => VisitResult.fromJsNode(
+      new js.LiteralString("${scope.nameFor(node.prefix.name)}.${node.identifier}"));
 }

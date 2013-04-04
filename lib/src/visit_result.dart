@@ -9,30 +9,40 @@
 //   }
 // }
 
+import 'jsast/js.dart' as js;
+
 class VisitResult {
-  List statements;
+  List nodes;
   // DartType type;
 
-  VisitResult([statements = null/*, this.type = DartType.UNKNOWN]*/]) {
-    this.statements = (statements == null) ? [] : statements;
+  VisitResult([List<js.Node> nodes = null/*, this.type = DartType.UNKNOWN]*/]) {
+    this.nodes = (nodes == null) ? [] : nodes;
+  }
+
+  static fromJsNodeList(List<js.Node> nodes) {
+    return new VisitResult(nodes);
+  }
+
+  static fromJsNode(js.Node node) {
+    return new VisitResult([node]);
   }
 
   static final EMPTY = new VisitResult();
 
-  get statement {
-    switch(statements.length) {
+  js.Node get node {
+    switch(nodes.length) {
       case 0:
         return null;
       case 1:
-        return statements[0];
+        return nodes[0];
       default:
-        throw "Attempt to get a single statement from a list: $statements";
+        throw "Attempt to get a single statement from a list: $nodes";
     }
   }
 
   toString() {
-    // return "VisitResult(type=$type, statements=$statements)";
-    return "VisitResult(statements=$statements)";
+    // return "VisitResult(type=$type, nodes=$nodes)";
+    return "VisitResult(nodes=$nodes)";
   }
 }
 

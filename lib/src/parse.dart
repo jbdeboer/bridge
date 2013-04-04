@@ -4,11 +4,12 @@ import 'package:analyzer_experimental/src/generated/parser.dart';
 import 'package:analyzer_experimental/src/generated/scanner.dart';
 
 // Package local imports.
-import 'debug.dart';
-import 'listeners.dart';
 import 'base_visitor.dart';
-import 'stub_visitor.dart';
+import 'debug.dart';
 import 'lexical_scope.dart';
+import 'listeners.dart';
+import 'stub_visitor.dart';
+import 'visit_result.dart';
 
 import 'jsast/js.dart' as js;
 
@@ -30,7 +31,7 @@ String stringBridge(String dart,
   ASTNode n = parseText(dart);
   var visitor = visitorFactory(new BaseVisitorOptions((x) => new StubVisitor(), new LexicalScope()));
 
-  List<js.Node> nodes = query(n).accept(visitor);
+  VisitResult nodes = query(n).accept(visitor);
   // TODO: create a new top-level JS AST node.
-  return nodes.map((s) => js.prettyPrint(s).getText()).join("");
+  return nodes.nodes.map((s) => js.prettyPrint(s).getText()).join("");
 }

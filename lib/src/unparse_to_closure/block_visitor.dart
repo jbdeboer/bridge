@@ -1,20 +1,20 @@
-import 'package:analyzer_experimental/src/generated/ast.dart';
-
 import 'dart:json';
 
-import '../base_visitor.dart';
+import 'package:analyzer_experimental/src/generated/ast.dart';
 import '../jsast/js.dart' as js;
+
+import '../base_visitor.dart';
+import '../lexical_scope.dart';
 import '../symbols.dart';
 import '../unparse_to_closure/expression_visitor.dart';
 import '../utils.dart';
-import '../lexical_scope.dart';
+import '../visit_result.dart';
 
 const jsbuilder = js.js;
 
 List<js.Statement> flattenOneLevel(List<List<js.Statement>> statementLists) {
   return statementLists.map((stmtList) => stmtList[0]).toList();
 }
-
 
 class BlockVisitor extends BaseVisitor {
   LexicalScope _currentScope;
@@ -36,7 +36,7 @@ class BlockVisitor extends BaseVisitor {
     return new js.ExpressionStatement(new js.VariableDeclaration(name));
   }
 
-  Object visitVariableDeclarationStatement(VariableDeclarationStatement node) {
+  VisitResult visitVariableDeclarationStatement(VariableDeclarationStatement node) {
     List<js.Statement> statements = [];
     for (var variable in node.variables.variables) {
       Expression initializer = variable.initializer;
@@ -44,79 +44,79 @@ class BlockVisitor extends BaseVisitor {
       _currentScope.addName(name);
       js.Node expression = null;
       if (initializer != null) {
-        expression = initializer.accept(otherVisitor)[0];
+        expression = initializer.accept(otherVisitor).node;
       }
       var statement = new js.ExpressionStatement(
           jsbuilder.defineVar(name, expression));
       statements.add(statement);
     }
-    return statements;
+    return VisitResult.fromJsNodeList(statements);
   }
 
   List<js.Statement> getStatements(Block block) {
     return flattenOneLevel(
         block.statements.elements.map(
-            (stmt) => stmt.accept(this)).toList());
+            (stmt) => stmt.accept(this).nodes).toList());
   }
 
-  List<js.Statement> visitEmptyStatement(EmptyStatement node) {
-    return [new js.EmptyStatement()];
+  VisitResult visitEmptyStatement(EmptyStatement node) {
+    return VisitResult.fromJsNode(new js.EmptyStatement());
   }
 
   // TODO(chirayu): We need a flag on our options object to indicate if asserts
   // should be compiled away to nop or stay.
-  List<js.Statement> visitAssertStatement(AssertStatement node) {
-    js.Node condition = node.condition.accept(otherVisitor)[0];
+  VisitResult visitAssertStatement(AssertStatement node) {
+    js.Node condition = node.condition.accept(otherVisitor).node;
     var throwStatement = new js.Throw(new js.LiteralString(stringify(
         "Assertion failed for dart expression: ${node.toString()}")));
-    return [jsbuilder.if_(condition, [throwStatement])];
+    return VisitResult.fromJsNode(jsbuilder.if_(condition, [throwStatement]));
   }
 
-  List<js.Statement> visitBreakStatement(BreakStatement _break) {
+  VisitResult visitBreakStatement(BreakStatement _break) {
     if (_break.label != null) {
       throw "Break statements with labels are not supported yet.";
     }
-    return [new js.Break(null)];
+    return VisitResult.fromJsNode(new js.Break(null));
   }
 
-  List<js.Statement> visitContinueStatement(ContinueStatement _continue) {
+  VisitResult visitContinueStatement(ContinueStatement _continue) {
     if (_continue.label != null) {
       throw "Continue statements with labels are not supported yet.";
     }
-    return [new js.Continue(null)];
+    return VisitResult.fromJsNode(new js.Continue(null));
   }
 
-  List<js.Statement> visitReturnStatement(ReturnStatement _return) {
+  VisitResult visitReturnStatement(ReturnStatement _return) {
     var expr = null;
     if (_return.expression != null) {
-      expr = _return.expression.accept(this.otherVisitor)[0];
+      expr = _return.expression.accept(this.otherVisitor).node;
     }
-    return [new js.Return(expr)];
+    return VisitResult.fromJsNode(new js.Return(expr));
   }
 
-  List<js.Statement> visitIfStatement(IfStatement _if) {
-    js.Node condition = _if.condition.accept(otherVisitor)[0];
-    List<js.Statement> thenStatements = _if.thenStatement.accept(this);
+  VisitResult visitIfStatement(IfStatement _if) {
+    js.Node condition = _if.condition.accept(otherVisitor).node;
+    List<js.Statement> thenStatements = _if.thenStatement.accept(this).nodes;
     List<js.Statement> elseStatements = null;
     if (_if.elseStatement != null) {
-      elseStatements = _if.elseStatement.accept(this);
+      elseStatements = _if.elseStatement.accept(this).nodes;
     }
-    return [jsbuilder.if_(condition, thenStatements, elseStatements)];
+    return VisitResult.fromJsNode(jsbuilder.if_(condition, thenStatements, elseStatements));
   }
 
-  List<js.Statement> visitWhileStatement(WhileStatement _while) {
-    js.Node condition = _while.condition.accept(this.otherVisitor)[0];
-    List<js.Statement> body = _while.body.accept(this);
-    return [jsbuilder.while_(condition, body)];
+  VisitResult visitWhileStatement(WhileStatement _while) {
+    js.Node condition = _while.condition.accept(this.otherVisitor).node;
+    List<js.Statement> body = _while.body.accept(this).nodes;
+    return VisitResult.fromJsNode(jsbuilder.while_(condition, body));
   }
 
-  Object visitBlock(Block block) {
+  VisitResult visitBlock(Block block) {
     if (!firstTime) {
       var v = new BlockVisitor(_currentScope,
                                this.otherVisitor);
       return v.visitBlock(block);
     } else {
-      return [new js.Block(getStatements(block))];
+      return VisitResult.fromJsNode(new js.Block(getStatements(block)));
     }
   }
 }
