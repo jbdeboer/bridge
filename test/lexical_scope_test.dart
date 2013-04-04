@@ -18,6 +18,7 @@ main() {
     LexicalScope scope = new LexicalScope();
     scope.currentScope = LexicalScope.CLASS;
     scope.addName('c');
+    scope = new LexicalScope.clone(scope);
     scope.currentScope = LexicalScope.UNQUALIFIED;
     scope.addName('c');
     expect(scope.nameFor('c'), equals('c'));
