@@ -252,4 +252,42 @@ main() {
         );
   });
 
+
+  // while(true);
+  test('should translate simple while loop', () {
+    expectBlock(
+        """
+        {
+          while(true);
+        }
+        """,
+        // JS.
+        """
+        {
+          while (true) {
+            ;
+          }
+        }
+        """
+        );
+  });
+
+  // while(a > 0) a = a - 1;
+  test('should translate single statement while loop', () {
+    expectBlock(
+        """
+        {
+          while(notDone) continue;
+        }
+        """,
+        // JS.
+        """
+        {
+          while (stubIDENTIFIER_notDone) {
+            continue;
+          }
+        }
+        """
+        );
+  });
 }

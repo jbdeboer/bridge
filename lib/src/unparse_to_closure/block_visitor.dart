@@ -104,6 +104,12 @@ class BlockVisitor extends BaseVisitor {
     return [jsbuilder.if_(condition, thenStatements, elseStatements)];
   }
 
+  List<js.Statement> visitWhileStatement(WhileStatement _while) {
+    js.Node condition = _while.condition.accept(this.otherVisitor)[0];
+    List<js.Statement> body = _while.body.accept(this);
+    return [jsbuilder.while_(condition, body)];
+  }
+
   Object visitBlock(Block block) {
     if (!firstTime) {
       var v = new BlockVisitor(_currentScope,
