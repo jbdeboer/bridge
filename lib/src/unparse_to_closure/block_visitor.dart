@@ -1,5 +1,7 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
 
+import 'dart:json';
+
 import '../base_visitor.dart';
 import '../jsast/js.dart' as js;
 import '../symbols.dart';
@@ -58,6 +60,15 @@ class BlockVisitor extends BaseVisitor {
 
   List<js.Statement> visitEmptyStatement(EmptyStatement node) {
     return [new js.EmptyStatement()];
+  }
+
+  // TODO(chirayu): We need a flag on our options object to indicate if asserts
+  // should be compiled away to nop or stay.
+  List<js.Statement> visitAssertStatement(AssertStatement node) {
+    js.Node condition = node.condition.accept(otherVisitor)[0];
+    var throwStatement = new js.Throw(new js.LiteralString(stringify(
+        "Assertion failed for dart expression: ${node.toString()}")));
+    return [jsbuilder.if_(condition, [throwStatement])];
   }
 
   List<js.Statement> visitBreakStatement(BreakStatement _break) {

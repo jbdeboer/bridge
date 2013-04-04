@@ -219,4 +219,21 @@ main() {
         );
   });
 
+  // assert(false);
+  test('should throw on assertion failure', () {
+    expectBlock(
+        """
+        {
+          assert(false);
+        }
+        """,
+        // JS.
+        """
+        if (false) {
+          throw "Assertion failed for dart expression: assert (false);";
+        }
+        """
+        );
+  });
+
 }
