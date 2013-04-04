@@ -5,45 +5,62 @@ import 'base_visitor.dart';
 import 'class_member_visitor.dart';
 import 'lexical_scope.dart';
 import 'identifier_visitor.dart';
+import 'expression_visitor.dart';
+import 'unparse_to_closure/block_visitor.dart';
+
 import 'transformers.dart';
 
 import 'jsast/js.dart' as js;
 
-NoOtherVisitor() {
+
+NoOtherVisitor(callee) {
   throw "BridgeVisitor other visitor";
 }
 
-Factory() => new BridgeVisitor();
+
+Factory(BaseVisitor caller) => new BridgeVisitor(caller);
+
 
 class BridgeVisitor extends BaseVisitor {
-    LexicalScope scope = new LexicalScope();
+    //LexicalScope scope = new LexicalScope();
 
-    BridgeVisitor(parentVisitor) : super(NoOtherVisitor) {
-      if (parentVisitor != null) this.scope = parentVisitor.scope;
-    }
+    BridgeVisitor(BaseVisitor parentVisitor) : super(new BaseVisitorOptions(NoOtherVisitor, parentVisitor.scope));
 
+    options() => new BaseVisitorOptions(Factory, scope);
 
-/*
-  R visitAdjacentStrings(AdjacentStrings node);
-  R visitAnnotation(Annotation node);
-  R visitArgumentDefinitionTest(ArgumentDefinitionTest node);
-  R visitArgumentList(ArgumentList node);
-  R visitAsExpression(AsExpression node);
-  R visitAssertStatement(AssertStatement assertStatement);
-  R visitAssignmentExpression(AssignmentExpression node);
-  R visitBinaryExpression(BinaryExpression node); */
+///*
+//  R visitAdjacentStrings(AdjacentStrings node);
+//  R visitAnnotation(Annotation node);
+//  R visitArgumentDefinitionTest(ArgumentDefinitionTest node);
+//  R visitArgumentList(ArgumentList node);
+//  R visitAsExpression(AsExpression node);
+//  R visitAssertStatement(AssertStatement assertStatement);
+//  R visitAssignmentExpression(AssignmentExpression node);
+//  */
+
+  visitBinaryExpression(BinaryExpression node) {
+    var visitor = new ExpressionVisitor(options());
+
+    return node.accept(visitor);
+  }
 
 //    List<js.Node> visitBlock(Block node) {
 //      return [new js.Comment('VISIT BLOCK')];
 //    }
 
-/*
-  R visitBlock(Block node);
-  R visitBlockFunctionBody(BlockFunctionBody node);
+
+  visitBlock(Block node) =>
+    node.accept(new BlockVisitor.root(options()));
+
+
+/*  R visitBlockFunctionBody(BlockFunctionBody node);
   R visitBooleanLiteral(BooleanLiteral node);
   R visitBreakStatement(BreakStatement node);
   R visitCascadeExpression(CascadeExpression node);
   R visitCatchClause(CatchClause node); */
+
+  visitClassDeclaration(ClassDeclaration node) =>
+    node.accept(new ClassMemberVisitor(options()));
 
 //    Object visitClassDeclaration(ClassDeclaration node) {
 //      var cmv = new ClassMemberVisitor(this);
@@ -151,11 +168,9 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   R visitShowCombinator(ShowCombinator node);
   R visitSimpleFormalParameter(SimpleFormalParameter node); */
 
-  visitSimpleIdentifier(SimpleIdentifier node) {
-      var visitor = new IdentifierVisitor(Factory, scope);
-      return node.accept(visitor);
-  }
-
+  visitSimpleIdentifier(SimpleIdentifier node) =>
+      node.accept(new IdentifierVisitor(options()));
+  
   /*
   Object visitSimpleStringLiteral(SimpleStringLiteral node) {
     node.visitChildren(this);

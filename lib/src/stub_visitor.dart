@@ -3,7 +3,9 @@ import 'jsast/js.dart' as jss;
 import 'base_visitor.dart';
 
 class StubVisitor extends BaseVisitor {
-  StubVisitor() : super(() => new StubVisitor());
+  StubVisitor() : super(new BaseVisitorOptions((callee) => new StubVisitor(callee), null)) {
+    print("new stub");
+  }
 
   visitEmptyStatement(node) {
     return [new jss.EmptyStatement()];

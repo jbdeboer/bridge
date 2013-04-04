@@ -35,13 +35,13 @@ main() {
         }""",
     // JS.
     """
-        /\**
+        /**
          * @constructor
          */
         function C(x) {
           this.x = x;
         }
-        /\** @type {string} */
+        /** @type {string} */
         C.prototype.x;
         """);
   });
@@ -53,12 +53,12 @@ main() {
         }""",
     // JS.
     """
-        /\**
+        /**
          * @constructor
          */
         function C() {
         }
-        /\**
+        /**
          * @return {string}
          */
         C.prototype.method = function() {

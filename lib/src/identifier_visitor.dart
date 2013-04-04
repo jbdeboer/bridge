@@ -31,11 +31,11 @@ import 'lexical_scope.dart';
 import 'jsast/js.dart' as js;
 
 class IdentifierVisitor extends BaseVisitor {
-  LexicalScope scope;
+  //LexicalScope scope;
 
-  IdentifierVisitor(otherVisitor, LexicalScope scope) :
-      super(otherVisitor) {
-    this.scope = scope;
+  IdentifierVisitor(baseOptions) :
+      super(baseOptions) {
+    print("cons");
   }
 
   visitSimpleIdentifier(SimpleIdentifier node) =>

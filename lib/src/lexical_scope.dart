@@ -34,7 +34,6 @@ class LexicalScope {
   }
 
   LexicalScope();
-
   LexicalScope.clone(scope) {
     this.parent = scope;
     this.currentScope = parent.currentScope;

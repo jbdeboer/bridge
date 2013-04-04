@@ -6,7 +6,7 @@ import 'base_visitor.dart';
 import 'jsast/js.dart' as js;
 
 class ExpressionVisitor extends BaseVisitor {
-  ExpressionVisitor(otherVisitor) : super(otherVisitor);
+  ExpressionVisitor(baseOptions) : super(baseOptions);
 
   js.Expression recurse_(Expression dartExpression) =>
       dartExpression.accept(this)[0];

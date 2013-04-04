@@ -21,11 +21,11 @@ class BlockVisitor extends BaseVisitor {
   // Visiting sub-blocks constructs a new BlockVisitor.
   bool firstTime = true;
 
-  BlockVisitor.root(otherVisitor): this(
-      new LexicalScope(), otherVisitor);
+  BlockVisitor.root(baseOptions): this(
+      new LexicalScope(), baseOptions);
 
   BlockVisitor(LexicalScope currentScope,
-               otherVisitor) : super(otherVisitor) {
+               baseOptions) : super(baseOptions) {
     _currentScope = new LexicalScope.clone(currentScope);
   }
 
