@@ -40,7 +40,9 @@ class BridgeVisitor extends BaseVisitor {
 //  R visitAssignmentExpression(AssignmentExpression node);
 //  */
 
-  visitBinaryExpression(BinaryExpression node) {
+  visitBinaryExpression(BinaryExpression node) => visitExpression(node);
+
+  visitExpression(Expression node) {
     var visitor = new ExpressionVisitor(options());
 
     return node.accept(visitor);
@@ -155,9 +157,11 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   R visitListLiteral(ListLiteral node);
   R visitMapLiteral(MapLiteral node);
   R visitMapLiteralEntry(MapLiteralEntry node);
-  R visitMethodDeclaration(MethodDeclaration node);
-  R visitMethodInvocation(MethodInvocation node);
-  R visitNamedExpression(NamedExpression node);
+  R visitMethodDeclaration(MethodDeclaration node); */
+
+  visitMethodInvocation(MethodInvocation node) => visitExpression(node);
+
+/*  R visitNamedExpression(NamedExpression node);
   R visitNullLiteral(NullLiteral node);
   R visitParenthesizedExpression(ParenthesizedExpression node);
   R visitPartDirective(PartDirective node);

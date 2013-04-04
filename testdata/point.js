@@ -1,11 +1,10 @@
+/**
+ * @constructor
+ */
 function Point(x, y) {
   this.x = x;
   this.y = y;
 }
-
-Point.zero = function() {
-  return new Point(0, 0);
-};
 
 /** @type {number} */
 Point.prototype.x;

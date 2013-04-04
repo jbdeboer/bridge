@@ -10,7 +10,7 @@ queryExpression(node) =>
         variables.variables[0].initializer;
 
 expectExpr(String dart, String jsCode) {
-  expect(stringBridge("var x = $dart",
+  expect(stringBridge(" var x = $dart;",
       (x) => new ExpressionVisitor(x),
       queryExpression),
     equals(jsCode));
@@ -196,6 +196,10 @@ main() {
 
   test('should compound parse assignments', () {
     expectExpr('f *= 5', 'stubIDENTIFIER_f *= 5');
+  });
+
+  test('should parse method invocations', () {
+    expectExpr('sqrt(3)', 'stubIDENTIFIER_sqrt(3)');
   });
 }
 

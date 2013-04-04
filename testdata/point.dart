@@ -4,8 +4,7 @@ class Point {
   final num x, y;
 
   Point(this.x, this.y);
-  Point.zero() : x = 0, y = 0;  // Named constructor
-                                // with an initializer list.
+  //Point.zero() : x = 0, y = 0;  // Named constructor are not supported
 
   num distanceTo(Point other) {
     var dx = x - other.x;
