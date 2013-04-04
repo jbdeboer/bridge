@@ -5,6 +5,7 @@ import 'package:analyzer_experimental/src/generated/ast.dart';
 import '../lib/src/identifier_visitor.dart';
 import '../lib/src/parse.dart';
 import '../lib/src/lexical_scope.dart';
+import '../lib/src/base_visitor.dart';
 
 queryId(CompilationUnit node) =>
     node.sortedDirectivesAndDeclarations[0].
@@ -14,7 +15,7 @@ queryId(CompilationUnit node) =>
 
 expectId(String dart, String jsCode, [LexicalScope optScope]) {
   var scope = optScope == null ? new LexicalScope() : optScope;
-  expect(stringBridge("$dart x = null", (x) => new IdentifierVisitor(x, scope), queryId),
+  expect(stringBridge("$dart x = null", (x) => new IdentifierVisitor(new BaseVisitorOptions(x, scope)), queryId),
   equals(jsCode));
 }
 

@@ -29,7 +29,7 @@ class LexicalScope {
     _symbols[id] = currentScope;
   }
 
-  LexicalScope();
+  LexicalScope() { print("created lexical scope"); }
   LexicalScope.clone(scope) {
     this.parent = scope;
     this.currentScope = parent.currentScope;

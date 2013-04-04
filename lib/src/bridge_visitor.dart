@@ -5,33 +5,42 @@ import 'base_visitor.dart';
 import 'class_member_visitor.dart';
 import 'lexical_scope.dart';
 import 'identifier_visitor.dart';
+import 'expression_visitor.dart';
 import 'transformers.dart';
 
 import 'jsast/js.dart' as js;
 
-NoOtherVisitor() {
+
+NoOtherVisitor(callee) {
   throw "BridgeVisitor other visitor";
 }
 
-Factory() => new BridgeVisitor();
+
+Factory(BaseVisitor caller) => new BridgeVisitor(caller);
+
 
 class BridgeVisitor extends BaseVisitor {
-    LexicalScope scope = new LexicalScope();
+    //LexicalScope scope = new LexicalScope();
 
-    BridgeVisitor(parentVisitor) : super(NoOtherVisitor) {
-      if (parentVisitor != null) this.scope = parentVisitor.scope;
-    }
+    BridgeVisitor(BaseVisitor parentVisitor) : super(new BaseVisitorOptions(NoOtherVisitor, parentVisitor.scope));
 
+    scoped(visitor) { visitor.scope = scope; return visitor; }
 
-/*
-  R visitAdjacentStrings(AdjacentStrings node);
-  R visitAnnotation(Annotation node);
-  R visitArgumentDefinitionTest(ArgumentDefinitionTest node);
-  R visitArgumentList(ArgumentList node);
-  R visitAsExpression(AsExpression node);
-  R visitAssertStatement(AssertStatement assertStatement);
-  R visitAssignmentExpression(AssignmentExpression node);
-  R visitBinaryExpression(BinaryExpression node); */
+///*
+//  R visitAdjacentStrings(AdjacentStrings node);
+//  R visitAnnotation(Annotation node);
+//  R visitArgumentDefinitionTest(ArgumentDefinitionTest node);
+//  R visitArgumentList(ArgumentList node);
+//  R visitAsExpression(AsExpression node);
+//  R visitAssertStatement(AssertStatement assertStatement);
+//  R visitAssignmentExpression(AssignmentExpression node);
+//  */
+
+  visitBinaryExpression(BinaryExpression node) {
+    var visitor = new ExpressionVisitor(new BaseVisitorOptions(Factory, scope));
+
+    return node.accept(visitor);
+  }
 
 //    List<js.Node> visitBlock(Block node) {
 //      return [new js.Comment('VISIT BLOCK')];
@@ -152,7 +161,9 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   R visitSimpleFormalParameter(SimpleFormalParameter node); */
 
   visitSimpleIdentifier(SimpleIdentifier node) {
-      var visitor = new IdentifierVisitor(Factory, scope);
+      print("bridge simple");
+      assert(scope != null);
+      var visitor = new IdentifierVisitor(new BaseVisitorOptions(Factory, scope));
       return node.accept(visitor);
   }
 

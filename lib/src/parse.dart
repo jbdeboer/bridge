@@ -27,7 +27,7 @@ String stringBridge(String dart,
                     BaseVisitor visitorFactory(BaseVisitor),
                     [ASTNode query(ASTNode) = identityQuery]) {
   ASTNode n = parseText(dart);
-  var visitor = visitorFactory(() => new StubVisitor());
+  var visitor = visitorFactory(new BaseVisitorOptions((x) => new StubVisitor(), null));
 
   List<js.Node> nodes = query(n).accept(visitor);
   return nodes.map((s) => js.prettyPrint(s).getText()).join("");
