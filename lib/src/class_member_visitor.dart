@@ -2,6 +2,7 @@ import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 import 'transformers.dart';
 import 'base_visitor.dart';
+import 'lexical_scope.dart';
 import 'jsast/js.dart' as js;
 
 class ClassMemberVisitor extends BaseVisitor {
@@ -14,7 +15,12 @@ class ClassMemberVisitor extends BaseVisitor {
   List<js.Parameter> consParams;
   js.Block consBlock = new js.Block.empty();
 
-  Object visitClassDeclaration(ClassDeclaration node) {
+  visitClassDeclaration(ClassDeclaration node) {
+    assert(scope != null);
+    scope.currentScope = LexicalScope.CLASS;
+
+    scope = new LexicalScope.clone(scope);
+
     functionName = node.name.toString();
     node.members.accept(this);
 
@@ -32,6 +38,7 @@ class ClassMemberVisitor extends BaseVisitor {
   Object visitFieldDeclaration(FieldDeclaration node) {
     for (VariableDeclaration decl in node.fields.variables) {
        var name = decl.name.toString();
+       scope.addName(name);
        fields.add(new js.ExpressionStatement(
           new js.VariableDeclaration.withType(
               "$functionName.prototype.$name", "string")));
@@ -49,6 +56,7 @@ class ClassMemberVisitor extends BaseVisitor {
   }
 
   Object visitConstructorDeclaration(ConstructorDeclaration node) {
+     if (consParams != null) { throw "two constructors"; }
      consParams = dartParamsToJs(node.parameters.parameters);
      var consStatements = new List<js.Statement>();
 
@@ -66,6 +74,7 @@ class ClassMemberVisitor extends BaseVisitor {
   Object visitMethodDeclaration(MethodDeclaration node) {
     String name = node.name.name;
     var funParams = dartParamsToJs(node.parameters.parameters);
+
     var funBody = node.body.block.accept(this.otherVisitor)[0];
     methods.add(new js.ExpressionStatement(
           new js.Assignment(

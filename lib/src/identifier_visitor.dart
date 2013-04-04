@@ -30,16 +30,17 @@ import 'base_visitor.dart';
 import 'lexical_scope.dart';
 import 'jsast/js.dart' as js;
 
+maybeSqrt(s) => s == 'sqrt' ? 'Math.sqrt' : s;
+
 class IdentifierVisitor extends BaseVisitor {
   //LexicalScope scope;
 
   IdentifierVisitor(baseOptions) :
       super(baseOptions) {
-    print("cons");
   }
 
   visitSimpleIdentifier(SimpleIdentifier node) =>
-      [new js.LiteralString(scope.nameFor(node.name))];
+      [new js.LiteralString(maybeSqrt(scope.nameFor(node.name)))];
 
   visitPrefixedIdentifier(PrefixedIdentifier node) =>
       [new js.LiteralString("${scope.nameFor(node.prefix.name)}.${node.identifier}")];

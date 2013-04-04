@@ -29,6 +29,7 @@ class BlockVisitor extends BaseVisitor {
   BlockVisitor(LexicalScope currentScope,
                baseOptions) : super(baseOptions) {
     _currentScope = new LexicalScope.clone(currentScope);
+    _currentScope.currentScope = LexicalScope.UNQUALIFIED;
   }
 
   js.ExpressionStatement getNewVarJsNode(String name) {
@@ -86,7 +87,11 @@ class BlockVisitor extends BaseVisitor {
   }
 
   List<js.Statement> visitReturnStatement(ReturnStatement _return) {
-    return [new js.Return(null)];
+    var expr = null;
+    if (_return.expression != null) {
+      expr = _return.expression.accept(this.otherVisitor)[0];
+    }
+    return [new js.Return(expr)];
   }
 
   List<js.Statement> visitIfStatement(IfStatement _if) {

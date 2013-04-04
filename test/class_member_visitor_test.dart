@@ -10,6 +10,8 @@ expectClass(String dart, String jsCode) {
          equals(dedent(jsCode)));
 }
 
+expectClassRaises(String dart) => expect(() => expectClass(dart, ""), throws);
+
 main() {
   test('should parse a simple class', () {
     expectClass('class E { String x; }',
@@ -45,6 +47,15 @@ main() {
         C.prototype.x;
         """);
   });
+
+  test('should parse a class with a constructor with two constructors', () {
+    expectClassRaises("""
+        class C {
+          C(this.x, this.y);
+          C.a();
+        }""");
+  });
+
 
   test('should parse a class with a method', () {
     expectClass("""

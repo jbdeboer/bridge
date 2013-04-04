@@ -140,6 +140,20 @@ main() {
         );
   });
 
+  test('should emit a return statement with an expression', () {
+    expectBlock(
+        """
+        {
+          return x;
+        }""",
+// JS.
+        """
+        {
+          return stubIDENTIFIER_x;
+        }"""
+    );
+  });
+
 
   // if (true);
   test('should parse a simple if statement', () {
