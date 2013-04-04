@@ -14,7 +14,6 @@ class BaseVisitor implements ASTVisitor<List<js.Node>> {
   LexicalScope scope;
 
   BaseVisitor get otherVisitor {
-    print("get other: scope:${scope != null}");
     return otherVisitorFactory(this);
   }
 

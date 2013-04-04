@@ -56,6 +56,10 @@ class BlockVisitor extends BaseVisitor {
             (stmt) => stmt.accept(this)).toList());
   }
 
+  List<js.Statement> visitEmptyStatement(EmptyStatement node) {
+    return [new js.EmptyStatement()];
+  }
+
   List<js.Statement> visitBreakStatement(BreakStatement _break) {
     if (_break.label != null) {
       throw "Break statements with labels are not supported yet.";
@@ -76,10 +80,10 @@ class BlockVisitor extends BaseVisitor {
 
   List<js.Statement> visitIfStatement(IfStatement _if) {
     js.Node condition = _if.condition.accept(otherVisitor)[0];
-    List<js.Statement> thenStatements = _if.thenStatement.accept(otherVisitor);
+    List<js.Statement> thenStatements = _if.thenStatement.accept(this);
     List<js.Statement> elseStatements = null;
     if (_if.elseStatement != null) {
-      elseStatements = _if.elseStatement.accept(otherVisitor);
+      elseStatements = _if.elseStatement.accept(this);
     }
     return [jsbuilder.if_(condition, thenStatements, elseStatements)];
   }

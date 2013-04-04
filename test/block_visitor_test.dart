@@ -190,7 +190,7 @@ main() {
         """
         {
           if (true) {
-            // STUB BLOCK
+            var a = 1 /* stubINT */;
           }
         }"""
         );
@@ -211,9 +211,9 @@ main() {
         """
         {
           if (true) {
-            // STUB BLOCK
+            var a = 1 /* stubINT */;
           } else {
-            // STUB BLOCK
+            var b = 1 /* stubINT */;
           }
         }"""
         );
