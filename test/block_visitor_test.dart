@@ -22,7 +22,7 @@ String dartToJs(String dart) {
 }
 
 expectBlock(String dart, String jsCode) {
-  expect(dartToJs(dart), equals(dedent(jsCode)));
+  expect(dartToJs(dart), equals(dedent(jsCode).trim()));
 }
 
 expectBlockRaises(String dart) {
@@ -229,8 +229,10 @@ main() {
         """,
         // JS.
         """
-        if (false) {
-          throw "Assertion failed for dart expression: assert (false);";
+        {
+          if (false) {
+            throw "Assertion failed for dart expression: assert (false);";
+          }
         }
         """
         );
