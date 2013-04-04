@@ -22,7 +22,7 @@ String dartToJs(String dart) {
 }
 
 expectBlock(String dart, String jsCode) {
-  expect(dartToJs(dart), equals(dedent(jsCode)));
+  expect(dartToJs(dart), equals(dedent(jsCode).trim()));
 }
 
 expectBlockRaises(String dart) {
@@ -216,6 +216,25 @@ main() {
             var b = 1 /* stubINT */;
           }
         }"""
+        );
+  });
+
+  // assert(false);
+  test('should throw on assertion failure', () {
+    expectBlock(
+        """
+        {
+          assert(false);
+        }
+        """,
+        // JS.
+        """
+        {
+          if (false) {
+            throw "Assertion failed for dart expression: assert (false);";
+          }
+        }
+        """
         );
   });
 
