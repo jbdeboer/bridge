@@ -30,4 +30,17 @@ main() {
     scope.addName('a');
     expectId('a', 'this.a', scope);
   });
+
+  test('should return a prefixed identifier with no scope', () {
+    expectId('b.a', 'b.a');
+  });
+
+  test('should return a prefixed identifier with scope', () {
+    var scope = new LexicalScope();
+    scope.currentScope = LexicalScope.CLASS;
+    scope.addName('a');
+    scope.addName('b');
+
+    expectId('b.a', 'this.b.a', scope);
+  });
 }

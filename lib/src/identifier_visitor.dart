@@ -40,4 +40,7 @@ class IdentifierVisitor extends BaseVisitor {
 
   visitSimpleIdentifier(SimpleIdentifier node) =>
       [new js.LiteralString(scope.nameFor(node.name))];
+
+  visitPrefixedIdentifier(PrefixedIdentifier node) =>
+      [new js.LiteralString("${scope.nameFor(node.prefix.name)}.${node.identifier}")];
 }

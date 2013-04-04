@@ -9,16 +9,10 @@ import '../lib/src/base_visitor.dart';
 
 ASTNode identityQuery(node) => node;
 
-class FakeVisitor extends BaseVisitor {
-  FakeVisitor(scope) : super(null) {
-    if (scope != null) { this.scope = scope; }
-    else this.scope = new LexicalScope();
-  }
-  LexicalScope scope;
-}
+maybeScope(s) => s == null ? new LexicalScope() : s;
 
 expectDart(String dart, String jsCode, [ASTNode query(ASTNode) = identityQuery, LexicalScope scope]) {
-  expect(stringBridge(dart, (x) => new BridgeVisitor(new FakeVisitor(scope)), query), equals(dedent(jsCode)));
+  expect(stringBridge(dart, (x) => new BridgeVisitor.fromScope(maybeScope(scope)), query), equals(dedent(jsCode)));
 }
 
 main() {

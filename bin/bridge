@@ -3,8 +3,9 @@
 
 import 'dart:io';
 import 'dart:async';
-import '../lib/utils.dart';
-import '../lib/src/bridge_parser.dart';
+import '../lib/src/utils.dart';
+import '../lib/src/parse.dart';
+import '../lib/src/bridge_visitor.dart';
 
 void print_usage_and_exit() {
   print(dedent('''
@@ -34,7 +35,7 @@ void main() {
 
   readFullStream(dartStream).then((dartText) {
     readFullStream(jsStream).then((jsText) {
-      String genJs = stringBridge(dartText);
+      String genJs = stringBridge(dartText, (x) => new BridgeVisitor.root());
       print(genJs);
       if (jsText.trim() != genJs.trim()) {
          print("Not equal.  Bad news!\n");

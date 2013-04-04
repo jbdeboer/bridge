@@ -25,6 +25,8 @@ class BridgeVisitor extends BaseVisitor {
     //LexicalScope scope = new LexicalScope();
 
     BridgeVisitor(BaseVisitor parentVisitor) : super(new BaseVisitorOptions(NoOtherVisitor, parentVisitor.scope));
+    BridgeVisitor.fromScope(LexicalScope scope) : super(new BaseVisitorOptions(NoOtherVisitor, scope));
+    BridgeVisitor.root() : super(new BaseVisitorOptions(NoOtherVisitor, new LexicalScope()));
 
     options() => new BaseVisitorOptions(Factory, scope);
 
@@ -131,9 +133,11 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   R visitFunctionTypedFormalParameter(FunctionTypedFormalParameter node);
   R visitHideCombinator(HideCombinator node);
   R visitIfStatement(IfStatement node);
-  R visitImplementsClause(ImplementsClause node);
-  R visitImportDirective(ImportDirective node);
-  R visitIndexExpression(IndexExpression node);
+  R visitImplementsClause(ImplementsClause node); */
+
+  visitImportDirective(ImportDirective node) => [];
+
+/*  R visitIndexExpression(IndexExpression node);
   R visitInstanceCreationExpression(InstanceCreationExpression node); */
 
 /*Object visitIntegerLiteral(IntegerLiteral node) {
@@ -158,8 +162,11 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   R visitParenthesizedExpression(ParenthesizedExpression node);
   R visitPartDirective(PartDirective node);
   R visitPartOfDirective(PartOfDirective node);
-  R visitPostfixExpression(PostfixExpression node);
-  R visitPrefixedIdentifier(PrefixedIdentifier node);
+  R visitPostfixExpression(PostfixExpression node); */
+
+  visitPrefixedIdentifier(PrefixedIdentifier node) => visitIdentifier(node);
+
+  /*
   R visitPrefixExpression(PrefixExpression node);
   R visitPropertyAccess(PropertyAccess node);
   R visitRedirectingConstructorInvocation(RedirectingConstructorInvocation node);
@@ -168,9 +175,11 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   R visitShowCombinator(ShowCombinator node);
   R visitSimpleFormalParameter(SimpleFormalParameter node); */
 
-  visitSimpleIdentifier(SimpleIdentifier node) =>
+  visitSimpleIdentifier(SimpleIdentifier node) => visitIdentifier(node);
+
+  visitIdentifier(node) =>
       node.accept(new IdentifierVisitor(options()));
-  
+
   /*
   Object visitSimpleStringLiteral(SimpleStringLiteral node) {
     node.visitChildren(this);

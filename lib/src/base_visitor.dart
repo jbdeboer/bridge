@@ -25,6 +25,11 @@ class BaseVisitor implements ASTVisitor<List<js.Node>> {
 
   List<js.Node> visitCompilationUnit(CompilationUnit node) {
     var ret = new List<js.Node>();
+    if (node.directivesAreBeforeDeclarations()) {
+      node.directives.elements.forEach((x) => ret.addAll(x.accept(this)));
+      node.declarations.elements.forEach((x) => ret.addAll(x.accept(this)));
+      return ret;
+    }
     for (var child in node.sortedDirectivesAndDeclarations) {
       ret.addAll(child.accept(this));
     }
