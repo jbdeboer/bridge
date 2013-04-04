@@ -6,6 +6,8 @@ import 'class_member_visitor.dart';
 import 'lexical_scope.dart';
 import 'identifier_visitor.dart';
 import 'expression_visitor.dart';
+import 'unparse_to_closure/block_visitor.dart';
+
 import 'transformers.dart';
 
 import 'jsast/js.dart' as js;
@@ -24,7 +26,7 @@ class BridgeVisitor extends BaseVisitor {
 
     BridgeVisitor(BaseVisitor parentVisitor) : super(new BaseVisitorOptions(NoOtherVisitor, parentVisitor.scope));
 
-    scoped(visitor) { visitor.scope = scope; return visitor; }
+    options() => new BaseVisitorOptions(Factory, scope);
 
 ///*
 //  R visitAdjacentStrings(AdjacentStrings node);
@@ -37,7 +39,7 @@ class BridgeVisitor extends BaseVisitor {
 //  */
 
   visitBinaryExpression(BinaryExpression node) {
-    var visitor = new ExpressionVisitor(new BaseVisitorOptions(Factory, scope));
+    var visitor = new ExpressionVisitor(options());
 
     return node.accept(visitor);
   }
@@ -46,13 +48,19 @@ class BridgeVisitor extends BaseVisitor {
 //      return [new js.Comment('VISIT BLOCK')];
 //    }
 
-/*
-  R visitBlock(Block node);
-  R visitBlockFunctionBody(BlockFunctionBody node);
+
+  visitBlock(Block node) =>
+    node.accept(new BlockVisitor.root(options()));
+
+
+/*  R visitBlockFunctionBody(BlockFunctionBody node);
   R visitBooleanLiteral(BooleanLiteral node);
   R visitBreakStatement(BreakStatement node);
   R visitCascadeExpression(CascadeExpression node);
   R visitCatchClause(CatchClause node); */
+
+  visitClassDeclaration(ClassDeclaration node) =>
+    node.accept(new ClassMemberVisitor(options()));
 
 //    Object visitClassDeclaration(ClassDeclaration node) {
 //      var cmv = new ClassMemberVisitor(this);
@@ -160,13 +168,9 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   R visitShowCombinator(ShowCombinator node);
   R visitSimpleFormalParameter(SimpleFormalParameter node); */
 
-  visitSimpleIdentifier(SimpleIdentifier node) {
-      print("bridge simple");
-      assert(scope != null);
-      var visitor = new IdentifierVisitor(new BaseVisitorOptions(Factory, scope));
-      return node.accept(visitor);
-  }
-
+  visitSimpleIdentifier(SimpleIdentifier node) =>
+      node.accept(new IdentifierVisitor(options()));
+  
   /*
   Object visitSimpleStringLiteral(SimpleStringLiteral node) {
     node.visitChildren(this);
