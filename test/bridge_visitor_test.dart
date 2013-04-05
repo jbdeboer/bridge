@@ -62,4 +62,15 @@ main() {
     }
     """);
   });
+
+  // end-to-end test.  belongs somewhere else.
+  test('should convert .add to .push for arrays', () {
+    expectDart('main() { [1,2].add(3); }', """
+    {
+      [1, 2].push(3);
+    }
+    """,
+        (node) => node.declarations[0].functionExpression.body.block
+  );
+  });
 }

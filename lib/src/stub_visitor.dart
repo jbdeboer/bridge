@@ -4,6 +4,7 @@ import 'jsast/js.dart' as jss;
 
 import 'base_visitor.dart';
 import 'visit_result.dart';
+import 'lexical_scope.dart';
 
 class StubVisitor extends BaseVisitor {
   StubVisitor() : super(
@@ -31,12 +32,17 @@ class StubVisitor extends BaseVisitor {
       VisitResult.fromJsNode(new jss.LiteralBool(node.value));
   visitIntegerLiteral(node) =>
       VisitResult.fromJsNode(new jss.LiteralNumber('${node.value} /* stubINT */'));
-  visitSimpleIdentifier(node) =>
-      VisitResult.fromJsNode(new jss.LiteralString('stubIDENTIFIER_${node.name}'));
-  visitPrefixedIdentifier(node) =>
-      VisitResult.fromJsNode(new jss.LiteralString('stubIDENTIFIER_${node.name}'));
-  visitLibraryIdentifier(node) =>
-      VisitResult.fromJsNode(new jss.LiteralString('stubIDENTIFIER_${node.name}'));
+
+  visitIdentifier(node) {
+    var type = "IDENTIFIER";
+    if (scope != null && scope.currentScope == LexicalScope.METHOD) { type = "METHODID"; }
+    return VisitResult.fromJsNode(new jss.LiteralString('stub${type}_${node.name}'));
+  }
+
+  visitSimpleIdentifier(node) => visitIdentifier(node);
+  visitPrefixedIdentifier(node) => visitIdentifier(node);
+  visitLibraryIdentifier(node) => visitIdentifier(node);
+
   visitReturnStatement(node) =>
       VisitResult.fromJsNode(new jss.Comment('// STUB'), new jss.Return(null));
 }

@@ -33,11 +33,17 @@ import 'lexical_scope.dart';
 import 'transformers.dart';
 import 'visit_result.dart';
 
-maybeSqrt(s) => s == 'sqrt' ? 'Math.sqrt' : s;
+
 
 class IdentifierVisitor extends BaseVisitor {
   //LexicalScope scope;
-
+  maybeSqrt(s) {
+    if (scope.currentScope == LexicalScope.METHOD) {
+      print('id method');
+      return s == 'add' ? 'push' : s;
+    }
+    return s == 'sqrt' ? 'Math.sqrt' : s;
+  }
   IdentifierVisitor(baseOptions) :
       super(baseOptions) {
   }

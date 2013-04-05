@@ -1,4 +1,8 @@
 import 'package:analyzer_experimental/src/generated/ast.dart';
+import 'package:analyzer_experimental/src/generated/element.dart';
+import 'package:analyzer_experimental/src/generated/engine.dart';
+import 'package:analyzer_experimental/src/generated/scanner.dart' as scanner;
+import 'package:analyzer_experimental/src/generated/resolver.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 
 import 'jsast/js.dart' as js;
@@ -7,13 +11,53 @@ import 'base_visitor.dart';
 import 'transformers.dart';
 import 'utils.dart';
 import 'visit_result.dart';
+import 'lexical_scope.dart';
+
+
+genListType() {
+  var ret = new InterfaceTypeImpl.con1(new ClassElementImpl(
+      new SimpleIdentifier.full(
+          new scanner.StringToken(scanner.TokenType.IDENTIFIER, 'List', 0))));
+  ret.typeArguments = [new DynamicTypeImpl()];
+  return ret;
+}
+
+getDynamicType() {
+  return new DynamicTypeImpl();
+}
+
+class LazyTypeProvider implements TypeProvider {
+  InterfaceType get boolType => null;
+  Type2 get bottomType => null;
+  InterfaceType get doubleType => null;
+  Type2 get dynamicType => getDynamicType();
+  InterfaceType get functionType => null;
+  InterfaceType get intType => null;
+  InterfaceType get listType => genListType();
+  InterfaceType get mapType => null;
+  InterfaceType get objectType => null;
+  InterfaceType get stackTraceType => null;
+  InterfaceType get stringType => null;
+  InterfaceType get typeType => null;
+}
 
 class ExpressionVisitor extends BaseVisitor {
   ExpressionVisitor(baseOptions) : super(baseOptions);
 
   js.Expression recurse_(Expression dartExpression) {
-    return dartExpression.accept(this).node;
+    return typedRecurse_(dartExpression).node;
   }
+
+  VisitResult typedRecurse_(Expression dartExpression) {
+    return dartExpression.accept(this);
+  }
+
+  js.Expression scopedRecurse_(Expression dartExpression, LexicalScope scope) {
+    var scopedVisitor = otherVisitor;
+    scopedVisitor.scope = scope;
+    return dartExpression.accept(scopedVisitor).node;
+  }
+
 
   VisitResult visitSimpleStringLiteral(node) => VisitResult.fromJsNode(
       new js.LiteralString('"${node.value}"'));
@@ -31,10 +75,17 @@ class ExpressionVisitor extends BaseVisitor {
       new js.LiteralNull());
 
   VisitResult visitListLiteral(ListLiteral node) {
+    TypeProvider tpi = new LazyTypeProvider();
+    StaticTypeAnalyzer sta = new StaticTypeAnalyzer.withTypeProvider(tpi);
+
+    node.accept(sta);
+
     var i = 0;
     var jsExprs = node.elements.elements.map((d) =>
         new js.ArrayElement(i++, recurse_(d))).toList();
-    return VisitResult.fromJsNode(new js.ArrayInitializer(i, jsExprs));
+    return VisitResult.fromTypedJsNode(new js.ArrayInitializer(i, jsExprs),
+         node.staticType
+    );
   }
 
   VisitResult visitMapLiteral(MapLiteral node) {
@@ -87,10 +138,21 @@ class ExpressionVisitor extends BaseVisitor {
       recurse_(d)).toList();
 
     var selector = recurse_(node.methodName);
-    js.Expression target = node.target != null ?
-         new js.PropertyAccess.fieldExpression(
-             recurse_(node.target), recurse_(node.methodName)) : selector;
-    return VisitResult.fromJsNode(new js.Call(target, args));
+    js.Expression jsTarget;
+    if (node.target == null) {
+      jsTarget = selector;
+    } else {
+      VisitResult target = typedRecurse_(node.target);
+
+      var methodScope = new LexicalScope.clone(scope);
+      methodScope.currentScope = LexicalScope.METHOD;
+      methodScope.currentType = target.type;
+
+      jsTarget = new js.PropertyAccess.fieldExpression(
+          target.node, scopedRecurse_(node.methodName, methodScope));
+    }
+
+    return VisitResult.fromJsNode(new js.Call(jsTarget, args));
   }
 
   visitIndexExpression(IndexExpression node) =>
@@ -111,9 +173,15 @@ class ExpressionVisitor extends BaseVisitor {
       VisitResult.fromJsNode(
           new js.Prefix(node.operator.toString(), recurse_(node.operand)));
 
-  visitPropertyAccess(PropertyAccess node) =>
-      VisitResult.fromJsNode(new js.PropertyAccess.fieldExpression(
-          recurse_(node.target), recurse_(node.propertyName)));
+  visitPropertyAccess(PropertyAccess node) {
+      VisitResult target = typedRecurse_(node.target);
+
+      var methodScope = new LexicalScope.clone(scope);
+      methodScope.currentScope = LexicalScope.METHOD;
+      methodScope.currentType = target.type;
+      return VisitResult.fromJsNode(new js.PropertyAccess.fieldExpression(
+          recurse_(node.target), scopedRecurse_(node.propertyName, methodScope)));
+  }
 
   visitThisExpression(ThisExpression node) =>
       VisitResult.fromJsNode(new js.This());

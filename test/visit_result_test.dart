@@ -1,11 +1,17 @@
 import 'package:unittest/unittest.dart';
 
+
 import '../lib/src/jsast/js.dart' as js;
+import 'package:analyzer_experimental/src/generated/ast.dart' as dart;
+import 'package:analyzer_experimental/src/generated/scanner.dart' as scanner;
 
 import '../lib/src/visit_result.dart';
 
 final commentA = new js.Comment("Comment A");
 final commentB = new js.Comment("Comment B");
+
+final listType = new dart.TypeName.full(
+    new dart.SimpleIdentifier.full(new scanner.StringToken(scanner.TokenType.IDENTIFIER, 'List', 0)), null);
 
 main() {
   test('should have default empty list for nodes', () {
@@ -32,6 +38,10 @@ main() {
 
   test('should raise an exception if you try to get a node when there are more than one', () {
     expect(() => new VisitResult([commentA, commentB]).node, throws);
+  });
+
+  test('should store types', () {
+    expect(VisitResult.fromTypedJsNode(commentA, listType).type, equals(listType));
   });
 
 }
