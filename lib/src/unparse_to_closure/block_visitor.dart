@@ -12,10 +12,6 @@ import '../visit_result.dart';
 
 const jsbuilder = js.js;
 
-List<js.Statement> flattenOneLevel(List<List<js.Statement>> statementLists) {
-  return statementLists.map((stmtList) => stmtList[0]).toList();
-}
-
 class BlockVisitor extends BaseVisitor {
   LexicalScope _currentScope;
   ExpressionVisitor expressionVisitor;
@@ -54,9 +50,8 @@ class BlockVisitor extends BaseVisitor {
   }
 
   List<js.Statement> getStatements(Block block) {
-    return flattenOneLevel(
-        block.statements.elements.map(
-            (stmt) => stmt.accept(this).nodes).toList());
+    return block.statements.elements.expand(
+            (stmt) => stmt.accept(this).nodes).toList();
   }
 
   VisitResult visitEmptyStatement(EmptyStatement node) {
