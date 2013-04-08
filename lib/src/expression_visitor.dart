@@ -12,12 +12,12 @@ import 'transformers.dart';
 import 'utils.dart';
 import 'visit_result.dart';
 import 'lexical_scope.dart';
+import 'ast_factory.dart';
 
 
 genListType() {
-  var ret = new InterfaceTypeImpl.con1(new ClassElementImpl(
-      new SimpleIdentifier.full(
-          new scanner.StringToken(scanner.TokenType.IDENTIFIER, 'List', 0))));
+  ClassElementImpl element = new ClassElementImpl(ASTFactory.identifier2('List'));
+  var ret = new InterfaceTypeImpl.con1(element);
   ret.typeArguments = [new DynamicTypeImpl()];
   return ret;
 }

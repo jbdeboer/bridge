@@ -1,5 +1,8 @@
 //typedef LexicalScopeType int;
 
+import 'package:analyzer_experimental/src/generated/element.dart' as element;
+
+
 /**
  * Collections of symbols available in a Dart lexical scope.
  *
@@ -14,7 +17,7 @@ class LexicalScope {
 
   var _symbols = new Map<String, int>();
   int currentScope = UNQUALIFIED;
-  var currentType;
+  element.Type2 currentType;
   LexicalScope parent;
 
   String nameFor(String id) {
