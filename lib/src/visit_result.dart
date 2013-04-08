@@ -13,9 +13,9 @@ import 'jsast/js.dart' as js;
 
 class VisitResult {
   List nodes;
-  // DartType type;
+  var type;
 
-  VisitResult([List<js.Node> nodes = null/*, this.type = DartType.UNKNOWN]*/]) {
+  VisitResult([List<js.Node> nodes = null, this.type = null]) {
     this.nodes = (nodes == null) ? [] : nodes;
   }
 
@@ -25,6 +25,10 @@ class VisitResult {
 
   static fromJsNode(js.Node node) {
     return new VisitResult([node]);
+  }
+
+  static fromTypedJsNode(js.Node node, typeName) {
+    return new VisitResult([node], typeName);
   }
 
   static final EMPTY = new VisitResult();

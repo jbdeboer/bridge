@@ -290,4 +290,12 @@ main() {
         """
         );
   });
+
+  // ExpressionStatements
+  test('should translate expression statements', () {
+    expectBlock('{ a; }', """
+    {
+      stubIDENTIFIER_a;
+    }""");
+  });
 }

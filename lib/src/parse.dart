@@ -10,6 +10,7 @@ import 'lexical_scope.dart';
 import 'listeners.dart';
 import 'stub_visitor.dart';
 import 'visit_result.dart';
+import 'type_translator.dart';
 
 import 'jsast/js.dart' as js;
 
@@ -25,7 +26,15 @@ CompilationUnit parseText(String text) {
 }
 
 ASTNode identityQuery(node) => node;
-String stringBridge(String dart,
+class TypedBridgeOutput {
+  String jsCode;
+  String jsType;
+  TypedBridgeOutput(this.jsCode, this.jsType);
+}
+
+
+
+TypedBridgeOutput typedStringBridge(String dart,
                     BaseVisitor visitorFactory(BaseVisitor),
                     [ASTNode query(ASTNode) = identityQuery]) {
   ASTNode n = parseText(dart);
@@ -33,5 +42,11 @@ String stringBridge(String dart,
 
   VisitResult nodes = query(n).accept(visitor);
   // TODO: create a new top-level JS AST node.
-  return nodes.nodes.map((s) => js.prettyPrint(s).getText()).join("");
+  return new TypedBridgeOutput(
+      nodes.nodes.map((s) => js.prettyPrint(s).getText()).join(""),
+      dartTypeToJsType(nodes.type));
 }
+
+String stringBridge(String dart,
+                    BaseVisitor visitorFactory(BaseVisitor),
+                    [ASTNode query(ASTNode) = identityQuery]) => typedStringBridge(dart, visitorFactory, query).jsCode;

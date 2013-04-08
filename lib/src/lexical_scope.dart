@@ -10,9 +10,11 @@
 class LexicalScope {
   static int UNQUALIFIED = 1;
   static int CLASS = 2;
+  static int METHOD = 3;
 
   var _symbols = new Map<String, int>();
   int currentScope = UNQUALIFIED;
+  var currentType;
   LexicalScope parent;
 
   String nameFor(String id) {

@@ -9,11 +9,18 @@ queryExpression(node) =>
   node.sortedDirectivesAndDeclarations[0].
         variables.variables[0].initializer;
 
+
+exprBridge(d) => typedStringBridge(" var x = $d;",
+    (x) => new ExpressionVisitor(x),
+    queryExpression);
+
 expectExpr(String dart, String jsCode) {
-  expect(stringBridge(" var x = $dart;",
-      (x) => new ExpressionVisitor(x),
-      queryExpression),
+  expect(exprBridge(dart).jsCode,
     equals(jsCode));
+}
+
+expectType(String dart, String jsType) {
+  expect(exprBridge(dart).jsType, equals(jsType));
 }
 
 main() {
@@ -43,6 +50,7 @@ main() {
   // Typed literals.
   test('should parse list literals', () {
     expectExpr('[]', '[]');
+    expectType('[]', 'Array');
   });
 
   test('should parse list literals', () {
@@ -117,7 +125,7 @@ main() {
 
   test('should parse method expressions', () {
     expectExpr('b.x(1,2)',
-      'stubIDENTIFIER_b.stubIDENTIFIER_x(1, 2)');
+      'stubIDENTIFIER_b.stubMETHODID_x(1, 2)');
   });
 
 
@@ -158,7 +166,7 @@ main() {
 
   // Property access
   test('should parse property access', () {
-    expectExpr('a[4].b', 'stubIDENTIFIER_a[4].stubIDENTIFIER_b');
+    expectExpr('a[4].b', 'stubIDENTIFIER_a[4].stubMETHODID_b');
   });
 
 
@@ -201,5 +209,7 @@ main() {
   test('should parse method invocations', () {
     expectExpr('sqrt(3)', 'stubIDENTIFIER_sqrt(3)');
   });
+
+
 }
 
