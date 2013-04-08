@@ -6,6 +6,15 @@ import '../lib/src/identifier_visitor.dart';
 import '../lib/src/parse.dart';
 import '../lib/src/lexical_scope.dart';
 import '../lib/src/base_visitor.dart';
+import '../lib/src/type_factory.dart';
+
+import 'package:analyzer_experimental/src/generated/ast.dart' as dart;
+import 'package:analyzer_experimental/src/generated/scanner.dart' as scanner;
+import 'package:analyzer_experimental/src/generated/element.dart' as element;
+
+
+final element.Type2 ARRAY_TYPE = typeFactory('List', []);
+final element.Type2 STRING_TYPE = typeFactory('String');
 
 queryId(CompilationUnit node) =>
     node.sortedDirectivesAndDeclarations[0].
@@ -42,5 +51,33 @@ main() {
     scope.addName('b');
 
     expectId('b.a', 'this.b.a', scope);
+  });
+
+  test('should return Math.sqrt for sqrt', () {
+    expectId('sqrt', 'Math.sqrt');
+  });
+
+  test('should not rename a sqrt method', () {
+    expectId('b.sqrt', 'b.sqrt');
+  });
+
+  test('should rename an add method to push for Arrays', () {
+    var scope = new LexicalScope();
+    scope.currentScope = LexicalScope.METHOD;
+    scope.currentType = ARRAY_TYPE;
+
+    expectId('add', 'push', scope);
+  });
+
+  test('should not rename an add method to push for Strings', () {
+    var scope = new LexicalScope();
+    scope.currentScope = LexicalScope.METHOD;
+    scope.currentType = STRING_TYPE;
+
+    expectId('add', 'add', scope);
+  });
+
+  test('should not rename an add metod for non Arrays', () {
+    expectId('add', 'add');
   });
 }
