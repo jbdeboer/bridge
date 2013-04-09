@@ -1,3 +1,5 @@
+library type_factory;
+
 import 'package:analyzer_experimental/src/generated/element.dart';
 import 'ast_factory.dart';
 

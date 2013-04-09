@@ -1,3 +1,5 @@
+library stub_visitor;
+
 import 'package:analyzer_experimental/src/generated/ast.dart' as dart;
 
 import 'jsast/js.dart' as jss;
@@ -8,7 +10,7 @@ import 'lexical_scope.dart';
 
 class StubVisitor extends BaseVisitor {
   StubVisitor() : super(
-      new BaseVisitorOptions((callee) => new StubVisitor(callee), null));
+      new BaseVisitorOptions((callee) => new StubVisitor(), null));
 
   visitEmptyStatement(node) {
     return VisitResult.fromJsNode(new jss.EmptyStatement());

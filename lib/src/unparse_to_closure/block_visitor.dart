@@ -1,3 +1,5 @@
+library block_visitor;
+
 import 'dart:json';
 
 import 'package:analyzer_experimental/src/generated/ast.dart';

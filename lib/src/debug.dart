@@ -1,3 +1,5 @@
+library debug;
+
 import 'dart:mirrors';
 
 import 'package:analyzer_experimental/src/generated/ast.dart';

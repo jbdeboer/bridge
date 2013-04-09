@@ -1,3 +1,5 @@
+library utils;
+
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 
 import 'dart:async';

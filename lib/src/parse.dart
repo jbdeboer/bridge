@@ -1,3 +1,5 @@
+library parse;
+
 
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/parser.dart';
@@ -15,7 +17,7 @@ import 'type_translator.dart';
 import 'jsast/js.dart' as js;
 
 CompilationUnit parseText(String text) {
-  List<ErrorCode> errorCodes;
+ // List<ErrorCode> errorCodes;
   ErrorListener errorListener = new ErrorListener();
   StringScanner scanner = new StringScanner(null, text, errorListener);
   Token token = scanner.tokenize();

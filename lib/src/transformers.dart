@@ -1,3 +1,5 @@
+library transformers;
+
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 import 'expression_visitor.dart';

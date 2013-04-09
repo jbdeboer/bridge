@@ -1,3 +1,5 @@
+library symbols;
+
 // TODO(chirayu): Define extensible Dart types.  Basic types will have
 // predefined behavior, and more complex types can choose between "Dart source
 // specified" behavior or "Bridge overriden definition" behaviors.
