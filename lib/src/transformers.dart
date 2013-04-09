@@ -1,7 +1,7 @@
 library transformers;
 
-import 'package:analyzer_experimental/src/generated/ast.dart';
-import 'package:analyzer_experimental/src/generated/java_core.dart';
+import './analyzer_experimental/ast.dart';
+import './analyzer_experimental/java_core.dart';
 import 'expression_visitor.dart';
 
 String dartType2jsType(TypeName dartType) {

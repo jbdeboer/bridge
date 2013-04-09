@@ -1,6 +1,6 @@
 library base_visitor;
 
-import 'package:analyzer_experimental/src/generated/ast.dart';
+import './analyzer_experimental/ast.dart';
 
 import 'jsast/js.dart' as js;
 

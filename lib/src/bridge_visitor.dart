@@ -1,7 +1,7 @@
 library bridge_visitor;
 
-import 'package:analyzer_experimental/src/generated/ast.dart';
-import 'package:analyzer_experimental/src/generated/java_core.dart';
+import './analyzer_experimental/ast.dart';
+import './analyzer_experimental/java_core.dart';
 
 import 'base_visitor.dart';
 import 'class_member_visitor.dart';

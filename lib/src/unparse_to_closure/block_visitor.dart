@@ -2,7 +2,7 @@ library block_visitor;
 
 import 'dart:json';
 
-import 'package:analyzer_experimental/src/generated/ast.dart';
+import './../analyzer_experimental/ast.dart';
 import '../jsast/js.dart' as js;
 
 import '../base_visitor.dart';

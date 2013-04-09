@@ -14,7 +14,7 @@ import 'error.dart';
 import 'scanner.dart';
 import 'parser.dart';
 import 'ast.dart';
-import 'package:analyzer_experimental/src/generated/engine.dart' show AnalysisEngine;
+import './../lib/src/analyzer_experimental/engine.dart' show AnalysisEngine;
 
 /**
  * Represents a single library in the SDK

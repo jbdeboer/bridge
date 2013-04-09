@@ -2,8 +2,8 @@ import 'package:unittest/unittest.dart';
 
 
 import '../lib/src/jsast/js.dart' as js;
-import 'package:analyzer_experimental/src/generated/ast.dart' as dart;
-import 'package:analyzer_experimental/src/generated/scanner.dart' as scanner;
+import './../lib/src/analyzer_experimental/ast.dart' as dart;
+import './../lib/src/analyzer_experimental/scanner.dart' as scanner;
 
 import '../lib/src/visit_result.dart';
 

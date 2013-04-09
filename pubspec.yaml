@@ -5,7 +5,6 @@ description: An easy way to build web apps in Dart.
 version: 0.0.1
 dependencies:
   args: any
-  analyzer_experimental: any
   browser: 0.4.2
   unittest: any
   js: any

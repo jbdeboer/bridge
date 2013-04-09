@@ -1,5 +1,5 @@
 import 'package:unittest/unittest.dart';
-import 'package:analyzer_experimental/src/generated/ast.dart';
+import './../lib/src/analyzer_experimental/ast.dart';
 
 
 import '../lib/src/identifier_visitor.dart';
@@ -8,9 +8,9 @@ import '../lib/src/lexical_scope.dart';
 import '../lib/src/base_visitor.dart';
 import '../lib/src/type_factory.dart';
 
-import 'package:analyzer_experimental/src/generated/ast.dart' as dart;
-import 'package:analyzer_experimental/src/generated/scanner.dart' as scanner;
-import 'package:analyzer_experimental/src/generated/element.dart' as element;
+import './../lib/src/analyzer_experimental/ast.dart' as dart;
+import './../lib/src/analyzer_experimental/scanner.dart' as scanner;
+import './../lib/src/analyzer_experimental/element.dart' as element;
 
 
 final element.Type2 ARRAY_TYPE = typeFactory('List', []);

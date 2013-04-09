@@ -1,6 +1,6 @@
 library listeners;
 
-import 'package:analyzer_experimental/src/generated/error.dart';
+import './analyzer_experimental/error.dart';
 
 
 class ErrorListener extends AnalysisErrorListener {

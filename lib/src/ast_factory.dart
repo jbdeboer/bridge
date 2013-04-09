@@ -4,15 +4,15 @@
 library engine.ast_test;
 
 import 'dart:collection';
-import 'package:analyzer_experimental/src/generated/java_core.dart';
-import 'package:analyzer_experimental/src/generated/java_engine.dart';
-import 'package:analyzer_experimental/src/generated/java_junit.dart';
-import 'package:analyzer_experimental/src/generated/source.dart';
-import 'package:analyzer_experimental/src/generated/error.dart';
-import 'package:analyzer_experimental/src/generated/scanner.dart';
-import 'package:analyzer_experimental/src/generated/ast.dart';
-import 'package:analyzer_experimental/src/generated/utilities_dart.dart';
-import 'package:analyzer_experimental/src/generated/element.dart' show ClassElement;
+import './analyzer_experimental/java_core.dart';
+import './analyzer_experimental/java_engine.dart';
+import './analyzer_experimental/java_junit.dart';
+import './analyzer_experimental/source.dart';
+import './analyzer_experimental/error.dart';
+import './analyzer_experimental/scanner.dart';
+import './analyzer_experimental/ast.dart';
+import './analyzer_experimental/utilities_dart.dart';
+import './analyzer_experimental/element.dart' show ClassElement;
 import 'package:unittest/unittest.dart' as _ut;
 
 

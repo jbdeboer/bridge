@@ -1,11 +1,11 @@
 library expression_visitor;
 
-import 'package:analyzer_experimental/src/generated/ast.dart';
-import 'package:analyzer_experimental/src/generated/element.dart';
-import 'package:analyzer_experimental/src/generated/engine.dart';
-import 'package:analyzer_experimental/src/generated/scanner.dart' as scanner;
-import 'package:analyzer_experimental/src/generated/resolver.dart';
-import 'package:analyzer_experimental/src/generated/java_core.dart';
+import './analyzer_experimental/ast.dart';
+import './analyzer_experimental/element.dart';
+import './analyzer_experimental/engine.dart';
+import './analyzer_experimental/scanner.dart' as scanner;
+import './analyzer_experimental/resolver.dart';
+import './analyzer_experimental/java_core.dart';
 
 import 'jsast/js.dart' as js;
 

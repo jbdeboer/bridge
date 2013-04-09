@@ -1,9 +1,9 @@
 library parse;
 
 
-import 'package:analyzer_experimental/src/generated/ast.dart';
-import 'package:analyzer_experimental/src/generated/parser.dart';
-import 'package:analyzer_experimental/src/generated/scanner.dart';
+import './analyzer_experimental/ast.dart';
+import './analyzer_experimental/parser.dart';
+import './analyzer_experimental/scanner.dart';
 
 // Package local imports.
 import 'base_visitor.dart';

@@ -1,6 +1,6 @@
 library stub_visitor;
 
-import 'package:analyzer_experimental/src/generated/ast.dart' as dart;
+import './analyzer_experimental/ast.dart' as dart;
 
 import 'jsast/js.dart' as jss;
 
