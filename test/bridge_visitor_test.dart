@@ -1,5 +1,5 @@
 import 'package:unittest/unittest.dart';
-import 'package:analyzer_experimental/src/generated/ast.dart';
+import './../lib/src/analyzer_experimental/ast.dart';
 
 import '../lib/src/bridge_visitor.dart';
 import '../lib/src/lexical_scope.dart';

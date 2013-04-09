@@ -13,8 +13,8 @@ import 'dart:collection';
 import 'dart:async';
 import 'dart:io';
 
-import 'package:analyzer_experimental/src/generated/java_core.dart';
-import 'package:analyzer_experimental/src/generated/java_engine.dart';
+import './../lib/src/analyzer_experimental/java_core.dart';
+import './../lib/src/analyzer_experimental/java_engine.dart';
 
 // This package.
 import '../lib/src/debug.dart';

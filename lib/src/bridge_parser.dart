@@ -4,17 +4,17 @@
 *
 */
 
-import 'package:analyzer_experimental/src/generated/java_core.dart';
-import 'package:analyzer_experimental/src/generated/java_engine.dart';
-import 'package:analyzer_experimental/src/generated/java_junit.dart';
+import './analyzer_experimental/java_core.dart';
+import './analyzer_experimental/java_engine.dart';
+import './analyzer_experimental/java_junit.dart';
 
 
 import 'package:unittest/unittest.dart';
 import 'bridge_visitor.dart';
-import 'package:analyzer_experimental/src/generated/ast.dart';
-import 'package:analyzer_experimental/src/generated/scanner.dart';
-import 'package:analyzer_experimental/src/generated/error.dart';
-import 'package:analyzer_experimental/src/generated/parser.dart';
+import './analyzer_experimental/ast.dart';
+import './analyzer_experimental/scanner.dart';
+import './analyzer_experimental/error.dart';
+import './analyzer_experimental/parser.dart';
 
 import 'listeners.dart';
 import 'parse.dart';

@@ -1,6 +1,6 @@
 library unparse_expression_visitor;
 
-import 'package:analyzer_experimental/src/generated/ast.dart';
+import './../analyzer_experimental/ast.dart';
 import '../symbols.dart';
 import '../utils.dart';
 

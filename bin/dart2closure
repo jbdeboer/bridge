@@ -9,9 +9,9 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:analyzer_experimental/src/generated/java_core.dart';
-import 'package:analyzer_experimental/src/generated/java_engine.dart';
-import 'package:analyzer_experimental/src/generated/java_junit.dart';
+import './../lib/src/analyzer_experimental/java_core.dart';
+import './../lib/src/analyzer_experimental/java_engine.dart';
+import './../lib/src/analyzer_experimental/java_junit.dart';
 
 // From this package.
 import '../lib/src/debug.dart';

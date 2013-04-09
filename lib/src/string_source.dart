@@ -1,4 +1,4 @@
-import 'package:analyzer_experimental/src/generated/source.dart';
+import './analyzer_experimental/source.dart';
 
 
 class StringSource implements Source {

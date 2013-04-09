@@ -2,7 +2,7 @@ library block_visitor;
 
 import 'dart:json';
 
-import 'package:analyzer_experimental/src/generated/ast.dart';
+import './../analyzer_experimental/ast.dart';
 import '../jsast/js.dart' as js;
 
 import '../base_visitor.dart';
@@ -13,10 +13,6 @@ import '../utils.dart';
 import '../visit_result.dart';
 
 const jsbuilder = js.js;
-
-List<js.Statement> flattenOneLevel(List<List<js.Statement>> statementLists) {
-  return statementLists.map((stmtList) => stmtList[0]).toList();
-}
 
 class BlockVisitor extends BaseVisitor {
   LexicalScope _currentScope;
@@ -66,9 +62,8 @@ class BlockVisitor extends BaseVisitor {
   }
 
   List<js.Statement> getStatements(Block block) {
-    return flattenOneLevel(
-        block.statements.elements.map(
-            (stmt) => stmt.accept(this).nodes).toList());
+    return block.statements.elements.expand(
+            (stmt) => stmt.accept(this).nodes).toList();
   }
 
   VisitResult visitEmptyStatement(EmptyStatement node) {

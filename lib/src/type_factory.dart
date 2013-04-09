@@ -1,6 +1,6 @@
 library type_factory;
 
-import 'package:analyzer_experimental/src/generated/element.dart';
+import './analyzer_experimental/element.dart';
 import 'ast_factory.dart';
 
 final ClassElementImpl object = classElement("Object", (null as InterfaceType), []);
