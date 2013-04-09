@@ -55,7 +55,7 @@ class BridgeVisitor extends BaseVisitor {
 //    }
 
 
-  visitBlock(Block node) =>
+  visitBlock(node) =>
     node.accept(new BlockVisitor.root(options()));
 
 
@@ -128,10 +128,14 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   R visitFieldFormalParameter(FieldFormalParameter node);
   R visitForEachStatement(ForEachStatement node);
   R visitFormalParameterList(FormalParameterList node);
-  R visitForStatement(ForStatement node);
-  R visitFunctionDeclaration(FunctionDeclaration node);
+  R visitForStatement(ForStatement node); */
+
+  visitFunctionDeclaration(FunctionDeclaration node) => visitBlock(node);
+  /*
   R visitFunctionDeclarationStatement(FunctionDeclarationStatement node);
-  R visitFunctionExpression(FunctionExpression node);
+  */
+  visitFunctionExpression(FunctionExpression node) => visitExpression(node);
+  /*
   R visitFunctionExpressionInvocation(FunctionExpressionInvocation node);
   R visitFunctionTypeAlias(FunctionTypeAlias functionTypeAlias);
   R visitFunctionTypedFormalParameter(FunctionTypedFormalParameter node);

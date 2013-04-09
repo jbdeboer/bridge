@@ -210,6 +210,10 @@ main() {
     expectExpr('sqrt(3)', 'stubIDENTIFIER_sqrt(3)');
   });
 
+  test('should parse function expressions', () {
+    expectExpr('() { }', 'function() {\n  // STUB BLOCK\n}');
+  });
+
 
 }
 

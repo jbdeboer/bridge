@@ -206,4 +206,10 @@ class ExpressionVisitor extends BaseVisitor {
             new js.Assignment.compound(lhs, node.operator.toString(), rhs));
       }
   }
+
+  visitFunctionExpression(FunctionExpression node) =>
+    VisitResult.fromJsNode(new js.Fun(
+        node.parameters.parameters.map((param) => new js.Parameter(param.identifier.name)).toList(),
+        node.body.block.accept(this.otherVisitor).node
+    ));
 }

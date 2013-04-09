@@ -55,6 +55,16 @@ class BlockVisitor extends BaseVisitor {
     return VisitResult.fromJsNodeList(statements);
   }
 
+  visitFunctionDeclarationStatement(FunctionDeclarationStatement node) => node.functionDeclaration.accept(this);
+
+  visitFunctionDeclaration(FunctionDeclaration node) {
+    js.VariableDeclaration name = new js.VariableDeclaration(node.name.name);
+
+    js.Fun functionBody = node.functionExpression.accept(otherVisitor).node;
+
+    return VisitResult.fromJsNode(new js.FunctionDeclaration(name, functionBody, 'jsdoc TODO'));
+  }
+
   List<js.Statement> getStatements(Block block) {
     return flattenOneLevel(
         block.statements.elements.map(

@@ -54,7 +54,20 @@ main() {
         );
   });
 
-  // Duplicate var declaration.
+
+  test('should parse a simple function defintion', () {
+    expectBlock('{ g() { }; }', """
+    {
+      /**
+     * jsdoc TODO
+     */
+    function g() {
+        // STUB FUN
+      }
+      ;
+    }""");
+  });
+
   test('should throw on duplicate symbol definition', () {
     expectBlockRaises(
         """
@@ -75,7 +88,7 @@ main() {
         // JS.
         """
         {
-          var a = 1 /* stubINT */;
+          var a = 1-stubEXPR;
         }"""
         );
   });
@@ -165,7 +178,7 @@ main() {
         // JS.
         """
         {
-          if (true) {
+          if (true-stubEXPR) {
             ;
           }
         }"""
@@ -182,7 +195,7 @@ main() {
         // JS.
         """
         {
-          if (true) {
+          if (true-stubEXPR) {
             ;
           } else {
             ;
@@ -203,8 +216,8 @@ main() {
         // JS.
         """
         {
-          if (true) {
-            var a = 1 /* stubINT */;
+          if (true-stubEXPR) {
+            var a = 1-stubEXPR;
           }
         }"""
         );
@@ -224,10 +237,10 @@ main() {
         // JS.
         """
         {
-          if (true) {
-            var a = 1 /* stubINT */;
+          if (true-stubEXPR) {
+            var a = 1-stubEXPR;
           } else {
-            var b = 1 /* stubINT */;
+            var b = 1-stubEXPR;
           }
         }"""
         );
@@ -244,7 +257,7 @@ main() {
         // JS.
         """
         {
-          if (false) {
+          if (false-stubEXPR) {
             throw "Assertion failed for dart expression: assert (false);";
           }
         }
@@ -264,7 +277,7 @@ main() {
         // JS.
         """
         {
-          while (true) {
+          while (true-stubEXPR) {
             ;
           }
         }

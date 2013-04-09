@@ -74,4 +74,14 @@ main() {
         (node) => node.declarations[0].functionExpression.body.block
   );
   });
+
+  test('should parse a top-level function', () {
+    expectDart('main() { }', """
+    /**
+     * jsdoc TODO
+     */
+    function main() {
+    }
+    """);
+  });
 }

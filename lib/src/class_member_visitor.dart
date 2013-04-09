@@ -51,13 +51,7 @@ class ClassMemberVisitor extends BaseVisitor {
   }
 
   List<js.Parameter> dartParamsToJs(var parameters) {
-    var jsParams = new List<js.Parameter>();
-
-    for(FormalParameter param in parameters) {
-      String name = param.identifier.name;
-      jsParams.add(new js.Parameter(name));
-    }
-    return jsParams;
+    return parameters.map((param) => new js.Parameter(param.identifier.name)).toList();
   }
 
   Object visitConstructorDeclaration(ConstructorDeclaration node) {
