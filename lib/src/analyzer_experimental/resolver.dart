@@ -3117,6 +3117,14 @@ class StaticTypeAnalyzer extends SimpleASTVisitor<Object> {
     _dynamicType = _typeProvider.dynamicType;
   }
   /**
+   * Initialize a newly created type analyzer.
+   * @param typeProvider the typeProvider driving this participant
+   */
+  StaticTypeAnalyzer.withTypeProvider(TypeProvider typeProvider) {
+    _typeProvider = typeProvider;
+    _dynamicType = _typeProvider.dynamicType;
+  }
+  /**
    * Set the type of the class being analyzed to the given type.
    * @param thisType the type representing the class containing the nodes being analyzed
    */
