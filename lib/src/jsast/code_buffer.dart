@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of dart2js;
+library codebuffer;
 
 class CodeBuffer implements StringBuffer {
   StringBuffer buffer;
@@ -37,7 +37,7 @@ class CodeBuffer implements StringBuffer {
     return this;
   }
 
-  CodeBuffer writeAll(Iterable<Object> objects) {
+  CodeBuffer writeAll(Iterable<Object> objects, [String separator = ""]) {
     for (var object in objects) {
       write(object);
     }

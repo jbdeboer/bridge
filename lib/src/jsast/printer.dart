@@ -6,7 +6,7 @@ part of js;
 
 class Printer implements NodeVisitor {
   final bool shouldCompressOutput;
-  leg.Compiler compiler;
+  //leg.Compiler compiler;
   leg.CodeBuffer outBuffer;
   int indentLevel = 0;
   bool inForInit = false;
@@ -18,12 +18,12 @@ class Printer implements NodeVisitor {
   static final identifierCharacterRegExp = new RegExp(r'^[a-zA-Z_0-9$]');
   static final expressionContinuationRegExp = new RegExp(r'^[-+([]');
 
-  Printer(leg.Compiler compiler, { allowVariableMinification: true })
-      : shouldCompressOutput = compiler.enableMinification,
-        this.compiler = compiler,
+  Printer(/*leg.Compiler compiler,*/ { allowVariableMinification: true })
+      : shouldCompressOutput = false /*compiler.enableMinification*/,
+        /*this.compiler = compiler,*/
         outBuffer = new leg.CodeBuffer(),
-        danglingElseVisitor = new DanglingElseVisitor(compiler),
-        localNamer = determineRenamer(compiler.enableMinification,
+        danglingElseVisitor = new DanglingElseVisitor(/*compiler*/),
+        localNamer = determineRenamer(false/*compiler.enableMinification*/,
                                       allowVariableMinification);
 
   static LocalNamer determineRenamer(bool shouldCompressOutput,
@@ -606,7 +606,7 @@ class Printer implements NodeVisitor {
         rightPrecedenceRequirement = UNARY;
         break;
       default:
-        compiler.internalError("Forgot operator: $op");
+        /*compiler.*/internalError("Forgot operator: $op");
     }
 
     visitNestedExpression(left, leftPrecedenceRequirement,
@@ -849,7 +849,7 @@ class Printer implements NodeVisitor {
 
     List<String> parts = template.split('#');
     if (parts.length != inputs.length + 1) {
-      compiler.internalError('Wrong number of arguments for JS: $template');
+      /*compiler.*/internalError('Wrong number of arguments for JS: $template');
     }
     // Code that uses JS must take care of operator precedences, and
     // put parenthesis if needed.
@@ -951,14 +951,14 @@ class VarCollector extends BaseVisitor {
  * as then-statement in an [If] that has an else branch.
  */
 class DanglingElseVisitor extends BaseVisitor<bool> {
-  leg.Compiler compiler;
+  /*leg.Compiler compiler;*/
 
-  DanglingElseVisitor(this.compiler);
+  DanglingElseVisitor(/*this.compiler*/);
 
   bool visitProgram(Program node) => false;
 
   bool visitNode(Statement node) {
-    compiler.internalError("Forgot node: $node");
+    /*compiler.*/internalError("Forgot node: $node");
   }
 
   bool visitBlock(Block node) => false;
@@ -996,10 +996,10 @@ class DanglingElseVisitor extends BaseVisitor<bool> {
 }
 
 
-leg.CodeBuffer prettyPrint(Node node, leg.Compiler compiler,
+leg.CodeBuffer prettyPrint(Node node, /*leg.Compiler compiler,*/
                            { allowVariableMinification: true }) {
   Printer printer =
-      new Printer(compiler,
+      new Printer(/*compiler,*/
                   allowVariableMinification: allowVariableMinification);
   printer.visit(node);
   return printer.outBuffer;
