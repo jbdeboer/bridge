@@ -492,7 +492,6 @@ abstract class Expression extends Node {
   Expression operator >=(expression) => binary('>=', expression);
 
   Expression binary(String operator, expression) {
-    throw new Error();
     return new Binary(operator, this, js.toExpression(expression));
   }
 

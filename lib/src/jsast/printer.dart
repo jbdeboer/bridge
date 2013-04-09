@@ -4,13 +4,9 @@
 
 part of js;
 
-internalError(msg) {
-  print("ERROR: " + msg);
-  throw msg;
-}
-
 class Printer implements NodeVisitor {
   final bool shouldCompressOutput;
+  //leg.Compiler compiler;
   leg.CodeBuffer outBuffer;
   int indentLevel = 0;
   bool inForInit = false;
@@ -22,11 +18,12 @@ class Printer implements NodeVisitor {
   static final identifierCharacterRegExp = new RegExp(r'^[a-zA-Z_0-9$]');
   static final expressionContinuationRegExp = new RegExp(r'^[-+([]');
 
-  Printer({ allowVariableMinification: true })
-      : shouldCompressOutput = false,
+  Printer(/*leg.Compiler compiler,*/ { allowVariableMinification: true })
+      : shouldCompressOutput = false /*compiler.enableMinification*/,
+        /*this.compiler = compiler,*/
         outBuffer = new leg.CodeBuffer(),
-        danglingElseVisitor = new DanglingElseVisitor(),
-        localNamer = determineRenamer(false,
+        danglingElseVisitor = new DanglingElseVisitor(/*compiler*/),
+        localNamer = determineRenamer(false/*compiler.enableMinification*/,
                                       allowVariableMinification);
 
   static LocalNamer determineRenamer(bool shouldCompressOutput,
@@ -609,7 +606,7 @@ class Printer implements NodeVisitor {
         rightPrecedenceRequirement = UNARY;
         break;
       default:
-        internalError("Forgot operator: $op");
+        /*compiler.*/internalError("Forgot operator: $op");
     }
 
     visitNestedExpression(left, leftPrecedenceRequirement,
@@ -852,7 +849,7 @@ class Printer implements NodeVisitor {
 
     List<String> parts = template.split('#');
     if (parts.length != inputs.length + 1) {
-      internalError('Wrong number of arguments for JS: $template');
+      /*compiler.*/internalError('Wrong number of arguments for JS: $template');
     }
     // Code that uses JS must take care of operator precedences, and
     // put parenthesis if needed.
@@ -868,8 +865,7 @@ class Printer implements NodeVisitor {
   }
 
   void visitComment(Comment node) {
-    //throw new Error(node.comment.trim());
-    //if (shouldCompressOutput) return;
+    if (shouldCompressOutput) return;
     String comment = node.comment.trim();
     if (comment.isEmpty) return;
     for (var line in comment.split('\n')) {
@@ -955,13 +951,14 @@ class VarCollector extends BaseVisitor {
  * as then-statement in an [If] that has an else branch.
  */
 class DanglingElseVisitor extends BaseVisitor<bool> {
+  /*leg.Compiler compiler;*/
 
-  DanglingElseVisitor();
+  DanglingElseVisitor(/*this.compiler*/);
 
   bool visitProgram(Program node) => false;
 
   bool visitNode(Statement node) {
-    internalError("Forgot node: $node");
+    /*compiler.*/internalError("Forgot node: $node");
   }
 
   bool visitBlock(Block node) => false;
@@ -999,10 +996,10 @@ class DanglingElseVisitor extends BaseVisitor<bool> {
 }
 
 
-leg.CodeBuffer prettyPrint(Node node,
+leg.CodeBuffer prettyPrint(Node node, /*leg.Compiler compiler,*/
                            { allowVariableMinification: true }) {
   Printer printer =
-      new Printer(
+      new Printer(/*compiler,*/
                   allowVariableMinification: allowVariableMinification);
   printer.visit(node);
   return printer.outBuffer;
