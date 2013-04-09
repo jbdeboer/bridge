@@ -32,15 +32,16 @@ class BridgeVisitor extends BaseVisitor {
 
     options() => new BaseVisitorOptions(Factory, scope);
 
-///*
-//  R visitAdjacentStrings(AdjacentStrings node);
+    visitAdjacentStrings(AdjacentStrings node) => visitExpression(node);
+
 //  R visitAnnotation(Annotation node);
 //  R visitArgumentDefinitionTest(ArgumentDefinitionTest node);
 //  R visitArgumentList(ArgumentList node);
 //  R visitAsExpression(AsExpression node);
-//  R visitAssertStatement(AssertStatement assertStatement);
-//  R visitAssignmentExpression(AssignmentExpression node);
-//  */
+//    visitAssertStatement(AssertStatement assertStatement) => visitStatement(node);
+
+    visitAssignmentExpression(AssignmentExpression node) => visitExpression(node);
+
 
   visitBinaryExpression(BinaryExpression node) => visitExpression(node);
 
@@ -50,10 +51,6 @@ class BridgeVisitor extends BaseVisitor {
     return node.accept(visitor);
   }
 
-//    List<js.Node> visitBlock(Block node) {
-//      return [new js.Comment('VISIT BLOCK')];
-//    }
-
 
   visitBlock(node) =>
     node.accept(new BlockVisitor.root(options()));
@@ -62,67 +59,42 @@ class BridgeVisitor extends BaseVisitor {
 /*  R visitBlockFunctionBody(BlockFunctionBody node);
   R visitBooleanLiteral(BooleanLiteral node);
   R visitBreakStatement(BreakStatement node);
-  R visitCascadeExpression(CascadeExpression node);
+*/
+  visitCascadeExpression(CascadeExpression node) => visitExpression(node);
+/*
   R visitCatchClause(CatchClause node); */
 
   visitClassDeclaration(ClassDeclaration node) =>
     node.accept(new ClassMemberVisitor(options()));
 
-//    Object visitClassDeclaration(ClassDeclaration node) {
-//      var cmv = new ClassMemberVisitor(this);
-//      node.accept(cmv);
-//      for (var s in cmv.statements) {
-//        this._writer.print(js.prettyPrint(s).getText());
-//      }
-//    }
-/*
-    this._writer.print(cmv.statements.getText())
-    String functionName = node.name.toString();
-
-
-    var cmv = new ClassMemberVisitor("$functionName.prototype.");
-    for (ClassMember member in node.members) {
-      member.accept(cmv);
-    }
-    this._writer.print("""/\**
- * @constructor
- * /
-function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
-
-    for (String s in cmv.fields) {
-      this._writer.print(s);
-    }
-  } */
-
 /*
   R visitClassTypeAlias(ClassTypeAlias node); */
-
-//    Object visitComment(Comment node) {
-//      this._writer.print("comment");
-//    }
 
 /*
   R visitCommentReference(CommentReference node); */
 
-//    Object visitCompilationUnit(CompilationUnit node) {
-//      node.visitChildren(this);
-//    }
+
+  visitConditionalExpression(ConditionalExpression node) => visitExpression(node);
 
 /*
-  R visitConditionalExpression(ConditionalExpression node);
   R visitConstructorDeclaration(ConstructorDeclaration node);
   R visitConstructorFieldInitializer(ConstructorFieldInitializer node);
   R visitConstructorName(ConstructorName node);
   R visitContinueStatement(ContinueStatement node);
   R visitDeclaredIdentifier(DeclaredIdentifier node);
   R visitDefaultFormalParameter(DefaultFormalParameter node);
-  R visitDoStatement(DoStatement node);
-  R visitDoubleLiteral(DoubleLiteral node);
+  R visitDoStatement(DoStatement node); */
+
+  visitDoubleLiteral(DoubleLiteral node) => visitExpression(node);
+
+  /*
   R visitEmptyFunctionBody(EmptyFunctionBody node);
   R visitEmptyStatement(EmptyStatement node);
   R visitExportDirective(ExportDirective node);
   R visitExpressionFunctionBody(ExpressionFunctionBody node);
-  R visitExpressionStatement(ExpressionStatement node);
+*/
+  visitExpressionStatement(ExpressionStatement node) => visitExpression(node);
+  /*
   R visitExtendsClause(ExtendsClause node);
   R visitFieldDeclaration(FieldDeclaration node);
   R visitFieldFormalParameter(FieldFormalParameter node);
@@ -145,40 +117,40 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
 
   visitImportDirective(ImportDirective node) => [];
 
-/*  R visitIndexExpression(IndexExpression node);
-  R visitInstanceCreationExpression(InstanceCreationExpression node); */
+  visitIndexExpression(IndexExpression node) => visitExpression(node);
 
-/*Object visitIntegerLiteral(IntegerLiteral node) {
-    node.visitChildren(this);
-  }*/
+  visitInstanceCreationExpression(InstanceCreationExpression node) => visitExpression(node);
 
-/*
-  R visitInterpolationExpression(InterpolationExpression node);
-  R visitInterpolationString(InterpolationString node);
-  R visitIsExpression(IsExpression node);
-  R visitLabel(Label node);
+  visitIntegerLiteral(IntegerLiteral node) => visitExpression(node);
+
+  visitInterpolationExpression(InterpolationExpression node) => visitExpression(node);
+  // visitInterpolationString(InterpolationString node);
+  visitIsExpression(IsExpression node) => visitExpression(node);
+/*  R visitLabel(Label node);
   R visitLabeledStatement(LabeledStatement node);
   R visitLibraryDirective(LibraryDirective node);
   R visitLibraryIdentifier(LibraryIdentifier node);
-  R visitListLiteral(ListLiteral node);
-  R visitMapLiteral(MapLiteral node);
-  R visitMapLiteralEntry(MapLiteralEntry node);
-  R visitMethodDeclaration(MethodDeclaration node); */
+*/
+  visitListLiteral(ListLiteral node) => visitExpression(node);
+  visitMapLiteral(MapLiteral node) => visitExpression(node);
+//  R visitMapLiteralEntry(MapLiteralEntry node);
+// visitMethodDeclaration(MethodDeclaration node); */
 
   visitMethodInvocation(MethodInvocation node) => visitExpression(node);
 
-/*  R visitNamedExpression(NamedExpression node);
-  R visitNullLiteral(NullLiteral node);
-  R visitParenthesizedExpression(ParenthesizedExpression node);
-  R visitPartDirective(PartDirective node);
-  R visitPartOfDirective(PartOfDirective node);
-  R visitPostfixExpression(PostfixExpression node); */
+  visitNamedExpression(NamedExpression node) => visitExpression(node);
+  visitNullLiteral(NullLiteral node) => visitExpression(node);
+  visitParenthesizedExpression(ParenthesizedExpression node) => visitExpression(node);
+/*  R visitPartDirective(PartDirective node);
+  R visitPartOfDirective(PartOfDirective node); */
+
+  visitPostfixExpression(PostfixExpression node) => visitExpression(node);
 
   visitPrefixedIdentifier(PrefixedIdentifier node) => visitIdentifier(node);
 
+  visitPrefixExpression(PrefixExpression node) => visitExpression(node);
+  visitPropertyAccess(PropertyAccess node) => visitExpression(node);
   /*
-  R visitPrefixExpression(PrefixExpression node);
-  R visitPropertyAccess(PropertyAccess node);
   R visitRedirectingConstructorInvocation(RedirectingConstructorInvocation node);
   R visitReturnStatement(ReturnStatement node);
   R visitScriptTag(ScriptTag node);
@@ -190,19 +162,16 @@ function $functionName(${cmv.consParams}) ${cmv.constructor}\n\n""");
   visitIdentifier(node) =>
       node.accept(new IdentifierVisitor(options()));
 
-  /*
-  Object visitSimpleStringLiteral(SimpleStringLiteral node) {
-    node.visitChildren(this);
-  }*/
-/*
-  R visitStringInterpolation(StringInterpolation node);
-  R visitSuperConstructorInvocation(SuperConstructorInvocation node);
-  R visitSuperExpression(SuperExpression node);
-  R visitSwitchCase(SwitchCase node);
-  R visitSwitchDefault(SwitchDefault node);
-  R visitSwitchStatement(SwitchStatement node);
-  R visitThisExpression(ThisExpression node);
-  R visitThrowExpression(ThrowExpression node); */
+  Object visitSimpleStringLiteral(SimpleStringLiteral node) => visitExpression(node);
+
+  //R visitStringInterpolation(StringInterpolation node);
+  visitSuperConstructorInvocation(SuperConstructorInvocation node);
+  visitSuperExpression(SuperExpression node) => visitExpression(node);
+ // R visitSwitchCase(SwitchCase node);
+ // R visitSwitchDefault(SwitchDefault node);
+ // R visitSwitchStatement(SwitchStatement node);
+  visitThisExpression(ThisExpression node) => visitExpression(node);
+  visitThrowExpression(ThrowExpression node) => visitExpression(node);
 
 //    Object visitTopLevelVariableDeclaration(TopLevelVariableDeclaration node) {
 //      node.visitChildren(this);
