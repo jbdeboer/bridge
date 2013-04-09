@@ -5,11 +5,11 @@
 library js;
 
 import 'precedence.dart';
-import 'characters.dart' as charCodes;
+import '../util/characters.dart' as charCodes;
 
 // TODO(floitsch): remove this dependency (currently necessary for the
 // CodeBuffer).
-import 'code_buffer.dart' as leg;
+import '../dart2jslib.dart' as leg;
 
 part 'nodes.dart';
 part 'builder.dart';
