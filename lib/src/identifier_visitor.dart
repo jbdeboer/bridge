@@ -1,3 +1,5 @@
+library identifier_visitor;
+
 /**
 Dart is lexically scoped.  Our Javascript output is not.
 

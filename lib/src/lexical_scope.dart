@@ -1,3 +1,5 @@
+library lexical_scope;
+
 //typedef LexicalScopeType int;
 
 import 'package:analyzer_experimental/src/generated/element.dart' as element;

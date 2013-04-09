@@ -1,3 +1,5 @@
+library visit_result;
+
 // TODO(chirayu): Implement.
 // class DartType {
 //   final name;

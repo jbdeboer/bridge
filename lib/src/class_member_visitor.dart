@@ -1,3 +1,5 @@
+library class_member_visitor;
+
 import 'package:analyzer_experimental/src/generated/ast.dart';
 import 'package:analyzer_experimental/src/generated/java_core.dart';
 
