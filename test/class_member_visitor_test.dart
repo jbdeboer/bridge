@@ -6,7 +6,7 @@ import '../lib/src/utils.dart';
 
 
 expectClass(String dart, String jsCode) {
-  expect(stringBridge(dart, (x) => new ClassMemberVisitor(x)),
+  expect(stringBridge(dart, (x) => new ClassMemberVisitor(x), identityQuery, true),
          equals(dedent(jsCode)));
 }
 
@@ -73,8 +73,47 @@ main() {
          * @return {string}
          */
         C.prototype.method = function() {
-          // STUB FUNCTION BODY
+          // STUB FUNCTION BODY scope:{method: 2}
         };
          """);
   });
+
+  test('should parse a class with a method with a parameter', () {
+    expectClass('class C { p(x) {}; }', """
+        /**
+         * @constructor
+         */
+        function C() {
+        }
+        /**
+         * @return {string}
+         */
+        C.prototype.p = function(x) {
+          // STUB FUNCTION BODY scope:{p: 2}
+        };
+        """);
+  });
+
+  test('should parse a class with methods in any order', () {
+    expectClass('class C { f() {}; p(x) {}; }', """
+        /**
+         * @constructor
+         */
+        function C() {
+        }
+        /**
+         * @return {string}
+         */
+        C.prototype.f = function() {
+          // STUB FUNCTION BODY scope:{p: 2, f: 2}
+        };
+        /**
+         * @return {string}
+         */
+        C.prototype.p = function(x) {
+          // STUB FUNCTION BODY scope:{p: 2, f: 2}
+        };
+        """);
+  });
+
 }

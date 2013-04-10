@@ -9,8 +9,11 @@ import 'visit_result.dart';
 import 'lexical_scope.dart';
 
 class StubVisitor extends BaseVisitor {
-  StubVisitor() : super(
-      new BaseVisitorOptions((callee) => new StubVisitor(), null));
+  var printScope;
+  get scopeOut => printScope ? " scope:$scope" : "";
+
+  StubVisitor(scope, [printScope = false]) : this.printScope = printScope, super(
+      new BaseVisitorOptions((callee) => new StubVisitor(), scope));
 
   visitEmptyStatement(node) {
     return VisitResult.fromJsNode(new jss.EmptyStatement());
@@ -27,7 +30,7 @@ class StubVisitor extends BaseVisitor {
     ));
   }
   visitBlockFunctionBody(node) =>
-    VisitResult.fromJsNode(new jss.Block([new jss.Comment('// STUB FUNCTION BODY')]));
+    VisitResult.fromJsNode(new jss.Block([new jss.Comment('// STUB FUNCTION BODY${scopeOut}')]));
 
   visitStringInterpolation(dart.StringInterpolation node) =>
       VisitResult.fromJsNode(new jss.LiteralString('STUB STRING INTERPOLATION'));
@@ -42,7 +45,7 @@ class StubVisitor extends BaseVisitor {
   visitIdentifier(node) {
     var type = "IDENTIFIER";
     if (scope != null && scope.currentScope == LexicalScope.METHOD) { type = "METHODID"; }
-    return VisitResult.fromJsNode(new jss.LiteralString('stub${type}_${node.name}'));
+    return VisitResult.fromJsNode(new jss.LiteralString('stub${type}_${node.name}${scopeOut}'));
   }
 
   visitSimpleIdentifier(node) => visitIdentifier(node);

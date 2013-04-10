@@ -45,4 +45,6 @@ class LexicalScope {
     this.parent = scope;
     this.currentScope = parent.currentScope;
   }
+
+  toString() => _symbols.toString();
 }

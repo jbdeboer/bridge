@@ -97,8 +97,9 @@ class BridgeVisitor extends BaseVisitor {
 
   /*R visitEmptyStatement(EmptyStatement node);
   R visitExportDirective(ExportDirective node);
-  R visitExpressionFunctionBody(ExpressionFunctionBody node);
-*/
+  */
+  visitExpressionFunctionBody(ExpressionFunctionBody node) => visitFunctionBody(node);
+
   visitExpressionStatement(ExpressionStatement node) => visitExpression(node);
   /*
   R visitExtendsClause(ExtendsClause node);

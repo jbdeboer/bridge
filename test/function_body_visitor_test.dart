@@ -19,4 +19,8 @@ main() {
   test('should accept a function body', () {
     expectFunctionBody('{}', '{\n  // STUB BLOCK\n}\n');
   });
+
+  test('should accept an expression function body', () {
+    expectFunctionBody(' => 3', '{\n  return 3-stubEXPR;\n}\n');
+  });
 }

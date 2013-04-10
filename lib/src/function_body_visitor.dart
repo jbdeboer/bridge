@@ -17,4 +17,8 @@ class FunctionBodyVisitor extends BaseVisitor {
 
   visitBlockFunctionBody(BlockFunctionBody node) =>
     node.block.accept(this.otherVisitor);
+
+  visitExpressionFunctionBody(ExpressionFunctionBody node) =>
+    VisitResult.fromJsNode(new js.Block([
+      new js.Return(node.expression.accept(this.otherVisitor).node)]));
 }

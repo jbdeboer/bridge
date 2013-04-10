@@ -9,7 +9,7 @@ import 'visit_result.dart';
 
 
 class BaseVisitorOptions {
-  BaseVisitorOptions(this.otherVisitorFactory, this.scope);
+  BaseVisitorOptions(this.otherVisitorFactory, this.scope) { assert(scope != null); }
 
   var otherVisitorFactory;
   LexicalScope scope;
@@ -27,6 +27,7 @@ class BaseVisitor implements ASTVisitor<List<js.Node>> {
     if (options == null) return;
     this.otherVisitorFactory = options.otherVisitorFactory;
     this.scope = options.scope;
+    assert(this.scope != null);
   }
 
   // TODO(chirayu): Change to just return VisitResult when all callers can

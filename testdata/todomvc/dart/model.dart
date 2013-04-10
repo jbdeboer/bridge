@@ -10,11 +10,13 @@ import 'package:web_ui/observe/html.dart';
 @observable
 class ViewModel {
   bool isVisible(Todo todo) => todo != null &&
-      ((showIncomplete && !todo.done) || (showDone && todo.done));
+      ((getShowIncomplete() && !todo.done) || (getShowDone() && todo.done));
 
-  bool get showIncomplete => locationHash != '#/completed';
+  //bool get showIncomplete => locationHash != '#/completed';
+  bool getShowIncomplete() => locationHash != '#/completed';
 
-  bool get showDone => locationHash != '#/active';
+  //bool get showDone => locationHash != '#/active';
+  bool getShowDone() => locationHash != '#/active';
 }
 
 final ViewModel viewModel = new ViewModel();

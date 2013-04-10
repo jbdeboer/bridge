@@ -10,8 +10,31 @@ import 'lexical_scope.dart';
 import 'transformers.dart';
 import 'visit_result.dart';
 
+
+class ClassMemberNameCollectorVisitor extends ASTVisitor<Object> {
+  LexicalScope scope;
+
+  ClassMemberNameCollectorVisitor(this.scope);
+
+  visitFieldDeclaration(FieldDeclaration node) {
+    for (VariableDeclaration decl in node.fields.variables) {
+        var name = decl.name.toString();
+        scope.addName(name);
+    }
+  }
+
+  visitMethodDeclaration(MethodDeclaration node) {
+    String name = node.name.name;
+    scope.addName(name);
+
+
+  }
+
+  visitConstructorDeclaration(ConstructorDeclaration node) {}
+}
+
 class ClassMemberVisitor extends BaseVisitor {
-  ClassMemberVisitor(baseOptions) : super(baseOptions);
+  ClassMemberVisitor(baseOptions) : super(baseOptions) { assert(scope != null); }
 
   List<js.Statement> fields = new List<js.Statement>();
   List<js.Statement> methods = new List<js.Statement>();
@@ -27,6 +50,7 @@ class ClassMemberVisitor extends BaseVisitor {
     scope = new LexicalScope.clone(scope);
 
     functionName = node.name.toString();
+    node.members.accept(new ClassMemberNameCollectorVisitor(scope));
     node.members.accept(this);
 
     var ret = new List<js.Statement>();
@@ -43,7 +67,6 @@ class ClassMemberVisitor extends BaseVisitor {
   Object visitFieldDeclaration(FieldDeclaration node) {
     for (VariableDeclaration decl in node.fields.variables) {
        var name = decl.name.toString();
-       scope.addName(name);
        fields.add(new js.ExpressionStatement(
           new js.VariableDeclaration.withType(
               "$functionName.prototype.$name", "string")));

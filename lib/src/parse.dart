@@ -38,9 +38,9 @@ class TypedBridgeOutput {
 
 TypedBridgeOutput typedStringBridge(String dart,
                     BaseVisitor visitorFactory(BaseVisitor),
-                    [ASTNode query(ASTNode) = identityQuery]) {
+                    [ASTNode query(ASTNode) = identityQuery, printScope = false]) {
   ASTNode n = parseText(dart);
-  var visitor = visitorFactory(new BaseVisitorOptions((x) => new StubVisitor(), new LexicalScope()));
+  var visitor = visitorFactory(new BaseVisitorOptions((x) => new StubVisitor(x.scope, printScope), new LexicalScope()));
 
   VisitResult nodes = query(n).accept(visitor);
   // TODO: create a new top-level JS AST node.
@@ -51,4 +51,4 @@ TypedBridgeOutput typedStringBridge(String dart,
 
 String stringBridge(String dart,
                     BaseVisitor visitorFactory(BaseVisitor),
-                    [ASTNode query(ASTNode) = identityQuery]) => typedStringBridge(dart, visitorFactory, query).jsCode;
+                    [ASTNode query(ASTNode) = identityQuery, printScope = false]) => typedStringBridge(dart, visitorFactory, query, printScope).jsCode;
