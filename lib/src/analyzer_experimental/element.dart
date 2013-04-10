@@ -1971,7 +1971,9 @@ abstract class ElementImpl implements Element {
     this._nameOffset = nameOffset2;
     this._modifiers = new Set();
   }
-  bool operator ==(Object object) => object != null && identical(object.runtimeType, runtimeType) && ((object as Element)).location == location;
+  bool operator ==(Object object) {
+    return object != null &&
+       identical(object.runtimeType.toString(), runtimeType.toString()) && ((object as Element)).location == location; }
   Element getAncestor(Type elementClass) {
     Element ancestor = _enclosingElement;
     while (ancestor != null && !isInstanceOf(ancestor, elementClass)) {

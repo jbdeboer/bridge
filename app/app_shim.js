@@ -20,7 +20,7 @@ function dartMainRunner(main) {
 }
 
 function dartPrint(message) {
-    console.log('dartPrint');
+    console.log('dartPrint ' + message);
     if (message[0] == '!') {
         console.log('found results')
         dartMainCallback(message.substring(1));
