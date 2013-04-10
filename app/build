@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+
+if [[ -z $DART_SDK ]]; then
+  echo Please set DART_SDK.
+  exit 1
+fi
+
+set -vx
+/usr/bin/env dart2js -oapp.js app.dart
