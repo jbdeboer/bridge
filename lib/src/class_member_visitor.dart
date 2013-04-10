@@ -74,7 +74,7 @@ class ClassMemberVisitor extends BaseVisitor {
     String name = node.name.name;
     var funParams = dartParamsToJs(node.parameters.parameters);
 
-    var funBody = node.body.block.accept(this.otherVisitor).node;
+    var funBody = node.body.accept(this.otherVisitor).node;
     methods.add(new js.ExpressionStatement(
           new js.Assignment(
            new js.VariableDeclaration.withDoc(

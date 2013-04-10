@@ -211,7 +211,7 @@ main() {
   });
 
   test('should parse function expressions', () {
-    expectExpr('() { }', 'function() {\n  // STUB BLOCK\n}');
+    expectExpr('() { }', 'function() {\n  // STUB FUNCTION BODY\n}');
   });
 
 

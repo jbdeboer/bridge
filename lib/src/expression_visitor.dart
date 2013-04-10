@@ -210,6 +210,6 @@ class ExpressionVisitor extends BaseVisitor {
   visitFunctionExpression(FunctionExpression node) =>
     VisitResult.fromJsNode(new js.Fun(
         node.parameters.parameters.map((param) => new js.Parameter(param.identifier.name)).toList(),
-        node.body.block.accept(this.otherVisitor).node
+        node.body.accept(this.otherVisitor).node
     ));
 }

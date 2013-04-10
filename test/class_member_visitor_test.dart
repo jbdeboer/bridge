@@ -73,7 +73,7 @@ main() {
          * @return {string}
          */
         C.prototype.method = function() {
-          // STUB BLOCK
+          // STUB FUNCTION BODY
         };
          """);
   });

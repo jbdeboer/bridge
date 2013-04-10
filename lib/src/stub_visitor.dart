@@ -26,6 +26,8 @@ class StubVisitor extends BaseVisitor {
         new jss.Block([new jss.Comment('// STUB BLOCK')]
     ));
   }
+  visitBlockFunctionBody(node) =>
+    VisitResult.fromJsNode(new jss.Block([new jss.Comment('// STUB FUNCTION BODY')]));
 
   visitStringInterpolation(dart.StringInterpolation node) =>
       VisitResult.fromJsNode(new jss.LiteralString('STUB STRING INTERPOLATION'));

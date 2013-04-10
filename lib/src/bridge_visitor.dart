@@ -5,6 +5,7 @@ import './analyzer_experimental/java_core.dart';
 
 import 'base_visitor.dart';
 import 'class_member_visitor.dart';
+import 'function_body_visitor.dart';
 import 'lexical_scope.dart';
 import 'identifier_visitor.dart';
 import 'expression_visitor.dart';
@@ -55,8 +56,12 @@ class BridgeVisitor extends BaseVisitor {
   visitBlock(node) =>
     node.accept(new BlockVisitor.root(options()));
 
+  visitFunctionBody(node) =>
+    node.accept(new FunctionBodyVisitor(options()));
 
-/*  R visitBlockFunctionBody(BlockFunctionBody node);
+
+  visitBlockFunctionBody(BlockFunctionBody node) => visitFunctionBody(node);
+  /*
   R visitBooleanLiteral(BooleanLiteral node);
   R visitBreakStatement(BreakStatement node);
 */
@@ -87,9 +92,10 @@ class BridgeVisitor extends BaseVisitor {
 
   visitDoubleLiteral(DoubleLiteral node) => visitExpression(node);
 
-  /*
-  R visitEmptyFunctionBody(EmptyFunctionBody node);
-  R visitEmptyStatement(EmptyStatement node);
+
+  visitEmptyFunctionBody(EmptyFunctionBody node) => visitFunctionBody(node);
+
+  /*R visitEmptyStatement(EmptyStatement node);
   R visitExportDirective(ExportDirective node);
   R visitExpressionFunctionBody(ExpressionFunctionBody node);
 */
