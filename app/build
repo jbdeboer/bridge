@@ -7,4 +7,4 @@ if [[ -z $DART_SDK ]]; then
 fi
 
 set -vx
-/usr/bin/env dart2js -oapp.js app.dart
+$DART_SDK/bin/dart2js -oapp.js app.dart
