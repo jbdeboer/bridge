@@ -3,12 +3,11 @@
 <head>
     <title>Dart JS Bridge</title>
 
-
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
     <script src="lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="lib/ace/mode-dart.js" type="text/javascript" charset="utf-8"></script>
     <script src="app_shim.js" type="text/javascript"></script>
-    <script type="text/javascript" src="../out.js"></script>
+    <script src="app.js" type="text/javascript"></script>
 
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
 
@@ -29,36 +28,24 @@
 </head>
 <body ng-app>
 
-
-<div ng-controller="DartCtrl" class="row">
+  <div ng-controller="DartCtrl" class="row">
     <!-- <button ng-click="callDart()">Call DART</button> -->
-
-
     <div class="span6"><h3>Dart</h3>
-    <div id="editorcontainer">
-    <div id="editor">class C {
-    String x;
-    C(this.x);
-}</div></div></div>
-
-    <div class="span6"><h3>JS Output</h3>
-    <div id="jseditorcontainer" class="span6">
-        <div id="jseditor">
-        </div></div>
+      <div id="editorcontainer">
+        <div id="editor">class C {
+  String x;
+  C(this.x);
+}
         </div>
-
-
-
-
-</div>
-
-
-
+      </div>
+    </div>
+    <div class="span6">
+      <h3>JS Output</h3>
+      <div id="jseditorcontainer" class="span6">
+        <div id="jseditor"></div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
-
-
-</head>
-<body>
-

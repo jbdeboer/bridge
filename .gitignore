@@ -91,10 +91,11 @@
 
 # My ignore patterns.
 
-# Dart specific.
+# Specific to this repository.
 /pubspec.lock
 /packages/
 /.idea/
+app/app.js*
 
 # Emacs byte-compiled files and desktop files, etc.
 *.elc
