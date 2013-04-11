@@ -59,9 +59,9 @@ class IdentifierVisitor extends BaseVisitor {
       super(baseOptions) {
   }
 
-  visitSimpleIdentifier(SimpleIdentifier node) { print('sim'); return VisitResult.fromJsNode(
+  visitSimpleIdentifier(SimpleIdentifier node) { return VisitResult.fromJsNode(
       new js.LiteralString(maybeSqrt(scope.nameFor(node.name)))); }
 
-  visitPrefixedIdentifier(PrefixedIdentifier node) { print('pre'); return VisitResult.fromJsNode(
+  visitPrefixedIdentifier(PrefixedIdentifier node) { return VisitResult.fromJsNode(
       new js.LiteralString("${scope.nameFor(node.prefix.name)}.${maybeSqrt(node.identifier.name, true)}")); }
 }
