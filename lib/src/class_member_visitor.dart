@@ -1,7 +1,7 @@
 library class_member_visitor;
 
-import './analyzer_experimental/ast.dart';
-import './analyzer_experimental/java_core.dart';
+import 'analyzer_experimental/ast.dart';
+import 'analyzer_experimental/java_core.dart';
 
 import 'jsast/js.dart' as js;
 
@@ -9,6 +9,8 @@ import 'base_visitor.dart';
 import 'lexical_scope.dart';
 import 'transformers.dart';
 import 'visit_result.dart';
+import 'static_type_analyzer.dart';
+import 'type_translator.dart';
 
 
 class ClassMemberNameCollectorVisitor extends ASTVisitor<Object> {
@@ -67,9 +69,10 @@ class ClassMemberVisitor extends BaseVisitor {
   Object visitFieldDeclaration(FieldDeclaration node) {
     for (VariableDeclaration decl in node.fields.variables) {
        var name = decl.name.toString();
+       var type = dartTypeIdToJsType(node.fields.type);
        fields.add(new js.ExpressionStatement(
           new js.VariableDeclaration.withType(
-              "$functionName.prototype.$name", "string")));
+              "$functionName.prototype.$name", type)));
     }
   }
 
@@ -95,13 +98,15 @@ class ClassMemberVisitor extends BaseVisitor {
 
   Object visitMethodDeclaration(MethodDeclaration node) {
     String name = node.name.name;
+    String returnType = dartTypeIdToJsType(node.returnType);
+
     var funParams = dartParamsToJs(node.parameters.parameters);
 
     var funBody = node.body.accept(this.otherVisitor).node;
     methods.add(new js.ExpressionStatement(
           new js.Assignment(
            new js.VariableDeclaration.withDoc(
-               "$functionName.prototype.$name", "@return {string}"),
+               "$functionName.prototype.$name", "@return {$returnType}"),
            new js.Fun(funParams, funBody))));
 
 

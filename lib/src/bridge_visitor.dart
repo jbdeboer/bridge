@@ -1,10 +1,11 @@
 library bridge_visitor;
 
-import './analyzer_experimental/ast.dart';
-import './analyzer_experimental/java_core.dart';
+import 'analyzer_experimental/ast.dart';
+import 'analyzer_experimental/java_core.dart';
 
 import 'base_visitor.dart';
 import 'class_member_visitor.dart';
+import 'compilation_member_visitor.dart';
 import 'function_body_visitor.dart';
 import 'lexical_scope.dart';
 import 'identifier_visitor.dart';
@@ -109,7 +110,11 @@ class BridgeVisitor extends BaseVisitor {
   R visitFormalParameterList(FormalParameterList node);
   R visitForStatement(ForStatement node); */
 
-  visitFunctionDeclaration(FunctionDeclaration node) => visitBlock(node);
+
+  visitCompilationUnitMember(node) =>
+      node.accept(new CompilationMemberVisitor(options()));
+
+  visitFunctionDeclaration(FunctionDeclaration node) => visitCompilationUnitMember(node);
   /*
   R visitFunctionDeclarationStatement(FunctionDeclarationStatement node);
   */
@@ -180,9 +185,7 @@ class BridgeVisitor extends BaseVisitor {
   visitThisExpression(ThisExpression node) => visitExpression(node);
   visitThrowExpression(ThrowExpression node) => visitExpression(node);
 
-//    Object visitTopLevelVariableDeclaration(TopLevelVariableDeclaration node) {
-//      node.visitChildren(this);
-//    }
+//  visitTopLevelVariableDeclaration(TopLevelVariableDeclaration node) =>
 
 /*
   R visitTryStatement(TryStatement node);
@@ -196,11 +199,11 @@ class BridgeVisitor extends BaseVisitor {
   R visitTypeParameter(TypeParameter node);
   R visitTypeParameterList(TypeParameterList node); */
 
-    Object visitVariableDeclaration(VariableDeclaration node) {
+ //   Object visitVariableDeclaration(VariableDeclaration node) {
 
 
 //node.visitChildren(this);
-    }
+  //  }
 
 
 

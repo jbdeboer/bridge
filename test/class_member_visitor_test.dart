@@ -28,6 +28,35 @@ main() {
         );
   });
 
+  test('should parse a simple class with an int', () {
+    expectClass('class E { int x; }',
+// JS.
+    """
+           /**
+            * @constructor
+            */
+           function E() {
+           }
+           /** @type {number} */
+           E.prototype.x;
+           """
+    );
+  });
+
+  test('should parse a simple class with a var', () {
+    expectClass('class E { var x; }',
+// JS.
+    """
+           /**
+            * @constructor
+            */
+           function E() {
+           }
+           /** @type {?} */
+           E.prototype.x;
+           """
+    );
+  });
 
   test('should parse a class with a constructor', () {
     expectClass("""
@@ -78,6 +107,27 @@ main() {
          """);
   });
 
+  test('should parse a class with a method that returns an int', () {
+    expectClass("""
+        class C {
+          int method() { return 4; };
+        }""",
+// JS.
+    """
+        /**
+         * @constructor
+         */
+        function C() {
+        }
+        /**
+         * @return {number}
+         */
+        C.prototype.method = function() {
+          // STUB FUNCTION BODY scope:{method: 2}
+        };
+         """);
+  });
+
   test('should parse a class with a method with a parameter', () {
     expectClass('class C { p(x) {}; }', """
         /**
@@ -86,7 +136,7 @@ main() {
         function C() {
         }
         /**
-         * @return {string}
+         * @return {?}
          */
         C.prototype.p = function(x) {
           // STUB FUNCTION BODY scope:{p: 2}
@@ -102,13 +152,13 @@ main() {
         function C() {
         }
         /**
-         * @return {string}
+         * @return {?}
          */
         C.prototype.f = function() {
           // STUB FUNCTION BODY scope:{p: 2, f: 2}
         };
         /**
-         * @return {string}
+         * @return {?}
          */
         C.prototype.p = function(x) {
           // STUB FUNCTION BODY scope:{p: 2, f: 2}

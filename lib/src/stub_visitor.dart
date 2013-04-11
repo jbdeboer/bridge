@@ -29,6 +29,10 @@ class StubVisitor extends BaseVisitor {
         new jss.Block([new jss.Comment('// STUB BLOCK')]
     ));
   }
+
+  visitFunctionDeclaration(node) =>
+    VisitResult.fromJsNode(new jss.Comment('// STUB FUNCTION DECL${scopeOut}'));
+
   visitBlockFunctionBody(node) =>
     VisitResult.fromJsNode(new jss.Block([new jss.Comment('// STUB FUNCTION BODY${scopeOut}')]));
 
