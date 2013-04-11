@@ -26,7 +26,6 @@ main() {
     scope.currentScope = LexicalScope.CLASS;
     scope.addName('X');
 
-    print("passed scope");
     expectDart('X x = 3', 'this.X',
         (node) => node.sortedDirectivesAndDeclarations[0].variables.type.name,
         scope);

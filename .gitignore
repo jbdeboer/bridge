@@ -96,6 +96,7 @@
 /packages/
 /.idea/
 app/app.js*
+.ck.prj/
 
 # Emacs byte-compiled files and desktop files, etc.
 *.elc

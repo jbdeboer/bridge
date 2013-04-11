@@ -35,33 +35,35 @@ import 'base_visitor.dart';
 import 'lexical_scope.dart';
 import 'transformers.dart';
 import 'visit_result.dart';
-
 import 'type_factory.dart';
-
-
-final element.Type2 ARRAY_TYPE = typeFactory('List', []);
+import 'identifier_translations.dart';
 
 class IdentifierVisitor extends BaseVisitor {
-  //LexicalScope scope;
-  maybeSqrt(String s, [forceMethod = false]) {
-    if (scope != null) {
-      if (forceMethod || scope.currentScope == LexicalScope.METHOD) {
-        if (scope.currentType != null && scope.currentType.isSubtypeOf(ARRAY_TYPE)) {
-          return s == 'add' ? 'push' : s;
-        }
-        return s;
-      }
-          }
-    // not for method
-    return s == 'sqrt' ? 'Math.sqrt' : s;
-  }
+  // TODO(chirayu):  Use DI to get these so tests can stub them out.
+  static final IDENTIFIER_TRANSLATORS = <NameTranslator>[
+    new ArrayTranslator(),
+    new GlobalNameTranslator(),
+  ];
+
   IdentifierVisitor(baseOptions) :
       super(baseOptions) {
   }
 
-  visitSimpleIdentifier(SimpleIdentifier node) { print('sim'); return VisitResult.fromJsNode(
-      new js.LiteralString(maybeSqrt(scope.nameFor(node.name)))); }
+  String translateName(String name, bool isPrefixed) {
+    var context = new TranslationContext.fromScope(isPrefixed, scope);
+    for (var i = 0; i < IDENTIFIER_TRANSLATORS.length; i++) {
+      var translator = IDENTIFIER_TRANSLATORS[i];
+      var newName = translator.translateName(name, context);
+      if (newName != null) {
+        return newName;
+      }
+    }
+    return name;
+  }
 
-  visitPrefixedIdentifier(PrefixedIdentifier node) { print('pre'); return VisitResult.fromJsNode(
-      new js.LiteralString("${scope.nameFor(node.prefix.name)}.${maybeSqrt(node.identifier.name, true)}")); }
+  visitSimpleIdentifier(SimpleIdentifier node) { return VisitResult.fromJsNode(
+      new js.LiteralString(translateName(scope.nameFor(node.name), false))); }
+
+  visitPrefixedIdentifier(PrefixedIdentifier node) { return VisitResult.fromJsNode(
+      new js.LiteralString("${scope.nameFor(node.prefix.name)}.${translateName(node.identifier.name, true)}")); }
 }
