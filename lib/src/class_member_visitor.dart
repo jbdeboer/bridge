@@ -69,7 +69,7 @@ class ClassMemberVisitor extends BaseVisitor {
   Object visitFieldDeclaration(FieldDeclaration node) {
     for (VariableDeclaration decl in node.fields.variables) {
        var name = decl.name.toString();
-       var type = dartTypeStringToJsType(node.fields.type.name);
+       var type = dartTypeIdToJsType(node.fields.type);
        fields.add(new js.ExpressionStatement(
           new js.VariableDeclaration.withType(
               "$functionName.prototype.$name", type)));
@@ -98,7 +98,7 @@ class ClassMemberVisitor extends BaseVisitor {
 
   Object visitMethodDeclaration(MethodDeclaration node) {
     String name = node.name.name;
-    String returnType = node.returnType != null ? dartTypeStringToJsType(node.returnType.name) : "?";
+    String returnType = dartTypeIdToJsType(node.returnType);
 
     var funParams = dartParamsToJs(node.parameters.parameters);
 

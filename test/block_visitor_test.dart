@@ -58,12 +58,7 @@ main() {
   test('should parse a simple function defintion', () {
     expectBlock('{ g() { }; }', """
     {
-      /**
-     * jsdoc TODO
-     */
-    function g() {
-        // STUB FUN
-      }
+      // STUB FUNCTION DECL
       ;
     }""");
   });

@@ -43,6 +43,20 @@ main() {
     );
   });
 
+  test('should parse a simple class with a var', () {
+    expectClass('class E { var x; }',
+// JS.
+    """
+           /**
+            * @constructor
+            */
+           function E() {
+           }
+           /** @type {?} */
+           E.prototype.x;
+           """
+    );
+  });
 
   test('should parse a class with a constructor', () {
     expectClass("""
