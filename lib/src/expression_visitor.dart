@@ -15,33 +15,9 @@ import 'utils.dart';
 import 'visit_result.dart';
 import 'lexical_scope.dart';
 import 'ast_factory.dart';
+import 'static_type_analyzer.dart';
 
 
-genListType() {
-  ClassElementImpl element = new ClassElementImpl(ASTFactory.identifier2('List'));
-  var ret = new InterfaceTypeImpl.con1(element);
-  ret.typeArguments = [new DynamicTypeImpl()];
-  return ret;
-}
-
-getDynamicType() {
-  return new DynamicTypeImpl();
-}
-
-class LazyTypeProvider implements TypeProvider {
-  InterfaceType get boolType => null;
-  Type2 get bottomType => null;
-  InterfaceType get doubleType => null;
-  Type2 get dynamicType => getDynamicType();
-  InterfaceType get functionType => null;
-  InterfaceType get intType => null;
-  InterfaceType get listType => genListType();
-  InterfaceType get mapType => null;
-  InterfaceType get objectType => null;
-  InterfaceType get stackTraceType => null;
-  InterfaceType get stringType => null;
-  InterfaceType get typeType => null;
-}
 
 class ExpressionVisitor extends BaseVisitor {
   ExpressionVisitor(baseOptions) : super(baseOptions);
@@ -77,10 +53,9 @@ class ExpressionVisitor extends BaseVisitor {
       new js.LiteralNull());
 
   VisitResult visitListLiteral(ListLiteral node) {
-    TypeProvider tpi = new LazyTypeProvider();
-    StaticTypeAnalyzer sta = new StaticTypeAnalyzer.withTypeProvider(tpi);
 
-    node.accept(sta);
+
+    node.accept(staticTypeAnalyzer);
 
     var i = 0;
     var jsExprs = node.elements.elements.map((d) =>
