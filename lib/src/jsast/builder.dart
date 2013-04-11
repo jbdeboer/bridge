@@ -103,7 +103,7 @@ class JsBuilder {
       }
       return new ObjectInitializer([]);
     } else {
-      throw new ArgumentError('expression should be an Expression, '
+      throw new ArgumentError('expression $expression should be an Expression, '
                               'a String, a num, a bool, or a Map');
     }
   }

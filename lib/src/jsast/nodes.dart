@@ -534,8 +534,10 @@ class LiteralExpression extends Expression {
  */
 class VariableDeclarationList extends Expression {
   final List<VariableInitialization> declarations;
+  String jsType;
 
   VariableDeclarationList(this.declarations);
+  VariableDeclarationList.withType(this.declarations, this.jsType);
 
   accept(NodeVisitor visitor) => visitor.visitVariableDeclarationList(this);
 

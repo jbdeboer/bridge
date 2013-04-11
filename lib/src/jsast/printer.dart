@@ -463,6 +463,9 @@ class Printer implements NodeVisitor {
   }
 
   visitVariableDeclarationList(VariableDeclarationList list) {
+    if (list.jsType != null) {
+      out("/** @type {${list.jsType}} */\n");
+    }
     out("var ");
     visitCommaSeparated(list.declarations, ASSIGNMENT,
                         newInForInit: inForInit, newAtStatementBegin: false);

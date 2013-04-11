@@ -23,4 +23,15 @@ main() {
       }
       """);
   });
+
+  test('should accept a top-level variable declaration', () {
+    expectUnit('var x = 3', '/** @type {?} */\nvar x = 3-stubEXPR;\n');
+  });
+
+  test('should accept a top-level variable declaration with a type', () {
+    expectUnit('int x = 3', '/** @type {number} */\nvar x = 3-stubEXPR;\n');
+  });
+
+  // or not, class member visitor is ok
+  // test('should accept class declarations', () { });
 }

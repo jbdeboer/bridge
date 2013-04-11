@@ -185,7 +185,7 @@ class BridgeVisitor extends BaseVisitor {
   visitThisExpression(ThisExpression node) => visitExpression(node);
   visitThrowExpression(ThrowExpression node) => visitExpression(node);
 
-//  visitTopLevelVariableDeclaration(TopLevelVariableDeclaration node) =>
+  visitTopLevelVariableDeclaration(TopLevelVariableDeclaration node) => visitCompilationUnitMember(node);
 
 /*
   R visitTryStatement(TryStatement node);
