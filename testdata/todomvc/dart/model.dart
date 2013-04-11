@@ -35,17 +35,21 @@ class AppModel {
     }
   }
 
-  bool get allChecked => todos.length > 0 && todos.every((t) => t.done);
+  // bool get allChecked => todos.length > 0 && todos.every((t) => t.done);
+  bool getAllChecked() => todos.length > 0 && todos.every((t) => t.done);
 
-  set allChecked(bool value) => todos.forEach((t) { t.done = value; });
+  // set allChecked(bool value) => todos.forEach((t) { t.done = value; });
+  setAllChecked(bool value) => todos.forEach((t) { t.done = value; });
 
-  int get doneCount {
+  // int get doneCount {
+  int getDoneCount() {
     int res = 0;
     todos.forEach((t) { if (t.done) res++; });
     return res;
   }
 
-  int get remaining => todos.length - doneCount;
+  // int get remaining => todos.length - doneCount;
+  int getRemaining() => todos.length - getDoneCount();
 
   void clearDone() {
     // TODO(jmesserly): should methods on ObservableList return Observables?

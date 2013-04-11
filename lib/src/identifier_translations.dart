@@ -1,3 +1,5 @@
+library identifier_translations;
+
 import './analyzer_experimental/ast.dart';
 import './analyzer_experimental/element.dart' as element;
 import './analyzer_experimental/java_core.dart';
