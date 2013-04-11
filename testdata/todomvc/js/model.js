@@ -13,11 +13,14 @@ function ViewModel() {}
 /** @type{?boolean} */
 ViewModel.prototype.todo;
 
-ViewModel.prototype.isVisible = function() {
+/**
+ * @param {Todo}.
+ */
+ViewModel.prototype.isVisible = function(todo) {
   return (
-      this.todo != null &&
-      ((this.getShowIncomplete() && !this.todo.done) ||
-       (this.getShowDone() && this.todo.done)));
+      todo != null &&
+      ((this.getShowIncomplete() && !todo.done) ||
+       (this.getShowDone() && todo.done)));
 }
 
 ViewModel.prototype.getShowIncomplete = function() {
